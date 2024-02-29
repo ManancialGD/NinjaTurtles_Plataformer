@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour
         // Encontre o objeto pelo nome do script
         target = GameObject.Find("Player");
 
+        //Logs
         if (target != null)
         {
             Debug.Log("Player encontrado com sucesso!");

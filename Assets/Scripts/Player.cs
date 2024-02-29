@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -28,15 +29,14 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D playerCollider;
 
     public float moveSpeed;
-    private Transform playerTransform;
 
 
-    private enum MovementState { Idle, Walk, Jump, Falling };
+    private enum MovementState { Idle, Walk, Jump, Falling, OnWall };
+    private string holdOnWallParameter = "holdOnWall";
     public bool isWallLocked;
     public float groundFriction;
 
     private bool Key_Jump;
-    private bool Key_Shift;
     public float WallSlideSpeed;
     private float PlayerFinalRotation;
     public float ROTATION_RATE_DEFAULT;
@@ -46,10 +46,8 @@ public class Player : MonoBehaviour
     {
         PlayerFinalRotation = 0f;
         Key_Jump = false;
-        Key_Shift = false;
         isWallLocked = false;
         moveSpeed = InitialMoveSpeed;
-        playerTransform = GetComponent<Transform>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponents<BoxCollider2D>();
@@ -64,7 +62,6 @@ public class Player : MonoBehaviour
         {
             Debug.Log(wallSideJumped_history);
         }
-        Debug.Log(playerTransform.rotation);
 
         KeyDetection();
 
@@ -74,7 +71,7 @@ public class Player : MonoBehaviour
 
         UpdateAnimationState();
         PlayerAutoRotate();
-        Debug.Log(GetFramesUntilCollision(false));
+        //Debug.Log(GetFramesUntilCollision(false));
 
     }
 
@@ -93,7 +90,7 @@ public class Player : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
 
-            if (!Key_Shift)
+            if (!Input.GetButton("Run"))
             {
                 if (rb.velocity.x + moveSpeed <= MAX_SPEED && dirX == 1)
                 {
@@ -148,9 +145,6 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButton("Jump") && !Key_Jump) Key_Jump = true;
         else if (!Input.GetButton("Jump") && Key_Jump) Key_Jump = false;
-
-        if (Input.GetButton("Run") && !Key_Shift) Key_Shift = true;
-        else if (!Input.GetButton("Run") && Key_Shift) Key_Shift = false;
     }
 
     public bool GroundDetection()
@@ -158,7 +152,7 @@ public class Player : MonoBehaviour
         if (Physics2D.BoxCast(coll[0].bounds.center, coll[0].bounds.size, 0f, Vector2.down, 0f, jumpableGround))
         {
             wallSideJumped_history = 0;
-            if (Key_Shift)
+            if (Input.GetButton("Run"))
             {
                 if (moveSpeed != InitialMoveSpeed * runMultiplier) moveSpeed = InitialMoveSpeed * runMultiplier;
             }
@@ -232,7 +226,7 @@ public class Player : MonoBehaviour
         else
         { // In Ground
 
-            if (!Key_Shift)
+            if (!Input.GetButton("holdOnWall"))
             {
                 if (rb.gravityScale != GravityForce) rb.gravityScale = GravityForce;
                 if (rb.velocity.y < -WallSlideSpeed) rb.velocity = new Vector2(rb.velocity.x, -WallSlideSpeed);
@@ -269,25 +263,40 @@ public class Player : MonoBehaviour
     private void UpdateAnimationState()
     {
         MovementState state;
-
-        if (rb.velocity.y > 0.1f)
+        //Debug.Log(GetFramesUntilCollision(false));
+        if (GetWallCollision() == 1)
+        {
+            state = MovementState.OnWall;
+            anim.SetBool(holdOnWallParameter, true);
+        }
+        else if (GetWallCollision() == 2)
+        {
+            state = MovementState.OnWall;
+            anim.SetBool(holdOnWallParameter, true);
+            sprite.flipX = rb.velocity.x < 0f;
+        }
+        else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !isNearGround()) 
         {
             state = MovementState.Jump;
             sprite.flipX = rb.velocity.x < 0f;
+            anim.SetBool(holdOnWallParameter, false);
         }
-        else if (rb.velocity.y < -0.1f)
+        else if (rb.velocity.y < -0.1f && isNearGround())
         {
             state = MovementState.Falling;
             sprite.flipX = rb.velocity.x < 0f;
+            anim.SetBool(holdOnWallParameter, false);
         }
         else if (dirX != 0f)
         {
             state = MovementState.Walk;
             sprite.flipX = rb.velocity.x < 0f;
+            anim.SetBool(holdOnWallParameter, false);
         }
         else
         {
             state = MovementState.Idle;
+            anim.SetBool(holdOnWallParameter, false);
         }
 
         //Debug.Log(state);
@@ -297,8 +306,6 @@ public class Player : MonoBehaviour
     private int PlayerAutoRotate()
     {
         float player_rotation = rb.rotation;
-        float rotation_needed = 0f;
-        int frames_needed = 0;
         //Debug.Log(player_rotation);
         if (player_rotation >= 360 || player_rotation <= -360)
         {
@@ -308,19 +315,12 @@ public class Player : MonoBehaviour
         else if (player_rotation == 0f) return 0;
         else if (player_rotation > 0f)
         {
-            frames_needed = GetFramesUntilCollision(false);
-            rotation_needed = 360f - Mathf.Abs(player_rotation) / frames_needed;
-            Debug.Log(rotation_needed);
-            playerTransform.rotation = new Quaternion(0f, 0f, playerTransform.rotation.z + 1f, 1f);
-            
+            rb.rotation += ROTATION_RATE_DEFAULT;
             return 1;
         }
         else if (player_rotation < 0f)
         {
-            frames_needed = GetFramesUntilCollision(false);
-            rotation_needed = -(360f - Mathf.Abs(player_rotation)) / frames_needed;
-            Debug.Log(rotation_needed);
-            playerTransform.rotation = new Quaternion(0f, 0f, playerTransform.rotation.z + 1f, 1f);
+            rb.rotation -= ROTATION_RATE_DEFAULT;
             return 2;
         }
         else
@@ -350,12 +350,12 @@ public class Player : MonoBehaviour
 
         }
 
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 100; i++)
         {
-            float newposX = posX + velocityX * (i * 0.14f);
-            float newposY = posY + (velocityY * (i * 0.14f)) - (GravityForce * (i * i) * 0.08f);
+            float newposX = posX + velocityX * (i * 0.1f);
+            float newposY = posY + (velocityY * (i * 0.1f)) - (GravityForce * i * i * 0.1f);
 
-            Vector2 newColliderPosition = new Vector2(newposX * 0.1f, newposY * 0.1f);
+            Vector2 newColliderPosition = new Vector2(newposX, newposY);
 
             //displayX = coll[3].bounds.center.x - PosX;
             //displayY = coll[3].bounds.center.y - PosY;            
@@ -378,6 +378,10 @@ public class Player : MonoBehaviour
 
         return 0;
 
+    }
+    private bool isNearGround()
+    {
+        return (Physics2D.BoxCast(coll[0].bounds.center, coll[0].bounds.size, 0f, Vector2.down, 3f, jumpableGround));
     }
 
 }
