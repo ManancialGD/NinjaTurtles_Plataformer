@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
 
 
     private enum MovementState { Idle, Walk, Jump, Falling, OnWall };
-    private string holdOnWallParameter = "holdOnWall";
+    private string holdOnWallParameter = "HoldOnWall";
     public bool isWallLocked;
     public float groundFriction;
 
@@ -63,6 +63,8 @@ public class Player : MonoBehaviour
             Debug.Log(wallSideJumped_history);
         }
 
+        Debug.Log(GetWallCollision());
+
         KeyDetection();
 
         GroundDetection();
@@ -71,6 +73,7 @@ public class Player : MonoBehaviour
 
         UpdateAnimationState();
         PlayerAutoRotate();
+
         //Debug.Log(GetFramesUntilCollision(false));
 
     }
@@ -226,7 +229,7 @@ public class Player : MonoBehaviour
         else
         { // In Ground
 
-            if (!Input.GetButton("holdOnWall"))
+            if (!Input.GetButton("HoldOnWall"))
             {
                 if (rb.gravityScale != GravityForce) rb.gravityScale = GravityForce;
                 if (rb.velocity.y < -WallSlideSpeed) rb.velocity = new Vector2(rb.velocity.x, -WallSlideSpeed);
@@ -264,16 +267,12 @@ public class Player : MonoBehaviour
     {
         MovementState state;
         //Debug.Log(GetFramesUntilCollision(false));
-        if (GetWallCollision() == 1)
+        
+        if (GetWallCollision() != 0)
         {
             state = MovementState.OnWall;
             anim.SetBool(holdOnWallParameter, true);
-        }
-        else if (GetWallCollision() == 2)
-        {
-            state = MovementState.OnWall;
-            anim.SetBool(holdOnWallParameter, true);
-            sprite.flipX = rb.velocity.x < 0f;
+            sprite.flipX = GetWallCollision() == 2;
         }
         else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !isNearGround()) 
         {
@@ -350,12 +349,12 @@ public class Player : MonoBehaviour
 
         }
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 50; i++)
         {
-            float newposX = posX + velocityX * (i * 0.1f);
-            float newposY = posY + (velocityY * (i * 0.1f)) - (GravityForce * i * i * 0.1f);
+            float newposX = posX + velocityX * (i * 0.14f);
+            float newposY = posY + (velocityY * (i * 0.14f)) - (GravityForce * (i * i) * 0.08f);
 
-            Vector2 newColliderPosition = new Vector2(newposX, newposY);
+            Vector2 newColliderPosition = new Vector2(newposX * 0.1f, newposY * 0.1f);
 
             //displayX = coll[3].bounds.center.x - PosX;
             //displayY = coll[3].bounds.center.y - PosY;            
