@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D playerCollider;
 
     public float moveSpeed;
+    private Transform playerTransform;
 
 
     private enum MovementState { Idle, Walk, Jump, Falling };
@@ -48,6 +49,7 @@ public class Player : MonoBehaviour
         Key_Shift = false;
         isWallLocked = false;
         moveSpeed = InitialMoveSpeed;
+        playerTransform = GetComponent<Transform>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponents<BoxCollider2D>();
@@ -62,6 +64,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log(wallSideJumped_history);
         }
+        Debug.Log(playerTransform.rotation);
 
         KeyDetection();
 
@@ -294,6 +297,8 @@ public class Player : MonoBehaviour
     private int PlayerAutoRotate()
     {
         float player_rotation = rb.rotation;
+        float rotation_needed = 0f;
+        int frames_needed = 0;
         //Debug.Log(player_rotation);
         if (player_rotation >= 360 || player_rotation <= -360)
         {
@@ -303,12 +308,19 @@ public class Player : MonoBehaviour
         else if (player_rotation == 0f) return 0;
         else if (player_rotation > 0f)
         {
-            rb.rotation += ROTATION_RATE_DEFAULT;
+            frames_needed = GetFramesUntilCollision(false);
+            rotation_needed = 360f - Mathf.Abs(player_rotation) / frames_needed;
+            Debug.Log(rotation_needed);
+            playerTransform.rotation = new Quaternion(0f, 0f, playerTransform.rotation.z + 1f, 1f);
+            
             return 1;
         }
         else if (player_rotation < 0f)
         {
-            rb.rotation -= ROTATION_RATE_DEFAULT;
+            frames_needed = GetFramesUntilCollision(false);
+            rotation_needed = -(360f - Mathf.Abs(player_rotation)) / frames_needed;
+            Debug.Log(rotation_needed);
+            playerTransform.rotation = new Quaternion(0f, 0f, playerTransform.rotation.z + 1f, 1f);
             return 2;
         }
         else
@@ -338,12 +350,12 @@ public class Player : MonoBehaviour
 
         }
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 50; i++)
         {
-            float newposX = posX + velocityX * (i * 0.1f);
-            float newposY = posY + (velocityY * (i * 0.1f)) - (GravityForce * i * i * 0.1f);
+            float newposX = posX + velocityX * (i * 0.14f);
+            float newposY = posY + (velocityY * (i * 0.14f)) - (GravityForce * (i * i) * 0.08f);
 
-            Vector2 newColliderPosition = new Vector2(newposX, newposY);
+            Vector2 newColliderPosition = new Vector2(newposX * 0.1f, newposY * 0.1f);
 
             //displayX = coll[3].bounds.center.x - PosX;
             //displayY = coll[3].bounds.center.y - PosY;            
