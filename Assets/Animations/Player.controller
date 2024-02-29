@@ -12,7 +12,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 1
   - m_ConditionMode: 2
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4943802846650473502}
@@ -65,7 +65,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 4
   - m_ConditionMode: 1
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -646325352023819116}
@@ -93,7 +93,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 4
   - m_ConditionMode: 1
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -646325352023819116}
@@ -151,7 +151,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 4
   - m_ConditionMode: 1
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -646325352023819116}
@@ -268,7 +268,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 4
   - m_ConditionMode: 1
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -646325352023819116}
@@ -371,7 +371,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 2
   - m_ConditionMode: 2
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6395147746775385599}
@@ -482,7 +482,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: holdOnWall
+  - m_Name: HoldOnWall
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -513,7 +513,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1074676874753833214}
@@ -676,7 +676,7 @@ AnimatorStateTransition:
     m_ConditionEvent: state
     m_EventTreshold: 3
   - m_ConditionMode: 2
-    m_ConditionEvent: holdOnWall
+    m_ConditionEvent: HoldOnWall
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6857587987747966854}
