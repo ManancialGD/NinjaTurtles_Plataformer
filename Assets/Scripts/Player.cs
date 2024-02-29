@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
             Debug.Log(wallSideJumped_history);
         }
 
-        Debug.Log(GetWallCollision());
+        Debug.Log("Payer in air:" + PlayerInAir);
 
         KeyDetection();
 
@@ -211,7 +211,7 @@ public class Player : MonoBehaviour
 
         int wallSide = GetWallCollision();
 
-        if (Key_Jump && wallSide != wallSideJumped_history)
+        if (Key_Jump && wallSide != wallSideJumped_history && PlayerInAir)
         { // Wall Boost
 
             wallSideJumped_history = wallSide;
@@ -221,21 +221,18 @@ public class Player : MonoBehaviour
             else Debug.Log("ERRO 986235 - Not touching any wall (Unable to Wall-Jump)");
             rb.velocity = new Vector2(wallBoost / 2 * wallSide, wallBoost);
 
-            if (wallSide == -1) rb.rotation -= ROTATION_RATE_DEFAULT * Time.deltaTime;
-            else if (wallSide == 1) rb.rotation += ROTATION_RATE_DEFAULT * Time.deltaTime;
-
             return 2;
         }
         else
         { // In Ground
 
-            if (!Input.GetButton("HoldOnWall"))
+            if (!Input.GetButton("HoldOnWall") && PlayerInAir)
             {
                 if (rb.gravityScale != GravityForce) rb.gravityScale = GravityForce;
                 if (rb.velocity.y < -WallSlideSpeed) rb.velocity = new Vector2(rb.velocity.x, -WallSlideSpeed);
                 isWallLocked = false;
             }
-            else
+            else if (PlayerInAir)
             { //SHIFT
                 isWallLocked = true;
                 if (rb.gravityScale != 0f) rb.gravityScale = 0f;
