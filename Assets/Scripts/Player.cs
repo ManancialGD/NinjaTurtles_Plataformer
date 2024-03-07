@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    // Initiators
     Collision coll;
     Rigidbody2D rb;
+    Animator anim;
+    SpriteRenderer sprite;
+
 
     [Header("Stats")]
     public float movementSpeed = 10f;
+    public float runMultiplier = 1.5f;
     public float jumpSpeed = 40f;
     public float WallJumpForce = 60f;
     public float slideSpeed = 3f;
@@ -22,20 +27,17 @@ public class Player : MonoBehaviour
     public bool wallSlide;
     public bool sliding;
     public bool wallJumped;
-    private Animator anim;
-    private SpriteRenderer sprite;
-    private CapsuleCollider2D playerCollider;
-    public bool isWallLocked;
+    public bool isRunning;
 
+    
+
+    // Animation variables
     private enum MovementState { Idle, Walk, Jump, Falling, OnWall };
     private string holdOnWallParameter = "HoldOnWall";
+
     private void Start()
     {
         coll = GetComponent<Collision>();
-        rb = GetComponent<Rigidbody2D>();
-
-        isWallLocked = false;
-        playerCollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -54,6 +56,15 @@ public class Player : MonoBehaviour
         if(xRaw != 0 && !wallSlide)
         {
             sprite.flipX = xRaw < 0;
+        }
+
+        if (Input.GetButtonDown("Run"))
+        {
+            isRunning = true;
+        }
+        else if (Input.GetButtonUp("Run"))
+        {
+            isRunning = false;
         }
 
         if(Input.GetButtonDown("Jump"))
@@ -113,16 +124,18 @@ public class Player : MonoBehaviour
             return;
         }
 
+        float currentSpeed = isRunning ? movementSpeed * runMultiplier : movementSpeed;
+
         if (!wallJumped)
         {
-            rb.velocity = new Vector2(dir.x * movementSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(dir.x * currentSpeed, rb.velocity.y);
         }
         else
         {
-            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * movementSpeed, rb.velocity.y)), wallSlideLerp * Time.deltaTime);
+            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * currentSpeed, rb.velocity.y)), wallSlideLerp * Time.deltaTime);
         }
-
     }
+
 
     private void Jump(Vector2 dir)
     {
