@@ -4063,6 +4063,7 @@ GameObject:
   m_Component:
   - component: {fileID: 745397280}
   - component: {fileID: 745397282}
+  - component: {fileID: 745397290}
   - component: {fileID: 745397279}
   - component: {fileID: 745397278}
   - component: {fileID: 745397283}
@@ -4184,23 +4185,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c0da60813dc204099a2e76bcf62499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionDetectorSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  CollisionDetectorGroup: {fileID: 1625899455}
-  PrintWallState: 0
-  jumpableGround:
-    serializedVersion: 2
-    m_Bits: 8
-  InitialMoveSpeed: 0.05
-  MAX_SPEED: 6
-  jumpForce: 10
-  wallBoost: 10
-  runMultiplier: 1.3
-  GravityForce: 2.6
-  moveSpeed: 0
+  movementSpeed: 5
+  jumpSpeed: 10
+  WallJumpForce: 60
+  slideSpeed: 3
+  wallSlideLerp: 4
+  canMove: 1
+  wallSlide: 0
+  sliding: 0
+  wallJumped: 0
   isWallLocked: 0
-  groundFriction: 0.98
-  WallSlideSpeed: 0.6
-  ROTATION_RATE_DEFAULT: 0
 --- !u!95 &745397283
 Animator:
   serializedVersion: 5
@@ -4264,7 +4258,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745397277}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -4309,7 +4303,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745397277}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -4354,7 +4348,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745397277}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -4399,7 +4393,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745397277}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -4437,6 +4431,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3270712, y: 0.69954836}
   m_EdgeRadius: 0
+--- !u!114 &745397290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745397277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 050131a68e16a454c83e725661fb2af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpableGround:
+    serializedVersion: 2
+    m_Bits: 8
+  onGround: 0
+  onWall: 0
+  onRightWall: 0
+  onLeftWall: 0
+  wallSide: 0
+  wallCollisionRadius: 0.19
+  groundCollisionRadius: 0.07
+  bottomOffset: {x: 0, y: -0.42}
+  rightOffset: {x: 0.21, y: 0}
+  leftOffset: {x: -0.21, y: 0}
 --- !u!1 &1625899454
 GameObject:
   m_ObjectHideFlags: 0
