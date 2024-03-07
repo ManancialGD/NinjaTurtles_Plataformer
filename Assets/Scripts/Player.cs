@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
 
 
     [Header("Stats")]
+    public int damageAmount = 10;
     public float movementSpeed = 10f;
     public float movementLerp = 4f;
     public float runMultiplier = 1.5f;
@@ -20,7 +22,6 @@ public class Player : MonoBehaviour
     public float WallJumpForce = 60f;
     public float slideSpeed = 3f;
     public float wallJumpLerp = 4f;
-    public bool isWallLocked;
 
 
     [Space]
@@ -31,19 +32,22 @@ public class Player : MonoBehaviour
     public bool sliding;
     public bool wallJumped;
     public bool isRunning;
+    public bool isWallLocked;
+    public bool canFlip;
 
-    
+    private Collision collisionScript;
 
     // Animation variables
-    private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking };
+    private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking, LeftAttacking };
     private string holdOnWallParameter = "HoldOnWall";
-
     private void Start()
     {
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        collisionScript = GetComponent<Collision>();
     }
 
     void Update()
@@ -56,11 +60,10 @@ public class Player : MonoBehaviour
 
         Move(dir);
 
-        if(xRaw != 0 && !wallSlide)
+        if(xRaw != 0 && !wallSlide && canFlip)
         {
             sprite.flipX = xRaw < 0;
         }
-
         if (Input.GetButtonDown("Run") && coll.onGround)
         {
             isRunning = true;
@@ -135,7 +138,7 @@ public class Player : MonoBehaviour
             wallJumped = false;
         }
         else if (coll.onWall) wallJumped = false;
-
+    
         UpdateAnimationState();
     }
 
@@ -196,27 +199,29 @@ public class Player : MonoBehaviour
                 anim.SetBool(holdOnWallParameter, true);
                 sprite.flipX = coll.onRightWall;
             }
-            else if (Input.GetButtonDown("Attack") && coll.onGround)
+            else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == false)
             {
                 state = MovementState.Attacking;
+                anim.SetBool(holdOnWallParameter, false);
+            }
+            else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
+            {
+                state = MovementState.LeftAttacking;
                 anim.SetBool(holdOnWallParameter, false);
             }
             else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround) 
             {
                 state = MovementState.Jump;
-                sprite.flipX = rb.velocity.x < 0f;
                 anim.SetBool(holdOnWallParameter, false);
             }
             else if (rb.velocity.y < -0.1f && coll.onGround)
             {
                 state = MovementState.Falling;
-                sprite.flipX = rb.velocity.x < 0f;
                 anim.SetBool(holdOnWallParameter, false);
             }
             else if (rb.velocity.x != 0f)
             {
                 state = MovementState.Walk;
-                sprite.flipX = rb.velocity.x < 0f;
                 anim.SetBool(holdOnWallParameter, false);
             }
             else
@@ -227,6 +232,18 @@ public class Player : MonoBehaviour
 
         //Debug.Log(state);
         anim.SetInteger("state", (int)state);
+        if(state == MovementState.Attacking || state == MovementState.LeftAttacking){
+            sprite.flipX = false;
+        }
     }
 
+    public int GetDamage()
+    {
+        return damageAmount;
+    }
+    public void CanItFlip(bool cantFlip)
+    {
+        if (cantFlip) canFlip = false;
+        else canFlip = true;
+    }
 }

@@ -21,9 +21,8 @@ public class Collision : MonoBehaviour
     public Vector2 wallBoxSize = new Vector2(0.04f, 0.61f);
     public Vector2 groundBoxSize = new Vector2(0.5f, 0.1f);
     public Vector2 groundOffset, rightWallOffset, leftWallOffset, attackCollision;
-    Color debugCollisionColor = Color.red;
+    public Color debugCollisionColor = Color.red;
 
-    // Update is called once per frame
     void Update()
     {
         onGround = Physics2D.OverlapBox((Vector2)transform.position + groundOffset, groundBoxSize, 0f, jumpableGround);
@@ -40,8 +39,8 @@ public class Collision : MonoBehaviour
     {
         Gizmos.color = debugCollisionColor;
 
-        Gizmos.DrawWireCube((Vector2)transform.position + groundOffset, groundBoxSize); // Ground Collision
-        Gizmos.DrawWireCube((Vector2)transform.position + leftWallOffset, wallBoxSize); // Left wall Collision
-        Gizmos.DrawWireCube((Vector2)transform.position + rightWallOffset, wallBoxSize); // Right wall Collision
+        Gizmos.DrawWireCube((Vector2)transform.position + groundOffset, groundBoxSize);
+        Gizmos.DrawWireCube((Vector2)transform.position + leftWallOffset, wallBoxSize);
+        Gizmos.DrawWireCube((Vector2)transform.position + rightWallOffset, wallBoxSize);
     }
 }
