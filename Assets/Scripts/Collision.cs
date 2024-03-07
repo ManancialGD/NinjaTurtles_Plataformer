@@ -20,7 +20,7 @@ public class Collision : MonoBehaviour
     [Header("Collision")]
     public Vector2 wallBoxSize = new Vector2(0.04f, 0.61f);
     public Vector2 groundBoxSize = new Vector2(0.5f, 0.1f);
-    public Vector2 groundOffset, rightWallOffset, leftWallOffset;
+    public Vector2 groundOffset, rightWallOffset, leftWallOffset, attackCollision;
     Color debugCollisionColor = Color.red;
 
     // Update is called once per frame

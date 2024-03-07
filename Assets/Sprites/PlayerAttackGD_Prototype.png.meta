@@ -115,17 +115,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 17
+        width: 32
         height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c34aebec86c86d3488ba3fd45b3941d5
-      internalID: -1742923943
+      spriteID: b3c73946698e7f44b827a1badbb18e2a
+      internalID: -867482117
       vertices: []
       indices: 
       edges: []
@@ -134,19 +134,19 @@ TextureImporter:
       name: PlayerAttackGD_Prototype_1
       rect:
         serializedVersion: 2
-        x: 17
+        x: 32
         y: 0
-        width: 17
+        width: 32
         height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 102569eb4307706488981be4cd870bc2
-      internalID: 1493480917
+      spriteID: 8664af63b71cca946a4253eec1aef577
+      internalID: -241093279
       vertices: []
       indices: 
       edges: []
@@ -155,19 +155,19 @@ TextureImporter:
       name: PlayerAttackGD_Prototype_2
       rect:
         serializedVersion: 2
-        x: 34
+        x: 64
         y: 0
-        width: 17
+        width: 32
         height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 028e732aa44b2fa4fbc701b9feed10af
-      internalID: -510251562
+      spriteID: dd09e912ae3790440b06873aa6e29c02
+      internalID: 585804209
       vertices: []
       indices: 
       edges: []
@@ -176,19 +176,19 @@ TextureImporter:
       name: PlayerAttackGD_Prototype_3
       rect:
         serializedVersion: 2
-        x: 51
+        x: 96
         y: 0
-        width: 17
+        width: 32
         height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c486f98687cdf724893c078e7a06f006
-      internalID: -1431526149
+      spriteID: 59cb48a6a3b69f041b13a914cfadff40
+      internalID: -446453894
       vertices: []
       indices: 
       edges: []
@@ -197,19 +197,19 @@ TextureImporter:
       name: PlayerAttackGD_Prototype_4
       rect:
         serializedVersion: 2
-        x: 68
+        x: 128
         y: 0
-        width: 17
+        width: 32
         height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 099ac80c8dcbc964a87dbee629b67b05
-      internalID: 1926400872
+      spriteID: f9b6849c80720d24a9331554c5bc0bf4
+      internalID: -1295147555
       vertices: []
       indices: 
       edges: []
@@ -218,19 +218,19 @@ TextureImporter:
       name: PlayerAttackGD_Prototype_5
       rect:
         serializedVersion: 2
-        x: 85
+        x: 160
         y: 0
-        width: 17
+        width: 32
         height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23d13c69ba58ad746bdb21520e32312d
-      internalID: 1575504063
+      spriteID: 320a2039832344342885469249439346
+      internalID: 1014569897
       vertices: []
       indices: 
       edges: []
@@ -246,12 +246,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      PlayerAttackGD_Prototype_0: -1742923943
-      PlayerAttackGD_Prototype_1: 1493480917
-      PlayerAttackGD_Prototype_2: -510251562
-      PlayerAttackGD_Prototype_3: -1431526149
-      PlayerAttackGD_Prototype_4: 1926400872
-      PlayerAttackGD_Prototype_5: 1575504063
+      PlayerAttackGD_Prototype_0: -867482117
+      PlayerAttackGD_Prototype_1: -241093279
+      PlayerAttackGD_Prototype_2: 585804209
+      PlayerAttackGD_Prototype_3: -446453894
+      PlayerAttackGD_Prototype_4: -1295147555
+      PlayerAttackGD_Prototype_5: 1014569897
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

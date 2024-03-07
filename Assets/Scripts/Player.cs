@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     
 
     // Animation variables
-    private enum MovementState { Idle, Walk, Jump, Falling, OnWall };
+    private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking };
     private string holdOnWallParameter = "HoldOnWall";
 
     private void Start()
@@ -195,6 +195,11 @@ public class Player : MonoBehaviour
                 state = MovementState.OnWall;
                 anim.SetBool(holdOnWallParameter, true);
                 sprite.flipX = coll.onRightWall;
+            }
+            else if (Input.GetButtonDown("Attack") && coll.onGround)
+            {
+                state = MovementState.Attacking;
+                anim.SetBool(holdOnWallParameter, false);
             }
             else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround) 
             {
