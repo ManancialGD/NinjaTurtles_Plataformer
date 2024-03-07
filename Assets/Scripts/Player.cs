@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
             sprite.flipX = xRaw < 0;
         }
 
-        if (Input.GetButtonDown("Run"))
+        if (Input.GetButtonDown("Run") && coll.onGround)
         {
             isRunning = true;
         }
@@ -69,6 +69,8 @@ public class Player : MonoBehaviour
         {
             isRunning = false;
         }
+        if (coll.onWall && !coll.onGround) isRunning = false;
+
         if (Input.GetButtonDown("HoldOnWall"))
         {
             isWallLocked = true;            
@@ -132,6 +134,7 @@ public class Player : MonoBehaviour
             sliding = false;
             wallJumped = false;
         }
+        else if (coll.onWall) wallJumped = false;
 
         UpdateAnimationState();
     }

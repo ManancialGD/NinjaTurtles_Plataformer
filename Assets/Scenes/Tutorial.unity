@@ -4180,7 +4180,7 @@ MonoBehaviour:
   movementLerp: 60
   runMultiplier: 1.5
   jumpSpeed: 10
-  WallJumpForce: 60
+  WallJumpForce: 55
   slideSpeed: 1
   wallJumpLerp: 3.5
   isWallLocked: 0
