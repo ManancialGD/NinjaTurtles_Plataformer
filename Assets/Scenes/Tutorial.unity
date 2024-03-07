@@ -4177,7 +4177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
-  movementLerp: 4
+  movementLerp: 60
   runMultiplier: 1.5
   jumpSpeed: 10
   WallJumpForce: 60
