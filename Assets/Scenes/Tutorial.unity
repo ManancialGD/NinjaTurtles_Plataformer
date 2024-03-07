@@ -2311,8 +2311,8 @@ Tilemap:
   - first: {x: 2, y: -2, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -3410,15 +3410,15 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 318
+  - m_RefCount: 319
     m_Data: {fileID: 11400000, guid: 96667e24d67080d4d9c0c996844666ba, type: 2}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 134f7d77fd8e79240b032626a2be7ebb, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
-  - m_RefCount: 318
+  - m_RefCount: 319
     m_Data: {fileID: -334081443, guid: 526752f530bcc0d4f8bcc41c91d4d373, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: 1774818732, guid: 526752f530bcc0d4f8bcc41c91d4d373, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 319
     m_Data:
@@ -3674,12 +3674,8 @@ CompositeCollider2D:
         Y: 41
       - X: 69999896
         Y: -9999900
-      - X: 29062480
-        Y: -9999900
-      - X: 29062442
-        Y: -9999915
       - X: 20000100
-        Y: -19062256
+        Y: -9999900
       - X: 20000100
         Y: 50000044
       - X: 20000040
@@ -3730,8 +3726,7 @@ CompositeCollider2D:
       - {x: 8.999961, y: 0.00001}
       - {x: 6.9999895, y: -0.0000252}
       - {x: 6.99996, y: -0.99999}
-      - {x: 2.9062366, y: -0.9999991}
-      - {x: 2.00001, y: -1.9061382}
+      - {x: 2.00001, y: -0.9999606}
       - {x: 1.9999748, y: 5.00001}
       - {x: -1.00001, y: 4.999975}
       - {x: -1.0000395, y: -2.99999}
@@ -4182,15 +4177,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
+  movementLerp: 4
+  runMultiplier: 1.5
   jumpSpeed: 10
   WallJumpForce: 60
   slideSpeed: 1
-  wallSlideLerp: 4
+  wallJumpLerp: 3.5
+  isWallLocked: 0
   canMove: 1
   wallSlide: 0
   sliding: 0
   wallJumped: 0
-  isWallLocked: 0
+  isRunning: 0
 --- !u!95 &745397283
 Animator:
   serializedVersion: 5

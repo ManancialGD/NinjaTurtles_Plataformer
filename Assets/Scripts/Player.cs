@@ -14,11 +14,14 @@ public class Player : MonoBehaviour
 
     [Header("Stats")]
     public float movementSpeed = 10f;
+    public float movementLerp = 4f;
     public float runMultiplier = 1.5f;
     public float jumpSpeed = 40f;
     public float WallJumpForce = 60f;
     public float slideSpeed = 3f;
-    public float wallSlideLerp = 1.5f;
+    public float wallJumpLerp = 4f;
+    public bool isWallLocked;
+
 
     [Space]
 
@@ -66,6 +69,14 @@ public class Player : MonoBehaviour
         {
             isRunning = false;
         }
+        if (Input.GetButtonDown("HoldOnWall"))
+        {
+            isWallLocked = true;            
+        }
+        else if (Input.GetButtonUp("HoldOnWall"))
+        {
+            isWallLocked = false;
+        }
 
         if(Input.GetButtonDown("Jump"))
         {
@@ -73,7 +84,7 @@ public class Player : MonoBehaviour
             {
                 Jump(Vector2.up);
             }
-            else if( coll.onWall)
+            else if (coll.onWall)
             {
                 WallJump();
             }
@@ -83,10 +94,9 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
         }
 
-        if( !coll.onGround && coll.onWall)
+        if (!coll.onGround && coll.onWall)
         {
-            
-            if( rb.velocity.y > 0)
+            if (rb.velocity.y > 0)
             {
                 wallSlide = false;
                 return;
@@ -102,7 +112,16 @@ public class Player : MonoBehaviour
                     rb.velocity = new Vector2(rb.velocity.x, 0);
                     sliding = true;
                 }
-                rb.velocity = new Vector2(rb.velocity.x, -slideSpeed);
+
+                // Lock the y position when holding onto the wall
+                if (isWallLocked && !coll.onGround)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, -slideSpeed);
+                }
             }
 
         }
@@ -130,9 +149,13 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(dir.x * currentSpeed, rb.velocity.y);
         }
-        else
+        else if (coll.onGround && !coll.onWall)
         {
-            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * currentSpeed, rb.velocity.y)), wallSlideLerp * Time.deltaTime);
+            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * currentSpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
+        }
+        else if (!coll.onGround)
+        {
+            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * currentSpeed, rb.velocity.y)), wallJumpLerp * Time.deltaTime);
         }
     }
 
@@ -164,7 +187,7 @@ public class Player : MonoBehaviour
         {
             MovementState state;
             
-            if (coll.onWall)
+            if (coll.onWall && !coll.onGround)
             {
                 state = MovementState.OnWall;
                 anim.SetBool(holdOnWallParameter, true);
