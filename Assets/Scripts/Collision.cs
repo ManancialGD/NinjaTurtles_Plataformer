@@ -18,27 +18,20 @@ public class Collision : MonoBehaviour
     [Space]
 
     [Header("Collision")]
-    public float wallCollisionRadius = 0.25f;
-    public float groundCollisionRadius = 0.25f;
-    public Vector2 bottomOffset, rightOffset, leftOffset;
+    public Vector2 wallBoxSize = new Vector2(0.04f, 0.61f);
+    public Vector2 groundBoxSize = new Vector2(0.5f, 0.1f);
+    public Vector2 groundOffset, rightWallOffset, leftWallOffset;
     Color debugCollisionColor = Color.red;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        onGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, groundCollisionRadius, jumpableGround);
-        onWall = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, wallCollisionRadius, jumpableGround)
-            || Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, wallCollisionRadius, jumpableGround);
+        onGround = Physics2D.OverlapBox((Vector2)transform.position + groundOffset, groundBoxSize, 0f, jumpableGround);
+        onWall = Physics2D.OverlapBox((Vector2)transform.position + leftWallOffset, wallBoxSize, 0f, jumpableGround)
+            || Physics2D.OverlapBox((Vector2)transform.position + rightWallOffset, wallBoxSize, 0f, jumpableGround);
 
-        onRightWall = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, wallCollisionRadius, jumpableGround);
-        onLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, wallCollisionRadius, jumpableGround);
+        onRightWall = Physics2D.OverlapBox((Vector2)transform.position + rightWallOffset, wallBoxSize, 0f, jumpableGround);
+        onLeftWall = Physics2D.OverlapBox((Vector2)transform.position + leftWallOffset, wallBoxSize, 0f, jumpableGround);
 
         wallSide = onRightWall ? -1 : 1;
     }
@@ -47,8 +40,8 @@ public class Collision : MonoBehaviour
     {
         Gizmos.color = debugCollisionColor;
 
-        Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset, groundCollisionRadius); // Ground Collision
-        Gizmos.DrawWireSphere((Vector2)transform.position + leftOffset, wallCollisionRadius); // Left wall Collision
-        Gizmos.DrawWireSphere((Vector2)transform.position + rightOffset, wallCollisionRadius); // Right wall Collision
+        Gizmos.DrawWireCube((Vector2)transform.position + groundOffset, groundBoxSize); // Ground Collision
+        Gizmos.DrawWireCube((Vector2)transform.position + leftWallOffset, wallBoxSize); // Left wall Collision
+        Gizmos.DrawWireCube((Vector2)transform.position + rightWallOffset, wallBoxSize); // Right wall Collision
     }
 }

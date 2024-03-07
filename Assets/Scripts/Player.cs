@@ -81,29 +81,8 @@ public class Player : MonoBehaviour
                 return;
             }
 
-
-            if( rb.velocity.x > 0 && coll.onRightWall)
-            {
-                if ( xRaw > 0 )
-                {
-                    wallSlide = true;
-                } else
-                {
-                    wallSlide = false;
-                }
-            }
-
-            if (rb.velocity.x < 0 && coll.onLeftWall)
-            {
-                if (xRaw < 0)
-                {
-                    wallSlide = true;
-                }
-                else
-                {
-                    wallSlide = false;
-                }
-            }
+            if (coll.onWall) wallSlide = true;
+            else wallSlide = false;
 
             if (wallSlide)
             {
