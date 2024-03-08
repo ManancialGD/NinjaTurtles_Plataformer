@@ -173,4 +173,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 5
   rotationModifier: 90
-  moveSpeed: 20
+  moveSpeed: 10
