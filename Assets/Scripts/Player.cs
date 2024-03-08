@@ -237,13 +237,23 @@ public class Player : MonoBehaviour
         }
     }
 
-    public int GetDamage()
+    void OnTriggerEnter2D(Collider2D other)
     {
-        return damageAmount;
+        if (other.gameObject.CompareTag("DamagePlayer"))
+        {
+            Destroy(gameObject);
+        }
     }
+
     public void CanItFlip(bool cantFlip)
     {
         if (cantFlip) canFlip = false;
         else canFlip = true;
     }
+
+    public int GetDamage()
+    {
+        return damageAmount;
+    }
+
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemyHP : MonoBehaviour
 {
     // Initiators
     GameObject player;
