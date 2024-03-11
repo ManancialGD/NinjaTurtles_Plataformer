@@ -4267,7 +4267,6 @@ MonoBehaviour:
   WallJumpForce: 55
   slideSpeed: 1
   wallJumpLerp: 3.5
-  PlayerHealth: 100
   canMove: 1
   wallSlide: 0
   sliding: 0
