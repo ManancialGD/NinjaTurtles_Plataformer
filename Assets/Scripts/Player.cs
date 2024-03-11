@@ -11,6 +11,9 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     SpriteRenderer sprite;
+    GameObject playerOBJ;
+
+    static float PLAYER_MAX_AIR_SPEED = 10.0f;
 
 
     [Header("Stats")]
@@ -22,6 +25,8 @@ public class Player : MonoBehaviour
     public float WallJumpForce = 60f;
     public float slideSpeed = 3f;
     public float wallJumpLerp = 4f;
+
+    public float PlayerHealth;
 
 
     [Space]
@@ -48,10 +53,19 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         collisionScript = GetComponent<Collision>();
+        playerOBJ = GameObject.Find("Player");
     }
 
     void Update()
     {
+        Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
+
+        if (PlayerHealth <= 0)
+        {
+            if (playerOBJ) PlayerDied();
+            return;
+        }
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         float xRaw = Input.GetAxisRaw("Horizontal");
@@ -60,7 +74,7 @@ public class Player : MonoBehaviour
 
         Move(dir);
 
-        if(xRaw != 0 && !wallSlide && canFlip)
+        if (xRaw != 0 && !wallSlide && canFlip)
         {
             sprite.flipX = xRaw < 0;
         }
@@ -76,14 +90,14 @@ public class Player : MonoBehaviour
 
         if (Input.GetButtonDown("HoldOnWall"))
         {
-            isWallLocked = true;            
+            isWallLocked = true;
         }
         else if (Input.GetButtonUp("HoldOnWall"))
         {
             isWallLocked = false;
         }
 
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             if (coll.onGround)
             {
@@ -138,30 +152,32 @@ public class Player : MonoBehaviour
             wallJumped = false;
         }
         else if (coll.onWall) wallJumped = false;
-    
+
         UpdateAnimationState();
     }
 
     private void Move(Vector2 dir)
     {
-        if (!canMove)
-        {
-            return;
+        if (!canMove) return;
+
+
+        float currentSpeed = movementSpeed;
+
+        if (isRunning)
+        {   // ( isRunning && coll.onGround ) ?
+            // Caso ele o player só consiga acelerar no chão;
+            currentSpeed = movementSpeed * runMultiplier;
         }
 
-        float currentSpeed = isRunning ? movementSpeed * runMultiplier : movementSpeed;
-
-        if (!wallJumped)
+        if (coll.onGround && !coll.onWall)
         {
-            rb.velocity = new Vector2(dir.x * currentSpeed, rb.velocity.y);
-        }
-        else if (coll.onGround && !coll.onWall)
-        {
+            // Player no chão
             rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * currentSpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
         }
         else if (!coll.onGround)
         {
-            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(dir.x * currentSpeed, rb.velocity.y)), wallJumpLerp * Time.deltaTime);
+            // Player no ar
+            if (Mathf.Abs(dir.x) > 0 && rb.velocity.x < PLAYER_MAX_AIR_SPEED) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x + (dir.x * currentSpeed), rb.velocity.y)), wallJumpLerp * Time.deltaTime);
         }
     }
 
@@ -190,49 +206,50 @@ public class Player : MonoBehaviour
     }
 
     private void UpdateAnimationState()
+    {
+        MovementState state;
+
+        if (coll.onWall && !coll.onGround)
         {
-            MovementState state;
-            
-            if (coll.onWall && !coll.onGround)
-            {
-                state = MovementState.OnWall;
-                anim.SetBool(holdOnWallParameter, true);
-                sprite.flipX = coll.onRightWall;
-            }
-            else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == false)
-            {
-                state = MovementState.Attacking;
-                anim.SetBool(holdOnWallParameter, false);
-            }
-            else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
-            {
-                state = MovementState.LeftAttacking;
-                anim.SetBool(holdOnWallParameter, false);
-            }
-            else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround) 
-            {
-                state = MovementState.Jump;
-                anim.SetBool(holdOnWallParameter, false);
-            }
-            else if (rb.velocity.y < -0.1f && coll.onGround)
-            {
-                state = MovementState.Falling;
-                anim.SetBool(holdOnWallParameter, false);
-            }
-            else if (rb.velocity.x != 0f)
-            {
-                state = MovementState.Walk;
-                anim.SetBool(holdOnWallParameter, false);
-            }
-            else
-            {
-                state = MovementState.Idle;
-                anim.SetBool(holdOnWallParameter, false);
-            }
+            state = MovementState.OnWall;
+            anim.SetBool(holdOnWallParameter, true);
+            sprite.flipX = coll.onRightWall;
+        }
+        else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == false)
+        {
+            state = MovementState.Attacking;
+            anim.SetBool(holdOnWallParameter, false);
+        }
+        else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
+        {
+            state = MovementState.LeftAttacking;
+            anim.SetBool(holdOnWallParameter, false);
+        }
+        else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround)
+        {
+            state = MovementState.Jump;
+            anim.SetBool(holdOnWallParameter, false);
+        }
+        else if (rb.velocity.y < -0.1f && coll.onGround)
+        {
+            state = MovementState.Falling;
+            anim.SetBool(holdOnWallParameter, false);
+        }
+        else if (rb.velocity.x != 0f)
+        {
+            state = MovementState.Walk;
+            anim.SetBool(holdOnWallParameter, false);
+        }
+        else
+        {
+            state = MovementState.Idle;
+            anim.SetBool(holdOnWallParameter, false);
+        }
 
         //Debug.Log(state);
         anim.SetInteger("state", (int)state);
-        if(state == MovementState.Attacking || state == MovementState.LeftAttacking){
+        if (state == MovementState.Attacking || state == MovementState.LeftAttacking)
+        {
             sprite.flipX = false;
         }
     }
@@ -254,6 +271,30 @@ public class Player : MonoBehaviour
     public int GetDamage()
     {
         return damageAmount;
+    }
+
+    public int DamagePlayer(float damage)
+    {
+        PlayerHealth -= damage;
+
+        if (PlayerHealth <= 0)
+        {
+            PlayerDied();
+        }
+        return 1;
+    }
+
+    int PlayerDied()
+    {
+        if (playerOBJ)
+        {
+            Destroy(playerOBJ);
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 }
