@@ -281,13 +281,14 @@ public class Player : MonoBehaviour
         {
             PlayerDied();
         }
+        return 1;
     }
 
     int PlayerDied()
     {
         if (playerOBJ)
         {
-            Destroy(playerOBJ)
+            Destroy(playerOBJ);
             return 1;
         }
         else
