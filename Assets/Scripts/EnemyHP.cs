@@ -7,42 +7,42 @@ public class EnemyHP : MonoBehaviour
     Rigidbody2D rb;
     [Header("Floating Text")]
     public GameObject FloattingTextPrefab;
-   
+
     [Space]
 
     [Header("Stats")]
     public int health = 30;
 
+    [Header("Bools")]
+    public bool hasInfinitHealth;
+    public bool canTakeDamage;
     private int damageAmount;
+
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        player = GameObject.Find("Player");
+        Player playerScript = FindObjectOfType<Player>();
 
-        if (player != null)
+        if (playerScript != null)
         {
-            Player playerScript = player.GetComponent<Player>();
-
-            if (playerScript != null)
-            {
-                damageAmount = playerScript.GetDamage();
-            }
-            else
-            {
-                Debug.LogError("Script do Player não encontrado no GameObject 'Player'.");
-            }
+            damageAmount = playerScript.GetDamage();
         }
         else
         {
-            Debug.LogError("GameObject 'Player' não encontrado.");
+            Debug.LogError("Script do Player não encontrado.");
         }
+    }
+
+    private void Update() {
+        canTakeDamage = true;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("AttackArea"))
+        if (other.CompareTag("AttackArea") && canTakeDamage)
         {
+            canTakeDamage = false;
             PolygonCollider2D attackingArea = other.GetComponent<PolygonCollider2D>();
 
             if (attackingArea != null)
@@ -52,18 +52,16 @@ public class EnemyHP : MonoBehaviour
         }
     }
 
-
     void TakeDamage(int damage)
     {
         health -= damage;
 
-        if (health <= 0)
+        if (health <= 0 && !hasInfinitHealth)
         {
             Die();
         }
-        
+
         if (FloattingTextPrefab) ShowFloatingText();
-        
     }
 
     void ShowFloatingText()

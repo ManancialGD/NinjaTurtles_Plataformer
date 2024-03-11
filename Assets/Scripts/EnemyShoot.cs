@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class EnemyShoot : MonoBehaviour
 {
-    GameObject player;
+    Player playerScript; // Reference to the Player script
     public float rotationSpeed = 5f;
     public float rotationModifier;
     public float moveSpeed = 5f;
 
     private void Start()
     {
-        player = GameObject.Find("Player");
+        playerScript = FindObjectOfType<Player>();
 
-        if (player != null)
+        if (playerScript != null)
         {
             RotateTowardsPlayer();
+        }
+        else
+        {
+            Debug.LogError("Script do Player não encontrado.");
         }
     }
 
     private void Update()
     {
-        if (player != null)
+        if (playerScript != null)
         {
             MoveTowardsPlayer();
         }
@@ -29,7 +33,7 @@ public class EnemyShoot : MonoBehaviour
 
     void RotateTowardsPlayer()
     {
-        Vector3 vectorToTarget = player.transform.position - transform.position;
+        Vector3 vectorToTarget = playerScript.transform.position - transform.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - rotationModifier;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = q;
