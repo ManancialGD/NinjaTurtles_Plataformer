@@ -93,6 +93,9 @@ public class Enemy2 : MonoBehaviour
             else
                 state = MovementState.Idle;
 
+
+            anim.SetInteger("state", (int)state);
+
             return 0;
         }
     }
@@ -102,8 +105,8 @@ public class Enemy2 : MonoBehaviour
         if (!canAttack) return 0;
 
 
-        //if (playerScript.PlayerHealth - EnemyAttack < 0) playerScript.PlayerHealth = 0;
-        //else playerScript.PlayerHealth -= EnemyAttack;
+        playerScript.DamagePlayer(EnemyAttack);
+        
         canAttack = false;
         isAttacking = true;
 
