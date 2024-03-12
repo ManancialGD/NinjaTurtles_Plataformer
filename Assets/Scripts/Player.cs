@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
+        //Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
 
         if (PlayerHealth <= 0)
         {

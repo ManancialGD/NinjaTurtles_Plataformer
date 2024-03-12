@@ -354,6 +354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FloattingTextPrefab: {fileID: 3456831215760177807, guid: d1f61528a0d642e46bfc810a7571f37b, type: 3}
   health: 30
+  hasInfinitHealth: 0
+  canTakeDamage: 0
 --- !u!70 &3804385352462538282
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
