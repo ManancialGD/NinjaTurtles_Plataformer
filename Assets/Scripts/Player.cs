@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     SpriteRenderer sprite;
-    GameObject playerOBJ;
 
     static float PLAYER_MAX_AIR_SPEED = 10.0f;
 
@@ -38,13 +37,16 @@ public class Player : MonoBehaviour
     public bool wallJumped;
     public bool isRunning;
     public bool isWallLocked;
-    public bool canFlip;
+    public bool canFlip = true;
+    public bool isAttackingLeft = false;
+    public bool wasAttackingLeft = false;
 
     private Collision collisionScript;
 
     // Animation variables
     private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking, LeftAttacking };
     private string holdOnWallParameter = "HoldOnWall";
+
     private void Start()
     {
         coll = GetComponent<Collision>();
@@ -53,7 +55,6 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         collisionScript = GetComponent<Collision>();
-        playerOBJ = GameObject.Find("Player");
     }
 
     void Update()
@@ -62,7 +63,7 @@ public class Player : MonoBehaviour
 
         if (PlayerHealth <= 0)
         {
-            if (playerOBJ) PlayerDied();
+            if (gameObject) PlayerDied();
             return;
         }
 
@@ -74,10 +75,6 @@ public class Player : MonoBehaviour
 
         Move(dir);
 
-        if (xRaw != 0 && !wallSlide && canFlip)
-        {
-            sprite.flipX = xRaw < 0;
-        }
         if (Input.GetButtonDown("Run") && coll.onGround)
         {
             isRunning = true;
@@ -156,6 +153,16 @@ public class Player : MonoBehaviour
         UpdateAnimationState();
     }
 
+    private void LateUpdate() {
+        if (isAttackingLeft){
+            sprite.flipX = false;
+        }
+        else if (!isAttackingLeft && wasAttackingLeft){
+            sprite.flipX = true;
+        }
+
+    }
+
     private void Move(Vector2 dir)
     {
         if (!canMove) return;
@@ -229,16 +236,20 @@ public class Player : MonoBehaviour
         {
             state = MovementState.Jump;
             anim.SetBool(holdOnWallParameter, false);
+
+            if (canFlip && !isAttackingLeft) sprite.flipX = rb.velocity.x < 0f;
         }
         else if (rb.velocity.y < -0.1f && coll.onGround)
         {
             state = MovementState.Falling;
             anim.SetBool(holdOnWallParameter, false);
+            if (canFlip && !isAttackingLeft) sprite.flipX = rb.velocity.x < 0f;
         }
         else if (rb.velocity.x != 0f)
         {
             state = MovementState.Walk;
             anim.SetBool(holdOnWallParameter, false);
+            if (canFlip && !isAttackingLeft) sprite.flipX = rb.velocity.x < 0f;
         }
         else
         {
@@ -248,10 +259,6 @@ public class Player : MonoBehaviour
 
         //Debug.Log(state);
         anim.SetInteger("state", (int)state);
-        if (state == MovementState.Attacking || state == MovementState.LeftAttacking)
-        {
-            sprite.flipX = false;
-        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -260,12 +267,6 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    public void CanItFlip(bool cantFlip)
-    {
-        if (cantFlip) canFlip = false;
-        else canFlip = true;
     }
 
     public int GetDamage()
@@ -286,9 +287,9 @@ public class Player : MonoBehaviour
 
     int PlayerDied()
     {
-        if (playerOBJ)
+        if (gameObject)
         {
-            Destroy(playerOBJ);
+            Destroy(gameObject);
             return 1;
         }
         else

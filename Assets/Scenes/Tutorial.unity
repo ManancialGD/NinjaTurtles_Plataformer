@@ -3850,7 +3850,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a607883a1eb044e834f27200543982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3708656503062212569, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
   smoothTime: 0.2
   positionOffset: {x: 0, y: 0, z: -10}
   xLimit: {x: -2.06, y: 11.06}
@@ -4243,6 +4242,10 @@ PrefabInstance:
     - target: {fileID: 3708656503062212569, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: movementLerp
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 5038371077837808314, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_Layer

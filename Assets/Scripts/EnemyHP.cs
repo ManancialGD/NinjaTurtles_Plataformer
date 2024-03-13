@@ -3,7 +3,6 @@ using UnityEngine;
 public class EnemyHP : MonoBehaviour
 {
     // Initiators
-    GameObject player;
     Rigidbody2D rb;
     [Header("Floating Text")]
     public GameObject FloattingTextPrefab;
