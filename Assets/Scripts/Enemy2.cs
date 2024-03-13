@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy2 : MonoBehaviour
 {
     public LayerMask playerLayer;
-    Player playerScript;
+    PlayerHP playerHPScript;
     Rigidbody2D rb;
     Rigidbody2D playerRB;
     SpriteRenderer sprite;
@@ -15,16 +15,13 @@ public class Enemy2 : MonoBehaviour
     public float EnemyAcceleration;
     public float DistanceArea;
     public float movementLerp = 4f;
-
     public int EnemyAttack;
-
     public bool inAttackZone;
     bool canAttack = true;
     bool isAttacking = false;
+    public float damageAmount = 10;
 
     private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking, LeftAttacking };
-
-
 
     void Start()
     {
@@ -32,21 +29,18 @@ public class Enemy2 : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         coll = GetComponents<BoxCollider2D>();
-        playerScript = FindObjectOfType<Player>();
+        playerHPScript = FindObjectOfType<PlayerHP>();
     }
-
 
     void Update()
     {
-
         FollowPlayer();
         AttackPlayer_Event();
-
     }
 
     private void FollowPlayer()
     {
-        playerRB = playerScript.GetComponent<Rigidbody2D>();
+        playerRB = playerHPScript.GetComponent<Rigidbody2D>();
 
         float distanceX = playerRB.position.x - rb.position.x;
         float distanceY = playerRB.position.y - rb.position.y;
@@ -55,18 +49,14 @@ public class Enemy2 : MonoBehaviour
         {
             if (distanceX < 0)
             {
-                //Debug.Log("Moving Left - " + rb.velocity.x);
                 if (rb.velocity.x - EnemyAcceleration <= -EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(-EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
                 else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x - EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
             }
             else
             {
-                //Debug.Log("Moving Right - " + rb.velocity.x);
                 if (rb.velocity.x + EnemyAcceleration >= EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
                 else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x + EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
             }
-
-
         }
     }
 
@@ -93,7 +83,6 @@ public class Enemy2 : MonoBehaviour
             else
                 state = MovementState.Idle;
 
-
             anim.SetInteger("state", (int)state);
 
             return 0;
@@ -103,16 +92,10 @@ public class Enemy2 : MonoBehaviour
     private int MakeAttack()
     {
         if (!canAttack) return 0;
-
-
-        playerScript.DamagePlayer(EnemyAttack);
-        
         canAttack = false;
         isAttacking = true;
 
         StartCoroutine(PlayerCantAttack(0.4f));
-
-        // Faça o que você precisa aqui relacionado ao ataque
 
         return 1;
     }
@@ -128,11 +111,9 @@ public class Enemy2 : MonoBehaviour
             state = MovementState.Idle;
 
         anim.SetInteger("state", (int)state);
-        Debug.Log("Terminado");
+        //Debug.Log("Terminado");
         isAttacking = false;
         yield return new WaitForSeconds(delay);
         canAttack = true;
-
     }
-
 }
