@@ -25,9 +25,6 @@ public class Player : MonoBehaviour
     public float slideSpeed = 3f;
     public float wallJumpLerp = 4f;
 
-    public float PlayerHealth;
-
-
     [Space]
 
     [Header("Booleans")]
@@ -60,12 +57,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         //Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
-
-        if (PlayerHealth <= 0)
-        {
-            if (gameObject) PlayerDied();
-            return;
-        }
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
@@ -261,41 +252,8 @@ public class Player : MonoBehaviour
         anim.SetInteger("state", (int)state);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("DamagePlayer"))
-        {
-            Destroy(gameObject);
-        }
-    }
-
     public int GetDamage()
     {
         return damageAmount;
     }
-
-    public int DamagePlayer(float damage)
-    {
-        PlayerHealth -= damage;
-
-        if (PlayerHealth <= 0)
-        {
-            PlayerDied();
-        }
-        return 1;
-    }
-
-    int PlayerDied()
-    {
-        if (gameObject)
-        {
-            Destroy(gameObject);
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
 }

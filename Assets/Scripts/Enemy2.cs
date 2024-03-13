@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy2 : MonoBehaviour
 {
     public LayerMask playerLayer;
-    Player playerScript;
+    PlayerHP playerHPScript;
     Rigidbody2D rb;
     Rigidbody2D playerRB;
     SpriteRenderer sprite;
@@ -32,7 +32,7 @@ public class Enemy2 : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         coll = GetComponents<BoxCollider2D>();
-        playerScript = FindObjectOfType<Player>();
+        playerHPScript = FindObjectOfType<PlayerHP>();
     }
 
 
@@ -46,7 +46,7 @@ public class Enemy2 : MonoBehaviour
 
     private void FollowPlayer()
     {
-        playerRB = playerScript.GetComponent<Rigidbody2D>();
+        playerRB = playerHPScript.GetComponent<Rigidbody2D>();
 
         float distanceX = playerRB.position.x - rb.position.x;
         float distanceY = playerRB.position.y - rb.position.y;
@@ -105,7 +105,7 @@ public class Enemy2 : MonoBehaviour
         if (!canAttack) return 0;
 
 
-        playerScript.DamagePlayer(EnemyAttack);
+        playerHPScript.DamagePlayer(EnemyAttack);
         
         canAttack = false;
         isAttacking = true;

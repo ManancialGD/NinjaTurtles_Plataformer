@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyShoot : MonoBehaviour
 {
     Player playerScript; // Reference to the Player script
+    PlayerHP playerHPScript;
     public float rotationSpeed = 5f;
     public float rotationModifier;
     public float moveSpeed = 5f;
@@ -12,15 +13,7 @@ public class EnemyShoot : MonoBehaviour
     private void Start()
     {
         playerScript = FindObjectOfType<Player>();
-
-        if (playerScript != null)
-        {
-            RotateTowardsPlayer();
-        }
-        else
-        {
-            Debug.LogError("Script do Player não encontrado.");
-        }
+        playerHPScript = FindObjectOfType<PlayerHP>();
     }
 
     private void Update()

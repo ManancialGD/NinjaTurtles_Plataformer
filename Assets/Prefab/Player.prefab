@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981169104337180135}
   - component: {fileID: 8456073985260053}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: RightAttackArea
   m_TagString: AttackArea
   m_Icon: {fileID: 0}
@@ -90,6 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8198336051422378985}
   - component: {fileID: 3742010920674272088}
+  - component: {fileID: 6787046911274386625}
   - component: {fileID: 8885765521526978649}
   - component: {fileID: 9074834963670483028}
   - component: {fileID: 6617474206497473321}
@@ -133,13 +134,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageAmount: 10
   movementSpeed: 5
-  movementLerp: 60
+  movementLerp: 1000
   runMultiplier: 1.5
   jumpSpeed: 10
   WallJumpForce: 55
   slideSpeed: 1
   wallJumpLerp: 3.5
-  PlayerHealth: 100
   canMove: 1
   wallSlide: 0
   sliding: 0
@@ -147,6 +147,21 @@ MonoBehaviour:
   isRunning: 0
   isWallLocked: 0
   canFlip: 0
+  isAttackingLeft: 0
+  wasAttackingLeft: 0
+--- !u!114 &6787046911274386625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708656503062212569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e17c19a17e500e741ac781a4968c2e2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerHealth: 100
 --- !u!114 &8885765521526978649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,7 +334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8477930479900369193}
   - component: {fileID: 7387118289584157866}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LeftAttackArea
   m_TagString: AttackArea
   m_Icon: {fileID: 0}
