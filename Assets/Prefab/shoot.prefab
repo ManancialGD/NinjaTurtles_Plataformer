@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4516696517550643802}
   m_Layer: 0
   m_Name: shoot
-  m_TagString: DamagePlayer
+  m_TagString: ShootAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,3 +174,4 @@ MonoBehaviour:
   rotationSpeed: 5
   rotationModifier: 90
   moveSpeed: 10
+  shootDamage: 80

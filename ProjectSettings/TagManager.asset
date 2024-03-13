@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - AttackArea
-  - DamagePlayer
   - Dont take damage
+  - MeeleAttack
+  - ShootAttack
   layers:
   - Default
   - TransparentFX

@@ -161,6 +161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17c19a17e500e741ac781a4968c2e2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy2: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+  enemyShoot: {fileID: 4516696517550643802, guid: 1f7c8bbb029640941bea20402fc7d6c0, type: 3}
+  FloattingTextPrefab: {fileID: 3456831215760177807, guid: d1f61528a0d642e46bfc810a7571f37b, type: 3}
   PlayerHealth: 100
 --- !u!114 &8885765521526978649
 MonoBehaviour:

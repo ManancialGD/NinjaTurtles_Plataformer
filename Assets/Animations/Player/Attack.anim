@@ -31,7 +31,16 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.13333334
+        time: 0.06666667
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.26666668
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -41,15 +50,6 @@ AnimationClip:
         outWeight: 0
       - serializedVersion: 3
         time: 0.33333334
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0.4
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -79,7 +79,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.4
+        time: 0.33333334
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -101,16 +101,14 @@ AnimationClip:
     - time: 0
       value: {fileID: -867482117, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
     - time: 0.06666667
-      value: {fileID: -867482117, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
-    - time: 0.13333334
       value: {fileID: -241093279, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
-    - time: 0.2
+    - time: 0.13333334
       value: {fileID: 585804209, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
-    - time: 0.26666668
+    - time: 0.2
       value: {fileID: -446453894, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
-    - time: 0.33333334
+    - time: 0.26666668
       value: {fileID: -1295147555, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
-    - time: 0.4
+    - time: 0.33333334
       value: {fileID: 1014569897, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
     attribute: m_Sprite
     path: 
@@ -153,7 +151,6 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: -867482117, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
-    - {fileID: -867482117, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
     - {fileID: -241093279, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
     - {fileID: 585804209, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
     - {fileID: -446453894, guid: a0a022906f4ead443afba8ee62d843e2, type: 3}
@@ -164,7 +161,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.46666667
+    m_StopTime: 0.4
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -194,7 +191,16 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.13333334
+        time: 0.06666667
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.26666668
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -204,15 +210,6 @@ AnimationClip:
         outWeight: 0
       - serializedVersion: 3
         time: 0.33333334
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0.4
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -242,7 +239,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.4
+        time: 0.33333334
         value: 0
         inSlope: Infinity
         outSlope: Infinity

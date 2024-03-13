@@ -9,6 +9,7 @@ public class EnemyShoot : MonoBehaviour
     public float rotationSpeed = 5f;
     public float rotationModifier;
     public float moveSpeed = 5f;
+    public float shootDamage = 80f;
 
     private void Start()
     {

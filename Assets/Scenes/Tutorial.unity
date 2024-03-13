@@ -223,7 +223,7 @@ Transform:
   m_GameObject: {fileID: 382624108}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.004, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4238,6 +4238,18 @@ PrefabInstance:
     - target: {fileID: 3708656503062212569, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: enemy2
+      value: 
+      objectReference: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: enemyShoot
+      value: 
+      objectReference: {fileID: 4516696517550643802, guid: 1f7c8bbb029640941bea20402fc7d6c0, type: 3}
+    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: PlayerHealth
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8198336051422378985, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_LocalPosition.x
