@@ -3713,6 +3713,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3854,6 +3855,36 @@ MonoBehaviour:
   positionOffset: {x: 0, y: 0, z: -10}
   xLimit: {x: -2.06, y: 11.06}
   yLimit: {x: 0.14, y: 4.02}
+  CameraPosition: {x: 0, y: 0}
+  cameraResistance: 0.98
+  MAX_CAMERA_REACTION: 0.1
+--- !u!50 &519420034
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &589771841
 GameObject:
   m_ObjectHideFlags: 0
@@ -4247,8 +4278,28 @@ PrefabInstance:
       propertyPath: movementLerp
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: movementSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: WallJumpForce.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: WallJumpForce.y
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: jumpableGround.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5038371077837808314, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6617474206497473321, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: m_AngularDrag
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8198336051422378985, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
