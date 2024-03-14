@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
     [Header("Stats")]
     public int damageAmount = 10;
     public float movementSpeed = 10f;
-    public float runMultiplier = 1.5f;
     public float jumpSpeed = 40f;
     public Vector2 WallJumpForce;
     public float slideSpeed = 3f;
@@ -35,7 +34,6 @@ public class Player : MonoBehaviour
     public bool wallSlide;
     public bool sliding;
     public bool wallJumped;
-    public bool isRunning;
     public bool isWallLocked;
     public bool isAttackingLeft = false;
     public bool wasAttackingLeft = false;
@@ -66,16 +64,6 @@ public class Player : MonoBehaviour
         Vector2 dir = new Vector2(x, y);
 
         Move(dir);
-
-        if (Input.GetButtonDown("Run") && coll.onGround)
-        {
-            isRunning = true;
-        }
-        else if (Input.GetButtonUp("Run"))
-        {
-            isRunning = false;
-        }
-        if (coll.onWall && !coll.onGround) isRunning = false;
 
         if (Input.GetButtonDown("HoldOnWall"))
         {
@@ -161,12 +149,6 @@ public class Player : MonoBehaviour
 
         float currentSpeed = movementSpeed;
 
-        if (isRunning)
-        {   // ( isRunning && coll.onGround ) ?
-            // Caso ele o player só consiga acelerar no chão;
-            currentSpeed = movementSpeed * runMultiplier;
-        }
-
         if (coll.onGround)
         {
             // Player no chão
@@ -176,7 +158,6 @@ public class Player : MonoBehaviour
                 if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.3f, -25f * 0.05f - 1f));
                 else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.3f, rb.velocity.y * 0.05f - 1f));
             }
-
 
             rb.velocity = new Vector2(rb.velocity.x + dir.x * currentSpeed * Time.deltaTime, rb.velocity.y);
         }
