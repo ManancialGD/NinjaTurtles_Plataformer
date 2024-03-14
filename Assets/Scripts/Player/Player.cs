@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
 
     private Collision collisionScript;
 
+    Vector2 dir_History = new Vector2(0f, 0f);
+
     private void Start()
     {
 
@@ -63,6 +65,8 @@ public class Player : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+
+
         float xRaw = Input.GetAxisRaw("Horizontal");
         float yRaw = Input.GetAxisRaw("Vertical");
         Vector2 dir = new Vector2(x, y);
@@ -158,17 +162,21 @@ public class Player : MonoBehaviour
 
                 }
 
-                if (Mathf.Abs(dir.x) == 0 && playerSpeed.x > 0f) playerSpeed = new Vector2(playerSpeed.x - momentumLost * Time.deltaTime, playerSpeed.y);
-                if (playerSpeed.x < 0f) playerSpeed = new Vector2(0f, playerSpeed.y);
+                //if (Mathf.Abs(dir.x) == 0 && playerSpeed.x > 0f) playerSpeed = new Vector2(playerSpeed.x - momentumLost * Time.deltaTime, playerSpeed.y);
+                //if (playerSpeed.x < 0f) playerSpeed = new Vector2(0f, playerSpeed.y);
             }
 
-            if (dir.x == 0 && !coll.onWall) rb.velocity = new Vector2(rb.velocity.x * groundFriction * Time.deltaTime, rb.velocity.y);
+            //ground friction
+            if (dir.x == 0 && !coll.onWall) rb.velocity = new Vector2(rb.velocity.x - groundFriction * Time.deltaTime, rb.velocity.y);
+            //air friction (currently none)
+            //else if (dir.x == 0 && !coll.onWall && !coll.onGround) rb.velocity = new Vector2(rb.velocity.x - airFriction * Time.deltaTime, rb.velocity.y);
 
-            if (rb.velocity.x > PLAYER_MAX_GROUND_VELOCITY && dir.x < 0 || rb.velocity.x < -PLAYER_MAX_GROUND_VELOCITY && dir.x > 0)
-            { // quando o jogador troca de direcao em excesso de velocidade
+            if (rb.velocity.x > 0 && dir.x < 0 || rb.velocity.x < 0 && dir.x > 0)
+            { // quando o jogador troca de direcao
+                //rb.velocity = new Vector2(-rb.velocity.x * 0.9f + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y); (Boost)
                 rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
             }
-            else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0)
+            else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0 && rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
             }
@@ -232,12 +240,12 @@ public class Player : MonoBehaviour
 
         if (wallSide == dirX || dirX == 0)
         {
-            cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.5f, WallJumpForce.y * 1.3f));
-            cameraFollow.SetCameraReaction(0f, 3f);
+            cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.5f, WallJumpForce.y * 1.6f));
+            cameraFollow.SetCameraReaction(0f, 0f);
         }
         else
         {
-            cameraFollow.SetCameraReaction(0f, 2f);
+            cameraFollow.SetCameraReaction(0f, 0f);
         }
         return;
     }
