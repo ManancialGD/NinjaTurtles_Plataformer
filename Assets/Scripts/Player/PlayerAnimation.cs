@@ -28,12 +28,10 @@ public class PlayerAnimation : MonoBehaviour
         UpdateAnimationState();
     }
     private void LateUpdate() {
-        if (isAttackingLeft){
-            sprite.flipX = false;
-        }
-        else if (!isAttackingLeft && wasAttackingLeft){
-            sprite.flipX = true;
-        }
+        
+
+        if(rb.velocity.x < 0) sprite.flipX = true;
+        else if(rb.velocity.x > 0) sprite.flipX = false;
 
     }
     private void UpdateAnimationState()
