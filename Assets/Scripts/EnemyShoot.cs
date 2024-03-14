@@ -15,6 +15,8 @@ public class EnemyShoot : MonoBehaviour
     {
         playerScript = FindObjectOfType<Player>();
         playerHPScript = FindObjectOfType<PlayerHP>();
+
+        RotateTowardsPlayer();
     }
 
     private void Update()
