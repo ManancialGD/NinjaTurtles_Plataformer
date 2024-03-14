@@ -35,7 +35,7 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         cameraReaction = MAX_CAMERA_REACTION;
-        
+
         // Encontre o objeto pelo nome do script
         target = GameObject.Find("Player");
         playerTransform = target.GetComponent<Transform>();
@@ -124,5 +124,7 @@ public class CameraFollow : MonoBehaviour
         reactionTimer = update_delay;
         return;
     }
+
+    //CameraShake()
 
 }

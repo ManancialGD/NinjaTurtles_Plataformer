@@ -14,15 +14,21 @@ public class Player : MonoBehaviour
     Animator anim;
     [SerializeField] private LayerMask jumpableGround;
 
-    static float PLAYER_MAX_AIR_SPEED = 10.0f;
-
 
     [Header("Stats")]
     public int damageAmount = 10;
-    public float maxMovementSpeed = 10f;
     public float jumpSpeed = 40f;
     public Vector2 WallJumpForce;
     public float slideSpeed = 3f;
+    float PLAYER_MAX_GROUND_VELOCITY = 5f;
+    float PLAYER_MAX_AIR_VELOCITY = 5f;
+    public float groundAcceleration;
+    public float airAcceleration;
+    public float groundFriction;
+    public float airFriction;
+    public float momentumLost;
+
+    Vector2 playerSpeed = new Vector2(0f, 0f);
 
     public CameraFollow cameraFollow;
 
@@ -39,6 +45,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+
+        playerSpeed = new Vector2(groundAcceleration, 0f);
 
         cameraFollow = FindObjectOfType<CameraFollow>();
 
@@ -129,24 +137,61 @@ public class Player : MonoBehaviour
     {
         if (!canMove) return;
 
-
-        float currentSpeed = maxMovementSpeed;
-
         if (coll.onGround)
         {   // Player on Ground
 
             if (rb.velocity.y < -12f)
             {
-                if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.3f, -25f * 0.05f - 1f));
-                else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.3f, rb.velocity.y * 0.05f - 1f));
+                if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, -25f * 0.05f - 1f));
+                else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, rb.velocity.y * 0.05f - 1f));
             }
 
-            rb.velocity = new Vector2(rb.velocity.x + dir.x * currentSpeed * Time.deltaTime, rb.velocity.y);
+            if (Mathf.Abs(dir.x) > 0)
+            {
+                if (coll.onGround)
+                {
+                    //if (playerSpeed.x < PLAYER_MAX_GROUND_VELOCITY) playerSpeed = new Vector2(playerSpeed.x + groundAcceleration * dir.x * Time.deltaTime, playerSpeed.y);
+
+                }
+                else if (!coll.onGround && !coll.onWall)
+                {
+
+                }
+
+                if (Mathf.Abs(dir.x) == 0 && playerSpeed.x > 0f) playerSpeed = new Vector2(playerSpeed.x - momentumLost * Time.deltaTime, playerSpeed.y);
+                if (playerSpeed.x < 0f) playerSpeed = new Vector2(0f, playerSpeed.y);
+            }
+
+            if (dir.x == 0 && !coll.onWall) rb.velocity = new Vector2(rb.velocity.x * groundFriction * Time.deltaTime, rb.velocity.y);
+
+            if (rb.velocity.x > PLAYER_MAX_GROUND_VELOCITY && dir.x < 0 || rb.velocity.x < -PLAYER_MAX_GROUND_VELOCITY && dir.x > 0)
+            { // quando o jogador troca de direcao em excesso de velocidade
+                rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+            }
+            else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+            }
+
+
         }
-        else if (!coll.onGround)
+        else if (!coll.onGround && !coll.onWall)
         {   // Player no air
-            
-            if (Mathf.Abs(dir.x) > 0 && Mathf.Abs(rb.velocity.x) < PLAYER_MAX_AIR_SPEED) rb.velocity = new Vector2(rb.velocity.x + dir.x * currentSpeed * Time.deltaTime, rb.velocity.y);
+
+            if (dir.x == 0 && coll.onGround && !coll.onWall) rb.velocity = new Vector2(rb.velocity.x * groundFriction * Time.deltaTime, rb.velocity.y);
+
+            if (rb.velocity.x > PLAYER_MAX_AIR_VELOCITY && dir.x < 0 || rb.velocity.x < -PLAYER_MAX_AIR_VELOCITY && dir.x > 0)
+            { // quando o jogador troca de direcao em excesso de velocidade
+                rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+            }
+            else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+            }
+        }
+        else if (!coll.onGround && coll.onWall)
+        {   // Player on wall (por agora igual a "Player on air")
+            if (Mathf.Abs(dir.x) > 0 && Mathf.Abs(rb.velocity.x) < PLAYER_MAX_AIR_VELOCITY) rb.velocity = new Vector2(rb.velocity.x + dir.x * Time.deltaTime, rb.velocity.y);
         }
     }
 
@@ -189,7 +234,9 @@ public class Player : MonoBehaviour
         {
             cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.5f, WallJumpForce.y * 1.3f));
             cameraFollow.SetCameraReaction(0f, 3f);
-        } else {
+        }
+        else
+        {
             cameraFollow.SetCameraReaction(0f, 2f);
         }
         return;
