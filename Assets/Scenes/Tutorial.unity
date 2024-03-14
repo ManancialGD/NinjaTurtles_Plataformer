@@ -4290,24 +4290,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
-      propertyPath: enemy2
-      value: 
-      objectReference: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
-    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
-      propertyPath: enemyShoot
-      value: 
-      objectReference: {fileID: 4516696517550643802, guid: 1f7c8bbb029640941bea20402fc7d6c0, type: 3}
-    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
-      propertyPath: PlayerHealth
-      value: 50
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: movementLerp
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: movementSpeed
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: WallJumpForce.x
@@ -4328,6 +4317,18 @@ PrefabInstance:
     - target: {fileID: 6617474206497473321, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_AngularDrag
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: enemy2
+      value: 
+      objectReference: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: enemyShoot
+      value: 
+      objectReference: {fileID: 4516696517550643802, guid: 1f7c8bbb029640941bea20402fc7d6c0, type: 3}
+    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: PlayerHealth
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8198336051422378985, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_LocalPosition.x
