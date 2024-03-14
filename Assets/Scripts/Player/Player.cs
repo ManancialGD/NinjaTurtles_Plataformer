@@ -162,7 +162,7 @@ public class Player : MonoBehaviour
             currentSpeed = movementSpeed * runMultiplier;
         }
 
-        if (coll.onGround && !coll.onWall)
+        if (coll.onGround)
         {
             // Player no chão
             rb.velocity = new Vector2(rb.velocity.x + dir.x * currentSpeed * Time.deltaTime, rb.velocity.y);
