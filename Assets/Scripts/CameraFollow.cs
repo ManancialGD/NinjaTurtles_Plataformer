@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraFollow : MonoBehaviour
 {
     GameObject target;
 
@@ -35,7 +35,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         cameraReaction = MAX_CAMERA_REACTION;
-        //Debug.Log(p_changer.CurrentPlayerSelected);
+        
         // Encontre o objeto pelo nome do script
         target = GameObject.Find("Player");
         playerTransform = target.GetComponent<Transform>();
@@ -123,6 +123,6 @@ public class CameraController : MonoBehaviour
         cameraReaction = new_reaction;
         reactionTimer = update_delay;
         return;
-
     }
+
 }

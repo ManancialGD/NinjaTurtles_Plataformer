@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -22,9 +23,10 @@ public class Player : MonoBehaviour
     public float movementSpeed = 10f;
     public float runMultiplier = 1.5f;
     public float jumpSpeed = 40f;
-    public Vector2 WallJumpForce = new Vector2(0.02f, 0.04f);
+    public Vector2 WallJumpForce;
     public float slideSpeed = 3f;
 
+    public CameraFollow cameraFollow;
 
     [Space]
 
@@ -42,6 +44,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+
+        cameraFollow = FindObjectOfType<CameraFollow>();
+
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -165,6 +170,14 @@ public class Player : MonoBehaviour
         if (coll.onGround && !coll.onWall)
         {
             // Player no chão
+
+            if (rb.velocity.y < -12f)
+            {
+                if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.3f, -25f * 0.05f - 1f));
+                else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.3f, rb.velocity.y * 0.05f - 1f));
+            }
+
+
             rb.velocity = new Vector2(rb.velocity.x + dir.x * currentSpeed * Time.deltaTime, rb.velocity.y);
         }
         else if (!coll.onGround)
@@ -192,7 +205,30 @@ public class Player : MonoBehaviour
 
         wallJumped = true;
         rb.velocity = new Vector2(WallJumpForce.x * wallSide, WallJumpForce.y);
-        Debug.Log("Wall Jumped" + WallJumpForce.y);
+
+        float inputHorizontal = Input.GetAxis("Horizontal");
+        int dirX;
+
+        if (inputHorizontal > 0)
+        {
+            dirX = 1;
+        }
+        else if (inputHorizontal < 0)
+        {
+            dirX = -1;
+        }
+        else
+        {
+            dirX = 0;
+        }
+
+        if (wallSide == dirX || dirX == 0)
+        {
+            cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.3f, WallJumpForce.y * 1.3f));
+            cameraFollow.SetCameraReaction(0f, 3f);
+        } else {
+            cameraFollow.SetCameraReaction(0f, 2f);
+        }
         return;
     }
 
