@@ -4291,6 +4291,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: momentumLost
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: movementLerp
       value: 1000
       objectReference: {fileID: 0}
@@ -4299,12 +4303,28 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: groundFriction
+      value: 0.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: WallJumpForce.x
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: WallJumpForce.y
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: airAcceleration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: maxMovementSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: groundAcceleration
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: jumpableGround.m_Bits
