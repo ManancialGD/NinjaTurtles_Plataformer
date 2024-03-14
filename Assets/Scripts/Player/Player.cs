@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     Collision coll;
     Rigidbody2D rb;
     Animator anim;
-    SpriteRenderer sprite;
     [SerializeField] private LayerMask jumpableGround;
 
     static float PLAYER_MAX_AIR_SPEED = 10.0f;
@@ -20,7 +19,7 @@ public class Player : MonoBehaviour
 
     [Header("Stats")]
     public int damageAmount = 10;
-    public float movementSpeed = 10f;
+    public float maxMovementSpeed = 10f;
     public float jumpSpeed = 40f;
     public Vector2 WallJumpForce;
     public float slideSpeed = 3f;
@@ -35,8 +34,6 @@ public class Player : MonoBehaviour
     public bool sliding;
     public bool wallJumped;
     public bool isWallLocked;
-    public bool isAttackingLeft = false;
-    public bool wasAttackingLeft = false;
 
     private Collision collisionScript;
 
@@ -47,7 +44,6 @@ public class Player : MonoBehaviour
 
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
 
         collisionScript = GetComponent<Collision>();
@@ -129,29 +125,15 @@ public class Player : MonoBehaviour
 
     }
 
-    private void LateUpdate()
-    {
-        if (isAttackingLeft)
-        {
-            sprite.flipX = false;
-        }
-        else if (!isAttackingLeft && wasAttackingLeft)
-        {
-            sprite.flipX = true;
-        }
-
-    }
-
     private void Move(Vector2 dir)
     {
         if (!canMove) return;
 
 
-        float currentSpeed = movementSpeed;
+        float currentSpeed = maxMovementSpeed;
 
         if (coll.onGround)
-        {
-            // Player no chão
+        {   // Player on Ground
 
             if (rb.velocity.y < -12f)
             {
@@ -162,8 +144,8 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x + dir.x * currentSpeed * Time.deltaTime, rb.velocity.y);
         }
         else if (!coll.onGround)
-        {
-            // Player no ar
+        {   // Player no air
+            
             if (Mathf.Abs(dir.x) > 0 && Mathf.Abs(rb.velocity.x) < PLAYER_MAX_AIR_SPEED) rb.velocity = new Vector2(rb.velocity.x + dir.x * currentSpeed * Time.deltaTime, rb.velocity.y);
         }
     }
@@ -211,13 +193,6 @@ public class Player : MonoBehaviour
             cameraFollow.SetCameraReaction(0f, 2f);
         }
         return;
-    }
-
-    IEnumerator DisableMovement(float time)
-    {
-        canMove = false;
-        yield return new WaitForSeconds(time);
-        canMove = true;
     }
 
     public int GetDamage()
