@@ -42,8 +42,7 @@ public class PlayerAnimation : MonoBehaviour
         // Loop através de todos os objetos encontrados
         foreach (GameObject obj in todosObjetos)
         {
-            if(obj.name == "Enemy") Debug.Log("Enemy exists");
-            if (obj.layer == enemyLayer)
+            if (obj.CompareTag("Enemy"))
             {
 
                 Transform objectTransform = obj.GetComponent<Transform>();
@@ -66,19 +65,24 @@ public class PlayerAnimation : MonoBehaviour
             Transform closestEnemyTransform = closestEnemy.GetComponent<Transform>();
             Debug.Log(closestEnemyTransform.name);
 
-            float distance = (rb.position.x - closestEnemyTransform.position.x) + (rb.position.y - closestEnemyTransform.position.y);
+            float distance = Mathf.Abs(rb.position.x - closestEnemyTransform.position.x) + Mathf.Abs(rb.position.y - closestEnemyTransform.position.y);
             float distanceX = rb.position.x - closestEnemyTransform.position.x;
             Debug.Log("distanceX = " + distanceX);
             if (Mathf.Abs(distance) <= combatModeArea)
             {
+                Debug.Log("Mathf.Abs(distance) = " + Mathf.Abs(distance));
                 playerInCombatMode = true;
-                if (distanceX > 0) sprite.flipX = false;
-                else if (distanceX < 0) sprite.flipX = true;
+                if (distanceX > 0) sprite.flipX = true;
+                else if (distanceX < 0) sprite.flipX = false;
             }
             else
             {
                 playerInCombatMode = false;
             }
+        }
+        else
+        {
+            playerInCombatMode = false;
         }
 
         UpdateAnimationState();
@@ -87,8 +91,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (!playerInCombatMode)
         {
-            if (rb.velocity.x < 0) sprite.flipX = true;
-            else if (rb.velocity.x > 0) sprite.flipX = false;
+            if (rb.velocity.x < -0.1) sprite.flipX = true;
+            else if (rb.velocity.x > 0.1) sprite.flipX = false;
         }
     }
     private void UpdateAnimationState()
@@ -108,7 +112,7 @@ public class PlayerAnimation : MonoBehaviour
         }
         else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
         {
-            state = MovementState.LeftAttacking;
+            state = MovementState.Attacking;
             anim.SetBool(holdOnWallParameter, false);
         }
         else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround)
