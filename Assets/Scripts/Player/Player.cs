@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     Collision coll;
     Rigidbody2D rb;
     Animator anim;
+
     [SerializeField] private LayerMask jumpableGround;
 
 
@@ -146,8 +147,8 @@ public class Player : MonoBehaviour
 
             if (rb.velocity.y < -12f)
             {
-                if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, -25f * 0.05f - 1f));
-                else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, rb.velocity.y * 0.05f - 1f));
+                if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, -25f * 0.05f));
+                else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, rb.velocity.y * 0.05f));
             }
 
             if (Mathf.Abs(dir.x) > 0)
@@ -206,7 +207,9 @@ public class Player : MonoBehaviour
 
     private void Jump(float yForce)
     {
-        rb.velocity = new Vector2(rb.velocity.x, yForce);
+        anim = GetComponent<Animator>();
+        Debug.Log("anim = " + anim.GetInteger("state"));
+        if (anim.GetInteger("state") != 5 && anim.GetInteger("state") != 6) rb.velocity = new Vector2(rb.velocity.x, yForce);
     }
 
     private void WallJump()
