@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
     GameObject target;
-
     Vector3 velocity = Vector3.zero;
 
     //public PlayerChanger p_changer;
@@ -32,8 +32,12 @@ public class CameraFollow : MonoBehaviour
     bool updateCameraReaction = true;
     float reactionTimer;
 
+    bool onCombatMode = false;
+    Vector2 enemyPosition;
+
     private void Start()
     {
+
         cameraReaction = MAX_CAMERA_REACTION;
 
         // Encontre o objeto pelo nome do script
@@ -102,14 +106,28 @@ public class CameraFollow : MonoBehaviour
         cameraTranform = GetComponent<Transform>();
         CameraPosition = new Vector2(cameraTranform.position.x, cameraTranform.position.y);
 
-        float distanceX = playerTransform.position.x - CameraPosition.x;
-        float distanceY = playerTransform.position.y - CameraPosition.y;
+        float distanceX;
+        float distanceY;
+
+        if (onCombatMode)
+        {
+
+            Vector2 combatDistance = new Vector2(CameraPosition.x - enemyPosition.x, CameraPosition.y - enemyPosition.y);
+            Debug.Log(combatDistance.x + " , " + combatDistance.y);
+            distanceX = playerTransform.position.x - (CameraPosition.x + combatDistance.x / 2);
+            distanceY = playerTransform.position.y - (CameraPosition.y + combatDistance.y / 2);
+        }
+        else
+        {
+            distanceX = playerTransform.position.x - CameraPosition.x;
+            distanceY = playerTransform.position.y - CameraPosition.y;
+        }
 
         float distance = Mathf.Abs(distanceX + distanceY);
         //Debug.Log("distance = " + distance);
 
         rb.velocity = new Vector2(rb.velocity.x * cameraResistance + distanceX * cameraReaction, rb.velocity.y * cameraResistance + distanceY * cameraReaction);
-
+        onCombatMode = false;
     }
 
     public void BoostCamera(Vector2 force)
@@ -123,6 +141,12 @@ public class CameraFollow : MonoBehaviour
         cameraReaction = new_reaction;
         reactionTimer = update_delay;
         return;
+    }
+
+    public void CombatMode(float x, float y)
+    {
+        enemyPosition = new Vector2(x, y);
+        onCombatMode = true;
     }
 
     //CameraShake()

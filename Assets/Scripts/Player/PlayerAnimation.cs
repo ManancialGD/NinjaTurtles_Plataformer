@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+
+    public CameraFollow cameraFollow;
     Collision coll;
     Animator anim;
     SpriteRenderer sprite;
@@ -26,6 +28,8 @@ public class PlayerAnimation : MonoBehaviour
 
     void Start()
     {
+        cameraFollow = FindObjectOfType<CameraFollow>();
+
         coll = GetComponent<Collision>();
         sprite = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
@@ -74,6 +78,7 @@ public class PlayerAnimation : MonoBehaviour
                 playerInCombatMode = true;
                 if (distanceX > 0) sprite.flipX = true;
                 else if (distanceX < 0) sprite.flipX = false;
+                cameraFollow.CombatMode(closestEnemyTransform.position.x, closestEnemyTransform.position.y);
             }
             else
             {
