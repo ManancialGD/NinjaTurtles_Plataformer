@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     // Initiators
+    public float playerAttackCooldown;
     Collision coll;
     Rigidbody2D rb;
     Animator anim;
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
     Vector2 playerSpeed = new Vector2(0f, 0f);
 
     public CameraFollow cameraFollow;
+    public PlayerAnimation playerAnimation;
 
     [Space]
 
@@ -45,6 +47,7 @@ public class Player : MonoBehaviour
     private Collision collisionScript;
     int layerId;
     Vector2 dir_History = new Vector2(0f, 0f);
+    public bool isPlayerAttacking = false;
 
     private void Start()
     {
@@ -52,6 +55,7 @@ public class Player : MonoBehaviour
         playerSpeed = new Vector2(groundAcceleration, 0f);
 
         cameraFollow = FindObjectOfType<CameraFollow>();
+        playerAnimation = FindObjectOfType<PlayerAnimation>();
 
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
@@ -207,9 +211,11 @@ public class Player : MonoBehaviour
 
     private void Jump(float yForce)
     {
-        anim = GetComponent<Animator>();
-        Debug.Log("anim = " + anim.GetInteger("state"));
-        if (anim.GetInteger("state") != 5 && anim.GetInteger("state") != 6) rb.velocity = new Vector2(rb.velocity.x, yForce);
+
+        if (!isPlayerAttacking)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, yForce);
+        }
     }
 
     private void WallJump()
@@ -256,6 +262,19 @@ public class Player : MonoBehaviour
     public int GetDamage()
     {
         return damageAmount;
+    }
+
+
+    public void EnablePlayerAttack()
+    {
+        isPlayerAttacking = true;
+        playerAnimation.SetAttackCooldown(playerAttackCooldown);
+        return;
+    }
+    public void DisablePlayerAttack()
+    {
+        isPlayerAttacking = false;
+        return;
     }
 
 }

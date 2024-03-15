@@ -7,10 +7,12 @@ public class PlayerAnimation : MonoBehaviour
 {
 
     public CameraFollow cameraFollow;
+    public Player playerScript;
     Collision coll;
     Animator anim;
     SpriteRenderer sprite;
     Rigidbody2D rb;
+    float playerAttackCooldown = 0f;
     private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking, LeftAttacking };
     private string holdOnWallParameter = "HoldOnWall";
     public bool canFlip = true;
@@ -29,6 +31,7 @@ public class PlayerAnimation : MonoBehaviour
     void Start()
     {
         cameraFollow = FindObjectOfType<CameraFollow>();
+        playerScript = FindObjectOfType<Player>();
 
         coll = GetComponent<Collision>();
         sprite = GetComponent<SpriteRenderer>();
@@ -38,6 +41,13 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
+        if (playerAttackCooldown > 0f) playerAttackCooldown -= Time.deltaTime;
+        else if (playerAttackCooldown < 0f)
+        {
+            playerAttackCooldown = 0f;
+            playerScript.DisablePlayerAttack();
+        }
+
         todosObjetos = GameObject.FindObjectsOfType<GameObject>();
 
         float minEnemyDistance = combatModeArea;
@@ -67,14 +77,11 @@ public class PlayerAnimation : MonoBehaviour
         if (enemysCount > 0)
         {
             Transform closestEnemyTransform = closestEnemy.GetComponent<Transform>();
-            Debug.Log(closestEnemyTransform.name);
-
             float distance = Mathf.Abs(rb.position.x - closestEnemyTransform.position.x) + Mathf.Abs(rb.position.y - closestEnemyTransform.position.y);
             float distanceX = rb.position.x - closestEnemyTransform.position.x;
-            Debug.Log("distanceX = " + distanceX);
+
             if (Mathf.Abs(distance) <= combatModeArea)
             {
-                Debug.Log("Mathf.Abs(distance) = " + Mathf.Abs(distance));
                 playerInCombatMode = true;
                 if (distanceX > 0) sprite.flipX = true;
                 else if (distanceX < 0) sprite.flipX = false;
@@ -114,11 +121,13 @@ public class PlayerAnimation : MonoBehaviour
         {
             state = MovementState.Attacking;
             anim.SetBool(holdOnWallParameter, false);
+            playerScript.EnablePlayerAttack();
         }
         else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
         {
             state = MovementState.LeftAttacking;
             anim.SetBool(holdOnWallParameter, false);
+            playerScript.EnablePlayerAttack();
         }
         else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround)
         {
@@ -145,4 +154,11 @@ public class PlayerAnimation : MonoBehaviour
         //Debug.Log(state);
         anim.SetInteger("state", (int)state);
     }
+
+    public void SetAttackCooldown(float timeout)
+    {
+        playerAttackCooldown = timeout;
+        return;
+    }
+
 }
