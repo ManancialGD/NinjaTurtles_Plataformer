@@ -81,7 +81,7 @@ public class CameraFollow : MonoBehaviour
             }
 
         }
-        else if (updateCameraReaction && cameraReaction == MAX_CAMERA_REACTION) Debug.Log("Camera Reaction is MAX");
+        //else if (updateCameraReaction && cameraReaction == MAX_CAMERA_REACTION) Debug.Log("Camera Reaction is MAX");
 
         //Debug.Log("Player" + p_changer.CurrentPlayerSelected);
         /*

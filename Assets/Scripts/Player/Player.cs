@@ -42,12 +42,12 @@ public class Player : MonoBehaviour
     public bool isWallLocked;
 
     private Collision collisionScript;
-
+    int layerId;
     Vector2 dir_History = new Vector2(0f, 0f);
 
     private void Start()
     {
-
+        layerId = LayerMask.NameToLayer("Enemys");
         playerSpeed = new Vector2(groundAcceleration, 0f);
 
         cameraFollow = FindObjectOfType<CameraFollow>();
@@ -206,7 +206,6 @@ public class Player : MonoBehaviour
 
     private void Jump(float yForce)
     {
-        Debug.Log("Jumped");
         rb.velocity = new Vector2(rb.velocity.x, yForce);
     }
 
