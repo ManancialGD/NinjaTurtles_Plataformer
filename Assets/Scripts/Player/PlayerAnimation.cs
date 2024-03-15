@@ -99,6 +99,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         MovementState state;
 
+        //if (anim.GetInteger("state") == 5) sprite.flipX = false;
+
         if (coll.onWall && !coll.onGround)
         {
             state = MovementState.OnWall;
@@ -112,7 +114,7 @@ public class PlayerAnimation : MonoBehaviour
         }
         else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
         {
-            state = MovementState.Attacking;
+            state = MovementState.LeftAttacking;
             anim.SetBool(holdOnWallParameter, false);
         }
         else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround)
