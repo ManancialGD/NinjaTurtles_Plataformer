@@ -249,12 +249,12 @@ public class Player : MonoBehaviour
         if (wallSide == dirX || dirX == 0)
         {
             cameraFollow.SetCameraReaction(cameraFollow.MAX_CAMERA_REACTION, 0f);
-            cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.5f, WallJumpForce.y * 1.6f));
-            cameraFollow.SetCameraReaction(0f, 0f);
+            cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.5f, WallJumpForce.y * 2f));
+            cameraFollow.SetCameraReaction(0.1f, 0.7f);
         }
         else
         {
-            cameraFollow.SetCameraReaction(0f, 0f);
+            cameraFollow.SetCameraReaction(0.1f, 0.7f);
         }
         return;
     }

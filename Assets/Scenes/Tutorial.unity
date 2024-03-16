@@ -7351,7 +7351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: playerAttackCooldown
-      value: 1
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: jumpableGround.m_Bits
