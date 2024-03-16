@@ -149,6 +149,10 @@ public class CameraFollow : MonoBehaviour
         onCombatMode = true;
     }
 
+    public void ChangeCameraTarget(GameObject newTarget)
+    {
+        target = newTarget;
+    }
     //CameraShake()
 
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.UI;
@@ -10,14 +11,18 @@ public class Player : MonoBehaviour
 {
     // Initiators
     public float playerAttackCooldown;
+    public float gravityForce;
+    public Sprite BallSprite;
     Collision coll;
     Rigidbody2D rb;
     Animator anim;
 
     [SerializeField] private LayerMask jumpableGround;
+    [SerializeField] Transform CollisionDetectorGroup;
 
 
     [Header("Stats")]
+    public Vector2 playerAttackForce;
     public int damageAmount = 10;
     public float jumpSpeed = 40f;
     public Vector2 WallJumpForce;
@@ -48,6 +53,8 @@ public class Player : MonoBehaviour
     int layerId;
     Vector2 dir_History = new Vector2(0f, 0f);
     public bool isPlayerAttacking = false;
+    bool isPlayerDownAttacking = false;
+    public int airAttack_Down_Damage;
 
     private void Start()
     {
@@ -62,10 +69,13 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         collisionScript = GetComponent<Collision>();
+
     }
 
     void Update()
     {
+        CheckForAirAttackExplosion();
+        //Debug.Log(GetFramesUntilCollision(true, false));
         //Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
 
         float x = Input.GetAxis("Horizontal");
@@ -276,5 +286,138 @@ public class Player : MonoBehaviour
         isPlayerAttacking = false;
         return;
     }
+
+    public Vector2 GetPlayerPosition()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        return new Vector2(rb.position.x, rb.position.y);
+    }
+
+    public void BoostPlayer(Vector2 force)
+    {
+        rb.velocity = new Vector2(rb.velocity.x + force.x, rb.velocity.y + force.y);
+        return;
+    }
+
+    public float GetPlayerDistanceFromGround()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        BoxCollider2D[] box_collider = GetComponents<BoxCollider2D>();
+
+        bool onGround = false;
+        float distance = 0f;
+        while (!onGround)
+        {
+            Vector2 newColliderPosition = new Vector2(rb.position.x, rb.position.y - distance);
+            if (!Physics2D.BoxCast(newColliderPosition, box_collider[0].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround)) distance += 0.1f;
+            else onGround = true;
+        }
+        return distance;
+    }
+
+
+    private int GetFramesUntilCollision(bool show, bool jumping)
+    {
+
+        Rigidbody2D thisRB = GetComponent<Rigidbody2D>();
+        int maxTrys = 75;
+
+        float velocityX = thisRB.velocity.x;
+        float velocityY = thisRB.velocity.y;
+
+        float posX = thisRB.position.x;
+        float posY = thisRB.position.y;
+
+        BoxCollider2D[] boxColliders = GetComponents<BoxCollider2D>();
+
+        if (jumping) velocityY = jumpSpeed;
+
+        if (show)
+        {
+
+            foreach (Transform child in CollisionDetectorGroup)
+            {
+                Destroy(child.gameObject);
+            }
+
+        }
+
+        float newposX = posX;
+        float newposY = posY;
+
+        for (int i = 0; i < maxTrys; i++)
+        {
+
+            newposX += velocityX * 0.08f;
+            newposY += velocityY * 0.08f - (i * (gravityForce * 0.08f));
+
+            Vector2 newColliderPosition = new Vector2(newposX, newposY);
+
+            if (show)
+            {
+                GameObject newSpriteObject = new GameObject("CollisionDetector_" + i);
+                newSpriteObject.transform.SetParent(CollisionDetectorGroup);
+                SpriteRenderer spriteRenderer = newSpriteObject.AddComponent<SpriteRenderer>();
+                spriteRenderer.sprite = BallSprite;
+                newSpriteObject.transform.position = newColliderPosition;
+                newSpriteObject.transform.localScale = new Vector2(0.3f, 0.3f);
+            }
+
+            if (Physics2D.BoxCast(newColliderPosition, boxColliders[0].bounds.size, 0f, Vector2.right, 0.0f, jumpableGround))
+            {
+                return i;
+            }
+        }
+
+        return maxTrys;
+
+    }
+    // ------------ Air Attacks --------------
+
+    public void AirAttack_Down()
+    {
+        isPlayerDownAttacking = true;
+        rb = GetComponent<Rigidbody2D>();
+        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 8f);
+        return;
+    }
+    void CheckForAirAttackExplosion()
+    {
+        if (coll.onGround && isPlayerDownAttacking)
+        {
+            rb = GetComponent<Rigidbody2D>();
+            isPlayerDownAttacking = false;
+            GroundImpact(new Vector2(rb.position.x, rb.position.y), 7f);
+        }
+    }
+    void GroundImpact(Vector2 position, float impactArea)
+    {
+        GameObject[] todosObjetos = GameObject.FindObjectsOfType<GameObject>();
+
+
+
+        foreach (GameObject obj in todosObjetos)
+        {
+            if (obj.CompareTag("Enemy"))
+            {
+
+                Transform objectTransform = obj.GetComponent<Transform>();
+                float distanceLast = (position.x - objectTransform.position.x) + (position.y - objectTransform.position.y);
+
+                if (Mathf.Abs(distanceLast) <= impactArea) // Combat Mode
+                {
+
+                    EnemyHP enemyHP;
+                    enemyHP = FindObjectOfType<EnemyHP>();
+
+                    enemyHP.TakeDamage(airAttack_Down_Damage, new Vector2(10f, 4f));
+
+                }
+
+            }
+        }
+    }
+
+    // ---------------------------------------
 
 }

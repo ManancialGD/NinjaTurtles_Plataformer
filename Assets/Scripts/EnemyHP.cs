@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class EnemyHP : MonoBehaviour
@@ -16,12 +17,13 @@ public class EnemyHP : MonoBehaviour
     public bool hasInfinitHealth;
     public bool canTakeDamage;
     private int damageAmount;
+    Player playerScript;
 
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        Player playerScript = FindObjectOfType<Player>();
+        playerScript = FindObjectOfType<Player>();
 
         if (playerScript != null)
         {
@@ -33,7 +35,8 @@ public class EnemyHP : MonoBehaviour
         }
     }
 
-    private void Update() {
+    private void Update()
+    {
         canTakeDamage = true;
     }
 
@@ -44,15 +47,23 @@ public class EnemyHP : MonoBehaviour
             canTakeDamage = false;
             PolygonCollider2D attackingArea = other.GetComponent<PolygonCollider2D>();
 
+            Vector2 distance = new Vector2(rb.position.x - playerScript.GetPlayerPosition().x, rb.position.y - playerScript.GetPlayerPosition().y);
+
             if (attackingArea != null)
             {
-                TakeDamage(damageAmount);
+                int newDir = -1;
+                if (distance.x > 0) newDir = 1;
+                TakeDamage(damageAmount, new Vector2(playerScript.playerAttackForce.x * newDir, playerScript.playerAttackForce.y));
+                playerScript.BoostPlayer(new Vector2(playerScript.playerAttackForce.x * 0.1f * newDir, playerScript.playerAttackForce.y * 0.1f));
             }
         }
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector2 attackForce)
     {
+
+        rb.velocity = new Vector2(rb.velocity.x + attackForce.x, rb.velocity.y + attackForce.y);
+
         health -= damage;
 
         if (health <= 0 && !hasInfinitHealth)

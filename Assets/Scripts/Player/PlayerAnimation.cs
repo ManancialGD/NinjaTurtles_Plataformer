@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
@@ -128,6 +129,15 @@ public class PlayerAnimation : MonoBehaviour
             state = MovementState.LeftAttacking;
             anim.SetBool(holdOnWallParameter, false);
             playerScript.EnablePlayerAttack();
+
+        }
+        else if (Input.GetButtonDown("Attack") && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 3f) //Air attack (down)
+        {
+            state = MovementState.Attacking;
+            anim.SetBool(holdOnWallParameter, false);
+            playerScript.EnablePlayerAttack();
+            playerScript.AirAttack_Down();
+
         }
         else if (rb.velocity.y > 0.1f || rb.velocity.y < 0.1f && !coll.onGround)
         {
@@ -161,4 +171,48 @@ public class PlayerAnimation : MonoBehaviour
         return;
     }
 
+    public GameObject GetClosestEnemy(float detectionArea)
+    {
+        todosObjetos = GameObject.FindObjectsOfType<GameObject>();
+
+        float minEnemyDistance = detectionArea;
+        int enemysCount = 0;
+        GameObject newClosestEnemy = null;
+
+        // Loop através de todos os objetos encontrados
+        foreach (GameObject obj in todosObjetos)
+        {
+            if (obj.CompareTag("Enemy"))
+            {
+
+                Transform objectTransform = obj.GetComponent<Transform>();
+                float distanceLast = (rb.position.x - objectTransform.position.x) + (rb.position.y - objectTransform.position.y);
+
+                if (Mathf.Abs(distanceLast) <= detectionArea && Mathf.Abs(distanceLast) < minEnemyDistance) // Combat Mode
+                {
+                    enemysCount++;
+                    newClosestEnemy = obj;
+                    minEnemyDistance = Mathf.Abs(distanceLast);
+                }
+
+            }
+        }
+
+        // caso o player saia da Combat Zone
+
+        if (enemysCount > 0 && newClosestEnemy != null)
+        {
+            Transform closestEnemyTransform = newClosestEnemy.GetComponent<Transform>();
+            float distance = Mathf.Abs(rb.position.x - closestEnemyTransform.position.x) + Mathf.Abs(rb.position.y - closestEnemyTransform.position.y);
+            float distanceX = rb.position.x - closestEnemyTransform.position.x;
+
+            if (Mathf.Abs(distance) <= detectionArea)
+            {
+                return newClosestEnemy;
+            }
+        }
+        return null;
+    }
+
+    
 }
