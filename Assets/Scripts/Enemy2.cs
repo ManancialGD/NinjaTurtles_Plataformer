@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy2 : MonoBehaviour
 {
     public LayerMask playerLayer;
+    static float groundFriction = 0.99f;
     PlayerHP playerHPScript;
     Rigidbody2D rb;
     Rigidbody2D playerRB;
@@ -21,6 +22,8 @@ public class Enemy2 : MonoBehaviour
     bool isAttacking = false;
     public float damageAmount = 10;
 
+    EnemyHP enemyHP;
+
     private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking, LeftAttacking };
 
     void Start()
@@ -29,6 +32,8 @@ public class Enemy2 : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         coll = GetComponents<BoxCollider2D>();
+
+        enemyHP = GetComponent<EnemyHP>();
         playerHPScript = FindObjectOfType<PlayerHP>();
     }
 
@@ -36,32 +41,40 @@ public class Enemy2 : MonoBehaviour
     {
         FollowPlayer();
         AttackPlayer_Event();
+        GroundFriction();
     }
 
     private void FollowPlayer()
     {
-        playerRB = playerHPScript.GetComponent<Rigidbody2D>();
-
-        float distanceX = playerRB.position.x - rb.position.x;
-        float distanceY = playerRB.position.y - rb.position.y;
-
-        if (Mathf.Abs(distanceX) > DistanceArea)
+        Debug.Log("ENEMY UN - " + enemyHP.GetEnemyUnconsciousCooldown());
+        if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return;
+        else
         {
-            if (distanceX < 0)
+
+            playerRB = playerHPScript.GetComponent<Rigidbody2D>();
+
+            float distanceX = playerRB.position.x - rb.position.x;
+            float distanceY = playerRB.position.y - rb.position.y;
+
+            if (Mathf.Abs(distanceX) > DistanceArea)
             {
-                if (rb.velocity.x - EnemyAcceleration <= -EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(-EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
-                else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x - EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
-            }
-            else
-            {
-                if (rb.velocity.x + EnemyAcceleration >= EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
-                else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x + EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
+                if (distanceX < 0)
+                {
+                    if (rb.velocity.x - EnemyAcceleration <= -EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(-EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
+                    else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x - EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
+                }
+                else
+                {
+                    if (rb.velocity.x + EnemyAcceleration >= EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
+                    else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x + EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
+                }
             }
         }
     }
 
     private int AttackPlayer_Event()
     {
+        if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return 0;
         inAttackZone = Physics2D.OverlapBox((Vector2)transform.position, new Vector2(1f, 0f), 0f, playerLayer);
 
         sprite.flipX = playerRB.position.x - rb.position.x < 0;
@@ -115,5 +128,10 @@ public class Enemy2 : MonoBehaviour
         isAttacking = false;
         yield return new WaitForSeconds(delay);
         canAttack = true;
+    }
+
+    void GroundFriction()
+    {
+        rb.velocity = new Vector2(rb.velocity.x * groundFriction, rb.velocity.y);
     }
 }

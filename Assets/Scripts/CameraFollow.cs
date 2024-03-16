@@ -113,7 +113,7 @@ public class CameraFollow : MonoBehaviour
         {
 
             Vector2 combatDistance = new Vector2(CameraPosition.x - enemyPosition.x, CameraPosition.y - enemyPosition.y);
-            Debug.Log(combatDistance.x + " , " + combatDistance.y);
+            
             distanceX = playerTransform.position.x - (CameraPosition.x + combatDistance.x / 2);
             distanceY = playerTransform.position.y - (CameraPosition.y + combatDistance.y / 2);
         }

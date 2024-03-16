@@ -26,6 +26,7 @@ public class PlayerAnimation : MonoBehaviour
 
     GameObject[] todosObjetos;
     GameObject closestEnemy;
+    Vector2 dir;
 
     bool playerInCombatMode = false;
 
@@ -42,6 +43,9 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        dir = new Vector2(x, y);
         if (playerAttackCooldown > 0f) playerAttackCooldown -= Time.deltaTime;
         else if (playerAttackCooldown < 0f)
         {
@@ -131,7 +135,7 @@ public class PlayerAnimation : MonoBehaviour
             playerScript.EnablePlayerAttack();
 
         }
-        else if (Input.GetButtonDown("Attack") && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 3f) //Air attack (down)
+        else if (Input.GetButtonDown("Attack") && dir.y < -0.1 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f) //Air attack (down)
         {
             state = MovementState.Attacking;
             anim.SetBool(holdOnWallParameter, false);
@@ -214,5 +218,5 @@ public class PlayerAnimation : MonoBehaviour
         return null;
     }
 
-    
+
 }

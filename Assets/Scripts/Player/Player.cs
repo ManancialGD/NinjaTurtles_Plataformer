@@ -378,7 +378,7 @@ public class Player : MonoBehaviour
     {
         isPlayerDownAttacking = true;
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 8f);
+        rb.velocity = new Vector2(rb.velocity.x * 0.2f, -8f);
         return;
     }
     void CheckForAirAttackExplosion()
@@ -410,7 +410,7 @@ public class Player : MonoBehaviour
                     EnemyHP enemyHP;
                     enemyHP = FindObjectOfType<EnemyHP>();
 
-                    enemyHP.TakeDamage(airAttack_Down_Damage, new Vector2(10f, 4f));
+                    enemyHP.TakeDamage(airAttack_Down_Damage, new Vector2(10f, 4f), 2f);
 
                 }
 

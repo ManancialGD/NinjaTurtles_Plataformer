@@ -6756,6 +6756,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &559691065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 559691066}
+  m_Layer: 0
+  m_Name: Particles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &559691066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559691065}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.91, y: -2.18, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &589771841
 GameObject:
   m_ObjectHideFlags: 0
@@ -6898,7 +6929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 844781314}
   m_Layer: 0
-  m_Name: Detectors
+  m_Name: DrawLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7062,6 +7093,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468ddf6acfc9fae409a538f813b62511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyUnconsciousCooldown: 0
+  BallSprite: {fileID: 0}
   FloattingTextPrefab: {fileID: 3456831215760177807, guid: d1f61528a0d642e46bfc810a7571f37b, type: 3}
   health: 30
   hasInfinitHealth: 1
@@ -7268,12 +7301,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5900050123916188917, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: enemyID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5900050123916188917, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: BallSprite
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 5900050123916188917, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: hasInfinitHealth
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7411925450144655723, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: m_FlipX
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: EnemySpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: EnemyAcceleration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8560823435602590742, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: m_IsTrigger
@@ -7357,12 +7406,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5900050123916188917, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: enemyID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5900050123916188917, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: BallSprite
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 5900050123916188917, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: hasInfinitHealth
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7411925450144655723, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: m_FlipX
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: EnemySpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347146973986374839, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: EnemyAcceleration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8560823435602590742, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: m_IsTrigger
@@ -7543,3 +7608,4 @@ SceneRoots:
   - {fileID: 589771843}
   - {fileID: 1531014413}
   - {fileID: 844781314}
+  - {fileID: 559691066}
