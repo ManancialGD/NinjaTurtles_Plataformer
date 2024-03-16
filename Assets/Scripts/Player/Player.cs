@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     // Initiators
+    PlayerParticles playerParticles;
     public float playerAttackCooldown;
     public float gravityForce;
     public Sprite BallSprite;
@@ -61,6 +62,7 @@ public class Player : MonoBehaviour
         layerId = LayerMask.NameToLayer("Enemys");
         playerSpeed = new Vector2(groundAcceleration, 0f);
 
+        playerParticles = FindObjectOfType<PlayerParticles>();
         cameraFollow = FindObjectOfType<CameraFollow>();
         playerAnimation = FindObjectOfType<PlayerAnimation>();
 
@@ -74,6 +76,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
         CheckForAirAttackExplosion();
         //Debug.Log(GetFramesUntilCollision(true, false));
         //Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
@@ -378,7 +381,7 @@ public class Player : MonoBehaviour
     {
         isPlayerDownAttacking = true;
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(rb.velocity.x * 0.2f, -8f);
+        rb.velocity = new Vector2(rb.velocity.x * 0.2f, -15f);
         return;
     }
     void CheckForAirAttackExplosion()

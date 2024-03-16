@@ -135,7 +135,7 @@ public class PlayerAnimation : MonoBehaviour
             playerScript.EnablePlayerAttack();
 
         }
-        else if (Input.GetButtonDown("Attack") && dir.y < -0.1 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f) //Air attack (down)
+        else if (Input.GetButtonDown("Attack") && dir.y < -0.1 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f && playerScript.GetPlayerDistanceFromGround() <= 6f) //Air attack (down)
         {
             state = MovementState.Attacking;
             anim.SetBool(holdOnWallParameter, false);

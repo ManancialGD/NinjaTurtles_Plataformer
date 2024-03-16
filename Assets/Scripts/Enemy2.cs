@@ -46,7 +46,7 @@ public class Enemy2 : MonoBehaviour
 
     private void FollowPlayer()
     {
-        Debug.Log("ENEMY UN - " + enemyHP.GetEnemyUnconsciousCooldown());
+        //Debug.Log("ENEMY UN - " + enemyHP.GetEnemyUnconsciousCooldown());
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return;
         else
         {
