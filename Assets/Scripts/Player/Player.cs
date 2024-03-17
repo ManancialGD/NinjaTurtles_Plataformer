@@ -50,12 +50,15 @@ public class Player : MonoBehaviour
     public bool wallJumped;
     public bool isWallLocked;
 
+    public Vector2 attackVelocityBoost;
+
     private Collision collisionScript;
     int layerId;
     Vector2 dir_History = new Vector2(0f, 0f);
     public bool isPlayerAttacking = false;
     bool isPlayerDownAttacking = false;
     public int airAttack_Down_Damage;
+    public Vector2 dir;
 
     private void Start()
     {
@@ -87,7 +90,7 @@ public class Player : MonoBehaviour
 
         float xRaw = Input.GetAxisRaw("Horizontal");
         float yRaw = Input.GetAxisRaw("Vertical");
-        Vector2 dir = new Vector2(x, y);
+        dir = new Vector2(x, y);
 
         Move(dir);
 
@@ -157,7 +160,7 @@ public class Player : MonoBehaviour
 
     private void Move(Vector2 dir)
     {
-        if (!canMove) return;
+        if (!canMove || isPlayerAttacking) return;
 
         if (coll.onGround)
         {   // Player on Ground
@@ -297,10 +300,9 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < particlesDisplayed; i++)
         {
-            float sideCorrection = UnityEngine.Random.Range(-5f, 5f);
+            //float sideCorrection = UnityEngine.Random.Range(-5f, 5f);
             string sideString = "left";
             if (wallSide == -1) sideString = "right";
-            //playerParticles.CreateParticle(1f, sideString, new Vector2(wallSide * WallJumpForce.x * UnityEngine.Random.Range(0.4f, 0.8f), WallJumpForce.y * UnityEngine.Random.Range(0.3f, 0.6f)));
             playerParticles.CreateParticle(1f, sideString, new Vector2(wallSide * WallJumpForce.x * UnityEngine.Random.Range(0.05f, WallJumpForce.x / 12), UnityEngine.Random.Range(0.05f, WallJumpForce.y / 3)));
         }
 

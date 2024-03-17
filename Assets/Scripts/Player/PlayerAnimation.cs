@@ -124,19 +124,27 @@ public class PlayerAnimation : MonoBehaviour
         }
         else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == false)
         {
+            if (playerScript.isPlayerAttacking) return;
             state = MovementState.Attacking;
             anim.SetBool(holdOnWallParameter, false);
             playerScript.EnablePlayerAttack();
+
+            if (playerScript.dir.x > 0) playerScript.BoostPlayer(new Vector2(playerScript.attackVelocityBoost.x, playerScript.attackVelocityBoost.y));
         }
         else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
         {
+            if (playerScript.isPlayerAttacking) return;
             state = MovementState.LeftAttacking;
             anim.SetBool(holdOnWallParameter, false);
             playerScript.EnablePlayerAttack();
 
+            if (playerScript.dir.x < 0) playerScript.BoostPlayer(new Vector2(-playerScript.attackVelocityBoost.x, playerScript.attackVelocityBoost.y));
+
+
         }
         else if (Input.GetButtonDown("Attack") && dir.y < -0.1 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f && playerScript.GetPlayerDistanceFromGround() <= 6f) //Air attack (down)
         {
+            if (playerScript.isPlayerAttacking) return;
             state = MovementState.Attacking;
             anim.SetBool(holdOnWallParameter, false);
             playerScript.EnablePlayerAttack();
