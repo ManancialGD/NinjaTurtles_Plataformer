@@ -162,10 +162,22 @@ public class Player : MonoBehaviour
         if (coll.onGround)
         {   // Player on Ground
 
-            if (rb.velocity.y < -12f)
+            if (rb.velocity.y < -4f)
+            { // Particulas
+                int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(rb.velocity.y * 0.1f, rb.velocity.y * 0.3f));
+
+                for (int i = 0; i < particlesDisplayed; i++)
+                {
+                    float sideCorrection = UnityEngine.Random.Range(-5f, 5f);
+                    playerParticles.CreateParticle(1f, "down", new Vector2(rb.velocity.x * UnityEngine.Random.Range(0.5f, 0.8f) + sideCorrection, -rb.velocity.y * UnityEngine.Random.Range(0.1f, 0.4f)));
+                }
+            }
+
+            if (rb.velocity.y < -12f && !isPlayerDownAttacking)
             {
                 if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, -25f * 0.05f));
                 else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, rb.velocity.y * 0.05f));
+
             }
 
             if (Mathf.Abs(dir.x) > 0)
@@ -228,6 +240,15 @@ public class Player : MonoBehaviour
         if (!isPlayerAttacking)
         {
             rb.velocity = new Vector2(rb.velocity.x, yForce);
+
+            int particlesDisplayed = (int)UnityEngine.Random.Range(3f, 6f);
+
+            for (int i = 0; i < particlesDisplayed; i++)
+            {
+                float sideCorrection = UnityEngine.Random.Range(-0.2f, 0.2f);
+                playerParticles.CreateParticle(1f, "down", new Vector2(rb.velocity.x * UnityEngine.Random.Range(0.5f, 0.8f) + sideCorrection, yForce * UnityEngine.Random.Range(0.2f, 0.5f)));
+            }
+
         }
     }
 
@@ -269,6 +290,21 @@ public class Player : MonoBehaviour
         {
             cameraFollow.SetCameraReaction(0.1f, 0.7f);
         }
+
+
+        // Particulas
+        int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(4f, 7f));
+
+        for (int i = 0; i < particlesDisplayed; i++)
+        {
+            float sideCorrection = UnityEngine.Random.Range(-5f, 5f);
+            string sideString = "left";
+            if (wallSide == -1) sideString = "right";
+            //playerParticles.CreateParticle(1f, sideString, new Vector2(wallSide * WallJumpForce.x * UnityEngine.Random.Range(0.4f, 0.8f), WallJumpForce.y * UnityEngine.Random.Range(0.3f, 0.6f)));
+            playerParticles.CreateParticle(1f, sideString, new Vector2(wallSide * WallJumpForce.x * UnityEngine.Random.Range(0.05f, WallJumpForce.x / 12), UnityEngine.Random.Range(0.05f, WallJumpForce.y / 3)));
+        }
+
+
         return;
     }
 

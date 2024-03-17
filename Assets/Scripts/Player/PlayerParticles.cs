@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerParticles : MonoBehaviour
 {
 
-    static Vector2 playerSize = new Vector2(0.375f, 0.95f); // Não faço ideia se isto está certo ( x não interessa )
+    static Vector2 playerSize = new Vector2(0.345f, 0.95f);
     Transform player;
     Rigidbody2D rb;
     Player playerScript;
@@ -18,7 +18,7 @@ public class PlayerParticles : MonoBehaviour
 
     //float time = 0f;
 
-    float opacityChangeTime = 1f;
+    public float opacityChangeTime;
 
     Dictionary<int, (float, SpriteRenderer)> particles = new Dictionary<int, (float, SpriteRenderer)>();
     GameObject[] particles_obj = new GameObject[0];
@@ -56,7 +56,7 @@ public class PlayerParticles : MonoBehaviour
 
             particles[p_id] = (p_lifeTime, particles[p_id].Item2);
 
-            if (p_lifeTime < opacityChangeTime) ChangeSpriteOpacity(p_spriteRenderer, p_lifeTime * (100 / opacityChangeTime));
+            if (p_lifeTime < opacityChangeTime) ChangeSpriteOpacity(p_spriteRenderer, p_lifeTime * (1 / opacityChangeTime));
 
         }
 
@@ -75,7 +75,7 @@ public class PlayerParticles : MonoBehaviour
             Vector2 randomVector = new Vector2(Random.Range(velocityDifference.x * -0.1f, velocityDifference.x * 0.3f), Random.Range(2f, 3f));
             float randomMultiplier = Random.Range(velocityDifference.x * 1.5f, velocityDifference.x * 3f);
 
-            CreateParticle(opacityChangeTime, new Vector2(rb.position.x, rb.position.y - playerSize.y / 2), new Vector2(velocityDifference.x * randomMultiplier + randomVector.x, randomVector.y));
+            CreateParticle(opacityChangeTime, "down", new Vector2(velocityDifference.x * randomMultiplier + randomVector.x, randomVector.y));
 
         }
 
@@ -92,8 +92,17 @@ public class PlayerParticles : MonoBehaviour
         velocity_history = new Vector2(0f, 0f);
     }
 
-    public void CreateParticle(float lifeTime, Vector2 initialPosition, Vector2 initialVelocity)
+    public void CreateParticle(float lifeTime, string spawnType, Vector2 initialVelocity)
     {
+        Vector2 initialPosition;
+        if (spawnType.ToLower() == "down") initialPosition = new Vector2(rb.position.x, rb.position.y - playerSize.y / 2);
+        else if (spawnType.ToLower() == "right") initialPosition = new Vector2(rb.position.x + playerSize.x / 2, rb.position.y - playerSize.y / 2);
+        else if (spawnType.ToLower() == "left") initialPosition = new Vector2(rb.position.x - playerSize.x / 2, rb.position.y - playerSize.y / 2);
+        else
+        {
+            Debug.Log("ERRO 6128241 - Invalid input");
+            return;
+        }
 
         GameObject newSpriteObject = new GameObject("Particle_" + LastParticleID);
         newSpriteObject.transform.SetParent(GetComponent<Transform>());
