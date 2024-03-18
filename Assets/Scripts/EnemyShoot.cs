@@ -9,7 +9,7 @@ public class EnemyShoot : MonoBehaviour
     public float rotationSpeed = 5f;
     public float rotationModifier;
     public float moveSpeed = 5f;
-    public float shootDamage = 80f;
+    public float shootDamage = 40f;
 
     private void Start()
     {
@@ -17,6 +17,7 @@ public class EnemyShoot : MonoBehaviour
         playerHPScript = FindObjectOfType<PlayerHP>();
 
         RotateTowardsPlayer();
+
     }
 
     private void Update()
@@ -43,7 +44,12 @@ public class EnemyShoot : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+
+        if (!other.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+        }
         // Destroi o objeto ao entrar em colisão com outro objeto
-        Destroy(gameObject);
+
     }
 }

@@ -32,7 +32,7 @@ public class CameraFollow : MonoBehaviour
     bool updateCameraReaction = true;
     float reactionTimer;
 
-    bool onCombatMode = false;
+    public bool onCombatMode = false;
     Vector2 enemyPosition;
 
     private void Start()

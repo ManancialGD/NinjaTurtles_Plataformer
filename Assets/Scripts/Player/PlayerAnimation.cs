@@ -129,7 +129,7 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool(holdOnWallParameter, false);
             playerScript.EnablePlayerAttack();
 
-            if (playerScript.dir.x > 0) playerScript.BoostPlayer(new Vector2(playerScript.attackVelocityBoost.x, playerScript.attackVelocityBoost.y));
+            if (playerScript.dir.x > 0 && cameraFollow.onCombatMode) playerScript.BoostPlayer(new Vector2(playerScript.attackVelocityBoost.x, playerScript.attackVelocityBoost.y));
         }
         else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
         {
@@ -138,7 +138,7 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool(holdOnWallParameter, false);
             playerScript.EnablePlayerAttack();
 
-            if (playerScript.dir.x < 0) playerScript.BoostPlayer(new Vector2(-playerScript.attackVelocityBoost.x, playerScript.attackVelocityBoost.y));
+            if (playerScript.dir.x < 0 && cameraFollow.onCombatMode) playerScript.BoostPlayer(new Vector2(-playerScript.attackVelocityBoost.x, playerScript.attackVelocityBoost.y));
 
 
         }

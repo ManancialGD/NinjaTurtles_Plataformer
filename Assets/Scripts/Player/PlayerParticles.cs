@@ -127,7 +127,7 @@ public class PlayerParticles : MonoBehaviour
         particles_obj = debug_particles;
 
         LastParticleID++;
-        Debug.Log("Particula criada - " + lifeTime + " | (" + initialVelocity.x + ", " + initialVelocity.y + ")");
+        //Debug.Log("Particula criada - " + lifeTime + " | (" + initialVelocity.x + ", " + initialVelocity.y + ")");
         return;
     }
 
