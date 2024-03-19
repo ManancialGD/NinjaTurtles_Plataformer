@@ -427,14 +427,12 @@ public class Player : MonoBehaviour
         {
             rb = GetComponent<Rigidbody2D>();
             isPlayerDownAttacking = false;
-            GroundImpact(new Vector2(rb.position.x, rb.position.y), 7f);
+            GroundImpact(new Vector2(rb.position.x, rb.position.y), new Vector2(7f, 1.5f));
         }
     }
-    void GroundImpact(Vector2 position, float impactArea)
+    void GroundImpact(Vector2 position, Vector2 impactArea)
     {
         GameObject[] todosObjetos = GameObject.FindObjectsOfType<GameObject>();
-
-
 
         foreach (GameObject obj in todosObjetos)
         {
@@ -442,15 +440,16 @@ public class Player : MonoBehaviour
             {
 
                 Transform objectTransform = obj.GetComponent<Transform>();
-                float distanceLast = (position.x - objectTransform.position.x) + (position.y - objectTransform.position.y);
+                Vector2 distanceLast = new Vector2(position.x - objectTransform.position.x, position.y - objectTransform.position.y);
 
-                if (Mathf.Abs(distanceLast) <= impactArea) // Combat Mode
+                if (Mathf.Abs(distanceLast.x) <= impactArea.x && Mathf.Abs(distanceLast.y) <= impactArea.y) // Combat Mode
                 {
 
                     EnemyHP enemyHP;
                     enemyHP = FindObjectOfType<EnemyHP>();
 
-                    enemyHP.TakeDamage(airAttack_Down_Damage, new Vector2(10f, 4f), 2f);
+                    enemyHP.TakeDamage(airAttack_Down_Damage, new Vector2(0f, 0f), 2f);
+                    //distanceLast.x / Mathf.Abs(distanceLast.x) * 10, distanceLast.y / Mathf.Abs(distanceLast.y) * 4f
 
                 }
 

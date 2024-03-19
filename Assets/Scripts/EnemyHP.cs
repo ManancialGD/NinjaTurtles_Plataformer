@@ -110,6 +110,7 @@ public class EnemyHP : MonoBehaviour
 
     void Die()
     {
+        Debug.Log("Enemy killed");
         Destroy(gameObject);
     }
 

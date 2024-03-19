@@ -100,7 +100,7 @@ public class PlayerParticles : MonoBehaviour
         else if (spawnType.ToLower() == "left") initialPosition = new Vector2(rb.position.x - playerSize.x / 2, rb.position.y - playerSize.y / 2);
         else
         {
-            Debug.Log("ERRO 6128241 - Invalid input");
+            Debug.Log("ERROR 6128241 - Invalid input");
             return;
         }
 

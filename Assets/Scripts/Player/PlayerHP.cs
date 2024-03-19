@@ -22,7 +22,7 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
-    private int DamagePlayer(float damage)
+    public int DamagePlayer(float damage)
     {
         PlayerHealth -= damage;
 

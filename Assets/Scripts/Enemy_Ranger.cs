@@ -37,7 +37,7 @@ public class Enemy_Ranger : MonoBehaviour
 
             if (Mathf.Abs(distance.x) + Mathf.Abs(distance.x) < attackRange) // Attack player
             {
-                Debug.Log("Ranger - Shoot Player");
+                //Debug.Log("Ranger - Shoot Player");
                 shootScript.ShootBullet();
                 attackCooldown = Random.Range(attackTime[0], attackTime[1]);
             }

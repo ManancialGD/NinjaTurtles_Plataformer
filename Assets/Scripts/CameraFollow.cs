@@ -91,7 +91,7 @@ public class CameraFollow : MonoBehaviour
         /*
         if (p_changer.CurrentPlayerSelected < 1 || p_changer.CurrentPlayerSelected > 2)
         {
-            Debug.Log("ERRO 854023 - Player index inválido");
+            Debug.Log("ERROR 854023 - Player index inválido");
             return;
         }
 
@@ -102,6 +102,11 @@ public class CameraFollow : MonoBehaviour
         }
         */
 
+        if (target == null)
+        {
+            Debug.Log("ERROR 862841 - Invalid target GameObject");
+            return;
+        }
         playerTransform = target.GetComponent<Transform>();
         cameraTranform = GetComponent<Transform>();
         CameraPosition = new Vector2(cameraTranform.position.x, cameraTranform.position.y);
@@ -113,7 +118,7 @@ public class CameraFollow : MonoBehaviour
         {
 
             Vector2 combatDistance = new Vector2(CameraPosition.x - enemyPosition.x, CameraPosition.y - enemyPosition.y);
-            
+
             distanceX = playerTransform.position.x - (CameraPosition.x + combatDistance.x / 2);
             distanceY = playerTransform.position.y - (CameraPosition.y + combatDistance.y / 2);
         }

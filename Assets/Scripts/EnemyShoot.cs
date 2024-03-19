@@ -44,7 +44,7 @@ public class EnemyShoot : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
+        Debug.Log(other.tag);
         if (!other.CompareTag("Enemy"))
         {
             Destroy(gameObject);
