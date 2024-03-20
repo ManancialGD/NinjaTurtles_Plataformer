@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
     bool isPlayerDownAttacking = false;
     public int airAttack_Down_Damage;
     BasicPlayerParticles basicPlayerParticles;
+    Player_GroundSlamParticles groundSlamParticles;
     public Vector2 dir;
 
     private void Start()
@@ -66,6 +67,7 @@ public class Player : MonoBehaviour
         playerSpeed = new Vector2(groundAcceleration, 0f);
 
         basicPlayerParticles = FindObjectOfType<BasicPlayerParticles>();
+        groundSlamParticles = FindObjectOfType<Player_GroundSlamParticles>();
         playerParticles = FindObjectOfType<PlayerParticles>();
         cameraFollow = FindObjectOfType<CameraFollow>();
         playerAnimation = FindObjectOfType<PlayerAnimation>();
@@ -83,7 +85,7 @@ public class Player : MonoBehaviour
         if (sliding)
         {
 
-            int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(0f, 1.05f));
+            int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(0f, 1.2f));
 
             int sideWall = -1;
             string sideName = "right";
@@ -95,9 +97,9 @@ public class Player : MonoBehaviour
 
             float[] multiplierX = { 0.0f, 1f };
             float[] multiplierY = { 0f, 1f };
-            float[] sideCorrection = { sideWall * 0f, sideWall * 2f };
+            float[] sideCorrection = { sideWall * 0f, sideWall * 0f };
 
-            if (particlesDisplayed > 0) basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(sideWall * 3f, 0f), multiplierX, multiplierY, sideCorrection, Color.white);
+            if (particlesDisplayed > 0) basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(sideWall * 1f, 0f), multiplierX, multiplierY, sideCorrection, Color.white);
 
         }
     }
@@ -275,11 +277,13 @@ public class Player : MonoBehaviour
 
             int particlesDisplayed = (int)UnityEngine.Random.Range(3f, 6f);
 
-            for (int i = 0; i < particlesDisplayed; i++)
-            {
-                float sideCorrection = UnityEngine.Random.Range(-0.2f, 0.2f);
-                playerParticles.CreateParticle(1f, "down", new Vector2(rb.velocity.x * UnityEngine.Random.Range(0.5f, 0.8f) + sideCorrection, yForce * UnityEngine.Random.Range(0.2f, 0.5f)));
-            }
+            float[] multiplierX = { 0.05f, 0.8f };
+            float[] multiplierY = { 0.05f, 0.6f };
+
+            float[] sideCorrection = { -0.1f, 0.1f };
+
+            basicPlayerParticles.CreateParticle(particlesDisplayed, "down", new Vector2(rb.velocity.x, yForce), multiplierX, multiplierY, sideCorrection, Color.white);
+            if (sliding) sliding = false;
 
         }
     }
@@ -333,6 +337,8 @@ public class Player : MonoBehaviour
 
         string sideName = "right";
         if (coll.onLeftWall) sideName = "left";
+
+        if (sliding) sliding = false;
 
         basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(rb.velocity.x / Mathf.Abs(rb.velocity.x) * 6f, WallJumpForce.y), multiplierX, multiplierY, sideCorrection, Color.white);
 
@@ -457,10 +463,11 @@ public class Player : MonoBehaviour
         {
             rb = GetComponent<Rigidbody2D>();
             isPlayerDownAttacking = false;
-            GroundImpact(new Vector2(rb.position.x, rb.position.y), new Vector2(7f, 1.5f));
+            GroundImpact(new Vector2(rb.position.x, rb.position.y), new Vector2(rb.velocity.x, rb.velocity.y), new Vector2(7f, 1.5f));
+            groundSlamParticles.DisplayGroundSlamParticles(rb.transform.position);
         }
     }
-    void GroundImpact(Vector2 position, Vector2 impactArea)
+    void GroundImpact(Vector2 position, Vector2 velocity, Vector2 impactArea)
     {
         GameObject[] todosObjetos = GameObject.FindObjectsOfType<GameObject>();
 
