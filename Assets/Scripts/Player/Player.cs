@@ -78,6 +78,29 @@ public class Player : MonoBehaviour
 
     }
 
+    void FixedUpdate()
+    {
+        if (sliding)
+        {
+
+            int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(0f, 1.05f));
+
+            int sideWall = -1;
+            string sideName = "right";
+            if (coll.onLeftWall)
+            {
+                sideName = "left";
+                sideWall = 1;
+            }
+
+            float[] multiplierX = { 0.0f, 1f };
+            float[] multiplierY = { 0f, 1f };
+            float[] sideCorrection = { sideWall * 0f, sideWall * 2f };
+
+            if (particlesDisplayed > 0) basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(sideWall * 3f, 0f), multiplierX, multiplierY, sideCorrection, Color.white);
+
+        }
+    }
     void Update()
     {
 
@@ -134,6 +157,7 @@ public class Player : MonoBehaviour
                 {
                     rb.velocity = new Vector2(rb.velocity.x, 0f);
                     sliding = true;
+
                 }
 
                 // Lock the y position when holding onto the wall
@@ -144,6 +168,7 @@ public class Player : MonoBehaviour
                 else
                 {
                     rb.velocity = new Vector2(rb.velocity.x, -slideSpeed);
+
                 }
             }
 

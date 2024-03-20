@@ -3,7 +3,7 @@ using UnityEngine;
 public class BasicPlayerParticles : MonoBehaviour
 {
 
-    static Vector2 playerSize = new Vector2(0.345f, 0.95f);
+    static Vector2 playerSize = new Vector2(0.305f, 0.95f);
     private ParticleSystem playerParticle;
     Player playerScript;
     ParticleSystem.MainModule mainModule;
