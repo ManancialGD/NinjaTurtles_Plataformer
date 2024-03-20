@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public float gravityForce;
     public Sprite BallSprite;
     Collision coll;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     Animator anim;
 
     [SerializeField] private LayerMask jumpableGround;
@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
     public bool isPlayerAttacking = false;
     bool isPlayerDownAttacking = false;
     public int airAttack_Down_Damage;
+    BasicPlayerParticles basicPlayerParticles;
     public Vector2 dir;
 
     private void Start()
@@ -64,6 +65,7 @@ public class Player : MonoBehaviour
         layerId = LayerMask.NameToLayer("Enemys");
         playerSpeed = new Vector2(groundAcceleration, 0f);
 
+        basicPlayerParticles = FindObjectOfType<BasicPlayerParticles>();
         playerParticles = FindObjectOfType<PlayerParticles>();
         cameraFollow = FindObjectOfType<CameraFollow>();
         playerAnimation = FindObjectOfType<PlayerAnimation>();
@@ -168,12 +170,15 @@ public class Player : MonoBehaviour
             { // Particulas
                 int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(rb.velocity.y * 0.1f, rb.velocity.y * 0.3f));
 
-                for (int i = 0; i < particlesDisplayed; i++)
-                {
-                    float sideCorrection = UnityEngine.Random.Range(-5f, 5f);
-                    playerParticles.CreateParticle(1f, "down", new Vector2(rb.velocity.x * UnityEngine.Random.Range(0.5f, 0.8f) + sideCorrection, -rb.velocity.y * UnityEngine.Random.Range(0.1f, 0.4f)));
-                }
+                //playerParticles.CreateParticle(1f, "down", new Vector2(rb.velocity.x * UnityEngine.Random.Range(0.5f, 0.8f) + sideCorrection, -rb.velocity.y * UnityEngine.Random.Range(0.1f, 0.4f)));
+
+                float[] multiplierX = { 0.4f, 0.8f };
+                float[] multiplierY = { 0.1f, 0.4f };
+                float[] sideCorrection = { -3f, 3f };
+
+                basicPlayerParticles.CreateParticle(particlesDisplayed, "down", new Vector2(rb.velocity.x, -rb.velocity.y), multiplierX, multiplierY, sideCorrection, Color.white);
             }
+
 
             if (rb.velocity.y < -12f && !isPlayerDownAttacking)
             {
@@ -296,15 +301,15 @@ public class Player : MonoBehaviour
 
         // Particulas
         int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(4f, 7f));
+        float[] multiplierX = { 0.05f, 0.7f };
+        float[] multiplierY = { 0.05f, 0.6f };
 
-        for (int i = 0; i < particlesDisplayed; i++)
-        {
-            //float sideCorrection = UnityEngine.Random.Range(-5f, 5f);
-            string sideString = "left";
-            if (wallSide == -1) sideString = "right";
-            playerParticles.CreateParticle(1f, sideString, new Vector2(wallSide * WallJumpForce.x * UnityEngine.Random.Range(0.05f, WallJumpForce.x / 12), UnityEngine.Random.Range(0.05f, WallJumpForce.y / 3)));
-        }
+        float[] sideCorrection = { -0.05f, 0.05f };
 
+        string sideName = "right";
+        if (coll.onLeftWall) sideName = "left";
+
+        basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(rb.velocity.x / Mathf.Abs(rb.velocity.x) * 6f, WallJumpForce.y), multiplierX, multiplierY, sideCorrection, Color.white);
 
         return;
     }

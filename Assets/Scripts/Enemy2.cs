@@ -104,13 +104,13 @@ public class Enemy2 : MonoBehaviour
                 {
                     if (enemyFixed == 0 && airAttacking == 0f)
                     {
-                        Brute_AirAttack(10f, 15f);
+                        Brute_AirAttack(7f, 15f);
                         return;
                     }
 
                 }
 
-                rb.velocity = new Vector2(distanceX / Mathf.Abs(distanceX) * EnemySpeed * 0f, climpForce);
+                rb.velocity = new Vector2(distanceX / Mathf.Abs(distanceX) * EnemySpeed * 0f, climpForce); // caso a formula seja necessária futuramente
             }
             else
             {
