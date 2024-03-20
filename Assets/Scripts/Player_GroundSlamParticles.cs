@@ -11,11 +11,6 @@ public class Player_GroundSlamParticles : MonoBehaviour
         particles = GetComponent<ParticleSystem>();
     }
 
-    void Update()
-    {
-        Debug.Log(".");
-    }
-
     public void DisplayGroundSlamParticles(Vector2 position)
     {
         if (particles == null)

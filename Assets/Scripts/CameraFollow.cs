@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -35,9 +34,16 @@ public class CameraFollow : MonoBehaviour
     public bool onCombatMode = false;
     Vector2 enemyPosition;
 
+    bool cameraShaking;
+    float cameraShakeTransitionTime;
+    Vector2 cameraShakeVelocity;
+    float cameraShakeCooldown;
+    float cameraShakeRotation;
+    float cameraShakeResistence;
+
     private void Start()
     {
-
+        cameraShaking = false;
         cameraReaction = MAX_CAMERA_REACTION;
 
         // Encontre o objeto pelo nome do script
@@ -60,8 +66,10 @@ public class CameraFollow : MonoBehaviour
         cameraTranform = GetComponent<Transform>();
     }
 
+
     private void LateUpdate()
     {
+
         if (reactionTimer > 0f) reactionTimer -= Time.deltaTime;
         if (reactionTimer < 0f)
         {
@@ -131,7 +139,9 @@ public class CameraFollow : MonoBehaviour
         float distance = Mathf.Abs(distanceX + distanceY);
         //Debug.Log("distance = " + distance);
 
-        rb.velocity = new Vector2(rb.velocity.x * cameraResistance + distanceX * cameraReaction, rb.velocity.y * cameraResistance + distanceY * cameraReaction);
+        if (!cameraShaking) rb.velocity = new Vector2(rb.velocity.x * cameraResistance + distanceX * cameraReaction, rb.velocity.y * cameraResistance + distanceY * cameraReaction);
+        else rb.velocity = new Vector2(rb.velocity.x * cameraShakeResistence + distanceX * cameraReaction, rb.velocity.y * cameraResistance + distanceY * cameraReaction);
+
         onCombatMode = false;
     }
 
@@ -158,6 +168,71 @@ public class CameraFollow : MonoBehaviour
     {
         target = newTarget;
     }
+
+    public void CameraShake(float shakeTime, float shakeInterval, float shakeResistence, Vector2 velocityIntensity)
+    {
+        if (!cameraShaking) cameraShaking = true;
+        cameraShakeCooldown = shakeTime;
+        cameraShakeResistence = shakeResistence;
+
+        StartCoroutine(SetCameraShakeProperties(0f, shakeInterval, velocityIntensity));
+        StartCoroutine(FinishCameraShake(shakeTime));
+        return;
+    }
+
+    /*
+        private IEnumerator InitiateCameraShakeDefault(float cooldown)
+        {
+
+            yield return new WaitForSeconds(cooldown);
+            CameraShake(0.2f, 0.05f, 0.99f, new Vector2(10f, 0f));
+        }
+    */
+
+    public void DamageCameraShake()
+    {
+        CameraShake(0.15f, 0.05f, 0.99f, new Vector2(8f, 3f));
+    }
+
+    private IEnumerator SetCameraShakeProperties(float waitTime, float shakeInterval, Vector2 velocityIntensity)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        Debug.Log("Camera Shake started");
+
+        int num = 1;
+
+        Vector2 currentDisplacement = new Vector2(0f, 0f);
+
+        while (cameraShaking)
+        {
+            if (cameraShakeCooldown <= 0f)
+            {
+                cameraShaking = false;
+                cameraShakeCooldown = 0f;
+                break;
+            }
+
+            currentDisplacement += num * velocityIntensity;
+            rb.velocity += num * velocityIntensity;
+            num = -num;
+            yield return new WaitForSeconds(shakeInterval);
+        }
+
+        rb.velocity -= currentDisplacement;
+
+        Debug.Log("Camera Shake finished");
+
+    }
+
+    private IEnumerator FinishCameraShake(float cooldown)
+    {
+        yield return new WaitForSeconds(cooldown);
+        cameraShakeCooldown = 0f;
+        cameraShaking = false;
+
+    }
+
     //CameraShake()
 
 }

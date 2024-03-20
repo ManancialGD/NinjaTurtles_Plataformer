@@ -11,8 +11,11 @@ public class EnemyShoot : MonoBehaviour
     public float moveSpeed = 5f;
     public float shootDamage = 40f;
 
+    CameraFollow cameraFollow;
+
     private void Start()
     {
+        cameraFollow = FindAnyObjectByType<CameraFollow>();
         playerScript = FindObjectOfType<Player>();
         playerHPScript = FindObjectOfType<PlayerHP>();
 
@@ -47,6 +50,7 @@ public class EnemyShoot : MonoBehaviour
         Debug.Log(other.tag);
         if (!other.CompareTag("Enemy"))
         {
+            if(other.CompareTag("Player")) cameraFollow.DamageCameraShake();
             Destroy(gameObject);
         }
         // Destroi o objeto ao entrar em colisão com outro objeto
