@@ -24,9 +24,11 @@ public class EnemyHP : MonoBehaviour
     private int damageAmount;
     Player playerScript;
     Transform enemyTransform;
+    NativeInfo native;
 
     private void Start()
     {
+        native = FindObjectOfType<NativeInfo>();
         enemyTransform = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
         playerScript = FindObjectOfType<Player>();
@@ -78,8 +80,17 @@ public class EnemyHP : MonoBehaviour
             {
                 int newDir = -1;
                 if (distance.x > 0) newDir = 1;
-                TakeDamage(damageAmount, new Vector2(playerScript.playerAttackForce.x * newDir, playerScript.playerAttackForce.y), 2f);
-                playerScript.BoostPlayer(new Vector2(playerScript.playerAttackForce.x * 0.1f * newDir, playerScript.playerAttackForce.y * 0.1f));
+
+                int player_id = native.GetPlayerIndexByObject(other.gameObject);
+
+                if (player_id < 0)
+                {
+                    Debug.Log("ERROR 775812 - Player GameObject not identified");
+                    return;
+                }
+                player_id--;
+                TakeDamage(damageAmount, new Vector2(native.playerAttackForce[player_id].x * newDir, native.playerAttackForce[player_id].y), 2f);
+                playerScript.BoostPlayer(new Vector2(native.playerAttackForce[player_id].x * 0.1f * newDir, native.playerAttackForce[player_id].y * 0.1f));
             }
         }
     }
@@ -130,7 +141,8 @@ public class EnemyHP : MonoBehaviour
         enemyUnconsciousSign = null;
     }
 
-    public float GetEnemyUnconsciousCooldown() {
+    public float GetEnemyUnconsciousCooldown()
+    {
         return enemyUnconsciousCooldown;
     }
 }

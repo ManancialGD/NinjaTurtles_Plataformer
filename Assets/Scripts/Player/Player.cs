@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     // Initiators
+    public int thisPlayerID;
     PlayerParticles playerParticles;
     public float playerAttackCooldown;
     public float gravityForce;
@@ -22,23 +23,22 @@ public class Player : MonoBehaviour
 
 
     [Header("Stats")]
-    public Vector2 playerAttackForce;
-    public int damageAmount = 10;
-    public float jumpSpeed = 40f;
-    public Vector2 WallJumpForce;
-    public float slideSpeed = 3f;
+    Vector2 playerAttackForce;
+    int damageAmount;
+    float jumpSpeed;
+    Vector2 WallJumpForce;
+    public float slideSpeed;
     float PLAYER_MAX_GROUND_VELOCITY = 5f;
     float PLAYER_MAX_AIR_VELOCITY = 5f;
     public float groundAcceleration;
     public float airAcceleration;
     public float groundFriction;
-    public float airFriction;
-    public float momentumLost;
 
     Vector2 playerSpeed = new Vector2(0f, 0f);
 
     public CameraFollow cameraFollow;
     public PlayerAnimation playerAnimation;
+    NativeInfo native;
 
     [Space]
 
@@ -55,14 +55,21 @@ public class Player : MonoBehaviour
     int layerId;
     Vector2 dir_History = new Vector2(0f, 0f);
     public bool isPlayerAttacking = false;
-    bool isPlayerDownAttacking = false;
+    bool isPlayerDownAttacking;
     public int airAttack_Down_Damage;
     BasicPlayerParticles basicPlayerParticles;
     Player_GroundSlamParticles groundSlamParticles;
     public Vector2 dir;
 
+    bool loaded;
+
     private void Start()
     {
+        loaded = false;
+        native = FindObjectOfType<NativeInfo>();
+        UpdatePlayerInfo(thisPlayerID);
+
+
         layerId = LayerMask.NameToLayer("Enemys");
         playerSpeed = new Vector2(groundAcceleration, 0f);
 
@@ -72,16 +79,20 @@ public class Player : MonoBehaviour
         cameraFollow = FindObjectOfType<CameraFollow>();
         playerAnimation = FindObjectOfType<PlayerAnimation>();
 
+
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
         collisionScript = GetComponent<Collision>();
+        isPlayerDownAttacking = false;
 
+        loaded = true;
     }
 
     void FixedUpdate()
     {
+        if (!loaded) return;
         if (sliding)
         {
 
@@ -105,7 +116,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-
+        if (!loaded) return;
         CheckForAirAttackExplosion();
         //Debug.Log(GetFramesUntilCollision(true, false));
         //Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
@@ -239,10 +250,12 @@ public class Player : MonoBehaviour
             { // quando o jogador troca de direcao
                 //rb.velocity = new Vector2(-rb.velocity.x * 0.9f + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y); (Boost)
                 rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+                Debug.Log("CCC");
             }
-            else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0 && rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0)
+            else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && dir.x > 0 || rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && dir.x < 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+                Debug.Log("BBB");
             }
 
 
@@ -254,12 +267,13 @@ public class Player : MonoBehaviour
 
             if (rb.velocity.x > PLAYER_MAX_AIR_VELOCITY && dir.x < 0 || rb.velocity.x < -PLAYER_MAX_AIR_VELOCITY && dir.x > 0)
             { // quando o jogador troca de direcao em excesso de velocidade
-                rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+                rb.velocity = new Vector2(rb.velocity.x + dir.x * airAcceleration * Time.deltaTime, rb.velocity.y);
             }
-            else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && Mathf.Abs(dir.x) > 0)
+            else if (rb.velocity.x < PLAYER_MAX_AIR_VELOCITY && dir.x > 0 || rb.velocity.x > -PLAYER_MAX_AIR_VELOCITY && dir.x < 0)
             {
-                rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
+                rb.velocity = new Vector2(rb.velocity.x + dir.x * airAcceleration * Time.deltaTime, rb.velocity.y);
             }
+
         }
         else if (!coll.onGround && coll.onWall)
         {   // Player on wall (por agora igual a "Player on air")
@@ -496,4 +510,32 @@ public class Player : MonoBehaviour
 
     // ---------------------------------------
 
+    // --------------- Native ----------------
+
+    public void UpdatePlayerInfo(int playerID)
+    {
+        playerID -= 1; // Escala de 1 - 4 // Index de 0 - 3
+        Debug.Log("UpdatePlayerInfo( " + playerID + " )");
+
+        groundAcceleration = native.playerGroundAcceleration[playerID];
+        Debug.Log("1");
+        airAcceleration = native.playerAirAcceleration[playerID];
+        groundFriction = native.PlayerGroundFriction[playerID];
+        damageAmount = native.playerDamage[playerID];
+        slideSpeed = native.playerSlideSpeed[playerID];
+        jumpSpeed = native.playerJumpForce[playerID];
+        PLAYER_MAX_GROUND_VELOCITY = native.PLAYER_MAX_GROUND_VELOCITY[playerID];
+        PLAYER_MAX_AIR_VELOCITY = native.PLAYER_MAX_AIR_VELOCITY[playerID];
+        airAttack_Down_Damage = native.playerGroundSlamDamage[playerID];
+        attackVelocityBoost = native.playerAttackVelocityBoost[playerID];
+        playerAttackForce = native.playerAttackForce[playerID];
+        WallJumpForce = native.playerWallJumpForce[playerID];
+
+        Debug.Log("Player " + (playerID + 1) + " information updated");
+
+        return;
+    }
+
+
+    //----------------------------------------
 }
