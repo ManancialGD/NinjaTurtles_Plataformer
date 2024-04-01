@@ -7,7 +7,6 @@ public class Enemy_Ranger : MonoBehaviour
     // Start is called before the first frame update
 
     Player playerScript;
-    Transform playerTransform;
     Transform thisTransform;
     public bool flipped = false;
     public float attackCooldown;
@@ -20,7 +19,6 @@ public class Enemy_Ranger : MonoBehaviour
         shootScript = GetComponentInChildren<EnemyAim>();
         flipped = false;
         playerScript = FindObjectOfType<Player>();
-        playerTransform = playerScript.GetComponent<Transform>();
         thisTransform = GetComponent<Transform>();
     }
 
@@ -32,8 +30,8 @@ public class Enemy_Ranger : MonoBehaviour
         if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
         else if (attackCooldown <= 0f)
         {
-            playerTransform = playerScript.GetComponent<Transform>();
-            Vector2 distance = new Vector2(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
+            
+            Vector2 distance = new Vector2(transform.position.x - transform.position.x, transform.position.y - transform.position.y);
 
             if (Mathf.Abs(distance.x) + Mathf.Abs(distance.x) < attackRange) // Attack player
             {
@@ -44,7 +42,7 @@ public class Enemy_Ranger : MonoBehaviour
         }
 
 
-        if (playerTransform.position.x < thisTransform.position.x)
+        if (transform.position.x < thisTransform.position.x)
         {
             thisTransform.localScale = new Vector3(1, thisTransform.localScale.y, thisTransform.localScale.z);
             flipped = false;

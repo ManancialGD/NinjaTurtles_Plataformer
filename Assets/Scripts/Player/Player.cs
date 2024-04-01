@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     Animator anim;
 
     [SerializeField] private LayerMask jumpableGround;
+
     [SerializeField] Transform CollisionDetectorGroup;
 
 
@@ -26,6 +27,8 @@ public class Player : MonoBehaviour
     Vector2 playerAttackForce;
     int damageAmount;
     float jumpSpeed;
+    float jumpPressedBoost;
+    float lastJumpCooldown;
     Vector2 WallJumpForce;
     public float slideSpeed;
     float PLAYER_MAX_GROUND_VELOCITY = 5f;
@@ -55,11 +58,13 @@ public class Player : MonoBehaviour
     int layerId;
     Vector2 dir_History = new Vector2(0f, 0f);
     public bool isPlayerAttacking = false;
-    bool isPlayerDownAttacking;
+    public bool isPlayerDownAttacking;
     public int airAttack_Down_Damage;
     BasicPlayerParticles basicPlayerParticles;
     Player_GroundSlamParticles groundSlamParticles;
+    ThrowRockScript throwRockScript;
     public Vector2 dir;
+
 
     bool loaded;
 
@@ -78,6 +83,7 @@ public class Player : MonoBehaviour
         playerParticles = FindObjectOfType<PlayerParticles>();
         cameraFollow = FindObjectOfType<CameraFollow>();
         playerAnimation = FindObjectOfType<PlayerAnimation>();
+        throwRockScript = GetComponent<ThrowRockScript>();
 
 
         coll = GetComponent<Collision>();
@@ -87,12 +93,12 @@ public class Player : MonoBehaviour
         collisionScript = GetComponent<Collision>();
         isPlayerDownAttacking = false;
 
-        loaded = true;
     }
 
     void FixedUpdate()
     {
-        if (!loaded) return;
+        if (thisPlayerID != native.currentPlayerID) return; // Não é o player a ser controlado
+
         if (sliding)
         {
 
@@ -116,8 +122,21 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (!loaded) return;
+
+        if (lastJumpCooldown > 0f) lastJumpCooldown += Time.deltaTime;
+
+        if (lastJumpCooldown >= 1f) lastJumpCooldown = 0f;
+
         CheckForAirAttackExplosion();
+
+        if (thisPlayerID != native.currentPlayerID)
+        {
+            if (throwRockScript.IsAiming()) throwRockScript.StopAiming();
+            return;
+        } // Não é o player a ser controlado
+
+        UpdateCheckpoints();
+
         //Debug.Log(GetFramesUntilCollision(true, false));
         //Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
 
@@ -140,7 +159,7 @@ public class Player : MonoBehaviour
             isWallLocked = false;
         }
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButton("Jump"))
         {
             if (coll.onGround)
             {
@@ -149,6 +168,10 @@ public class Player : MonoBehaviour
             else if (coll.onWall)
             {
                 WallJump();
+            }
+            else if (lastJumpCooldown <= 1f && lastJumpCooldown > 0f) //1sec
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + (1f - lastJumpCooldown) * 0.02f);
             }
         }
 
@@ -194,6 +217,17 @@ public class Player : MonoBehaviour
             wallJumped = false;
         }
         else if (coll.onWall) wallJumped = false;
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("start aiming");
+            throwRockScript.StartAiming();
+        }
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            throwRockScript.StopAiming();
+            Debug.Log("stop aiming");
+        }
 
     }
 
@@ -250,12 +284,12 @@ public class Player : MonoBehaviour
             { // quando o jogador troca de direcao
                 //rb.velocity = new Vector2(-rb.velocity.x * 0.9f + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y); (Boost)
                 rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
-                Debug.Log("CCC");
+
             }
             else if (rb.velocity.x < PLAYER_MAX_GROUND_VELOCITY && dir.x > 0 || rb.velocity.x > -PLAYER_MAX_GROUND_VELOCITY && dir.x < 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x + dir.x * playerSpeed.x * Time.deltaTime, rb.velocity.y);
-                Debug.Log("BBB");
+
             }
 
 
@@ -298,6 +332,7 @@ public class Player : MonoBehaviour
 
             basicPlayerParticles.CreateParticle(particlesDisplayed, "down", new Vector2(rb.velocity.x, yForce), multiplierX, multiplierY, sideCorrection, Color.white);
             if (sliding) sliding = false;
+            lastJumpCooldown = 0.001f;
 
         }
     }
@@ -396,10 +431,13 @@ public class Player : MonoBehaviour
 
         bool onGround = false;
         float distance = 0f;
+
+        float error_margin = 0.1f;
+
         while (!onGround)
         {
-            Vector2 newColliderPosition = new Vector2(rb.position.x, rb.position.y - distance);
-            if (!Physics2D.BoxCast(newColliderPosition, box_collider[0].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround)) distance += 0.1f;
+            Vector2 newColliderPosition = new Vector2(box_collider[0].bounds.center.x, box_collider[0].bounds.center.y - distance);
+            if (!Physics2D.BoxCast(newColliderPosition, box_collider[0].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround)) distance += error_margin;
             else onGround = true;
         }
         return distance;
@@ -538,4 +576,24 @@ public class Player : MonoBehaviour
 
 
     //----------------------------------------
+
+    void UpdateCheckpoints()
+    {
+        if (native.GetCheckpointsAmount() <= 0)
+        {
+            if (coll.onGround) native.CreateTargetCheckpoint(new Vector2(transform.position.x, transform.position.y));
+            return;
+        }
+
+        Vector2 nearestCheckpoint;
+        int nearestCheckpointID;
+
+        (nearestCheckpoint, nearestCheckpointID) = native.GetDistanceFromNearestCheckpoint(new Vector2(transform.position.x, transform.position.y));
+        if (Mathf.Abs(nearestCheckpoint.x) + Mathf.Abs(nearestCheckpoint.y) > 2f && coll.onGround)
+        {
+            native.CreateTargetCheckpoint(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y));
+        }
+
+    }
+
 }

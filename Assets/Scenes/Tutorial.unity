@@ -19709,6 +19709,65 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32750225, y: 0.6997669}
   m_EdgeRadius: 0
+--- !u!114 &1012772971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012772944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe8c1339f900514e90f0e979229d56e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisPlayerID: 1
+  followingCheckpointID: 0
+--- !u!114 &1012772972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012772944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab37af6d7c5f60540abdcd25e9dbf939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimLayer: {fileID: 1455261529}
+  cameraObj: {fileID: 519420028}
+--- !u!1 &1455261528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1455261529}
+  m_Layer: 0
+  m_Name: AimLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1455261529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455261528}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.046865, y: 3.5713444, z: -0.08633547}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1531014412
 GameObject:
   m_ObjectHideFlags: 0
@@ -20433,30 +20492,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d9e0d86955d6447994d00f3c143ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentPlayerID: 1
   playerObj:
   - {fileID: 1012772944}
   playerGroundAcceleration:
   - 30
+  - 30
   PlayerGroundFriction:
   - 0.004
+  - 0.004
   playerAirAcceleration:
-  - 100
+  - 20
+  - 20
   playerSlideSpeed:
   - 1
-  playerDamage: 0a000000
-  playerGroundSlamDamage: 14000000
+  - 1
+  playerDamage: 0a0000000a000000
+  playerGroundSlamDamage: 1400000014000000
   playerAttackForce:
+  - {x: 4, y: 2}
   - {x: 4, y: 2}
   playerAttackVelocityBoost:
   - {x: 4.5, y: 0}
+  - {x: 4.5, y: 0}
   playerJumpForce:
+  - 10
   - 10
   playerWallJumpForce:
   - {x: 7, y: 10}
+  - {x: 7, y: 10}
   PLAYER_MAX_GROUND_VELOCITY:
+  - 5
   - 5
   PLAYER_MAX_AIR_VELOCITY:
   - 5
+  - 5
+  npcGroundAcceleration: 25
+  NPC_MAX_GROUND_VELOCITY: 4.5
+  BallSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!4 &2119551857
 Transform:
   m_ObjectHideFlags: 0
@@ -20666,11 +20739,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8198336051422378985, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.6
+      value: -14.99
       objectReference: {fileID: 0}
     - target: {fileID: 8198336051422378985, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.75
+      value: -1.51
       objectReference: {fileID: 0}
     - target: {fileID: 8198336051422378985, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_LocalPosition.z
@@ -20718,6 +20791,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3708656503062212569, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1012772962}
+    - targetCorrespondingSourceObject: {fileID: 3708656503062212569, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1012772971}
+    - targetCorrespondingSourceObject: {fileID: 3708656503062212569, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1012772972}
   m_SourcePrefab: {fileID: 100100000, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -20733,3 +20812,4 @@ SceneRoots:
   - {fileID: 559691066}
   - {fileID: 1584614160}
   - {fileID: 2119551857}
+  - {fileID: 1455261529}

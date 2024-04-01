@@ -29,11 +29,17 @@ public class PlayerAnimation : MonoBehaviour
     Vector2 dir;
 
     bool playerInCombatMode = false;
+    bool isPlayerNPC = false;
+    NativeInfo native;
 
     void Start()
     {
+
         cameraFollow = FindObjectOfType<CameraFollow>();
         playerScript = FindObjectOfType<Player>();
+        native = FindObjectOfType<NativeInfo>();
+
+        if (playerScript.thisPlayerID != native.currentPlayerID) isPlayerNPC = true;
 
         coll = GetComponent<Collision>();
         sprite = GetComponent<SpriteRenderer>();
@@ -122,7 +128,7 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool(holdOnWallParameter, true);
             sprite.flipX = coll.onRightWall;
         }
-        else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == false)
+        else if (!isPlayerNPC && Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == false)
         {
             if (playerScript.isPlayerAttacking) return;
             state = MovementState.Attacking;
@@ -131,7 +137,7 @@ public class PlayerAnimation : MonoBehaviour
 
             if (playerScript.dir.x > 0 && cameraFollow.onCombatMode) playerScript.BoostPlayer(new Vector2(playerScript.attackVelocityBoost.x, playerScript.attackVelocityBoost.y));
         }
-        else if (Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
+        else if (!isPlayerNPC && Input.GetButtonDown("Attack") && coll.onGround && sprite.flipX == true)
         {
             if (playerScript.isPlayerAttacking) return;
             state = MovementState.LeftAttacking;
@@ -142,8 +148,9 @@ public class PlayerAnimation : MonoBehaviour
 
 
         }
-        else if (Input.GetButtonDown("Attack") && dir.y < -0.1 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f && playerScript.GetPlayerDistanceFromGround() <= 6f) //Air attack (down)
+        else if (!isPlayerNPC && Input.GetButtonDown("Attack") && dir.y < -0.01 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f && playerScript.GetPlayerDistanceFromGround() <= 6f && !playerScript.isPlayerDownAttacking) //Air attack (down)
         {
+            Debug.Log("GroundSlam");
             if (playerScript.isPlayerAttacking) return;
             state = MovementState.Attacking;
             anim.SetBool(holdOnWallParameter, false);

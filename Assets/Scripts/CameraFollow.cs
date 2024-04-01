@@ -40,14 +40,17 @@ public class CameraFollow : MonoBehaviour
     float cameraShakeCooldown;
     float cameraShakeRotation;
     float cameraShakeResistence;
+    NativeInfo native;
 
     private void Start()
     {
         cameraShaking = false;
         cameraReaction = MAX_CAMERA_REACTION;
 
+        native = FindObjectOfType<NativeInfo>();
+
         // Encontre o objeto pelo nome do script
-        target = GameObject.Find("Player");
+        target = native.playerObj[native.currentPlayerID - 1];
         playerTransform = target.GetComponent<Transform>();
         //currentPlayerTarget = 1;
 
@@ -66,6 +69,13 @@ public class CameraFollow : MonoBehaviour
         cameraTranform = GetComponent<Transform>();
     }
 
+    void Update()
+    {
+        if (target != native.playerObj[native.currentPlayerID - 1]) // changed player
+        {
+            target = native.playerObj[native.currentPlayerID - 1];
+        }
+    }
 
     private void LateUpdate()
     {
