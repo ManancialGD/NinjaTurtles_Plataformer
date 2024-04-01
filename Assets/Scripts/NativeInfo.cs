@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 public class NativeInfo : MonoBehaviour
@@ -25,10 +27,12 @@ public class NativeInfo : MonoBehaviour
     private GameObject[] CheckpointCircle;
     [SerializeField] public Sprite BallSprite;
 
-
+    public LayerMask playerLayerMask;
+    public Transform enemiesLayer;
+    public PhysicsMaterial2D rockMaterial;
     private Vector2[] targetCheckPoints;
-
-    void Start(){
+    void Start()
+    {
         ResetTargetCheckpoints(false);
     }
 
@@ -60,6 +64,7 @@ public class NativeInfo : MonoBehaviour
 
     }
 
+    public LayerMask GetPlayerLayerMask() => playerLayerMask;
     private int OnChangePlayer()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && currentPlayerID != 1)
@@ -89,6 +94,9 @@ public class NativeInfo : MonoBehaviour
 
         return 0;
     }
+
+    public Vector2 GetSelectedPlayerPosition() => playerObj[currentPlayerID - 1].transform.position;
+
 
     public void CreateTargetCheckpoint(Vector2 newPosition)
     {
@@ -163,7 +171,7 @@ public class NativeInfo : MonoBehaviour
         if (!executed)
         {
             Debug.Log("ERRO 96941 - Nenhum checkpoint encontrado");
-            return(new Vector2(0f, 0f), -1);
+            return (new Vector2(0f, 0f), -1);
         }
         return (min_distance, checkpointID);
     }
@@ -213,6 +221,19 @@ public class NativeInfo : MonoBehaviour
             Destroy(obj);
         }
         return;
+    }
+
+    public List<(GameObject, float)> GetEnemiesDistances(Vector2 position)
+    {
+        List<(GameObject, float)> enemiesList = new List<(GameObject, float)>();
+
+        foreach (Transform enemy in enemiesLayer)
+        {
+            float distance = Mathf.Abs(enemy.position.x - position.x) + Mathf.Abs(enemy.position.y - position.y);
+            enemiesList.Add((enemy.gameObject, distance));
+        }
+
+        return enemiesList;
     }
 
 }

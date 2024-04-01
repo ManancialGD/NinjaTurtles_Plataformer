@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
             return;
         } // Não é o player a ser controlado
 
-        UpdateCheckpoints();
+        //UpdateCheckpoints();
 
         //Debug.Log(GetFramesUntilCollision(true, false));
         //Debug.Log("PlayerHealth = " + PlayerHealth);// porquê que isto não está a ser printado??
@@ -581,17 +581,17 @@ public class Player : MonoBehaviour
     {
         if (native.GetCheckpointsAmount() <= 0)
         {
-            if (coll.onGround) native.CreateTargetCheckpoint(new Vector2(transform.position.x, transform.position.y));
+            if (coll.onGround) native.CreateTargetCheckpoint(native.GetSelectedPlayerPosition());
             return;
         }
 
         Vector2 nearestCheckpoint;
         int nearestCheckpointID;
 
-        (nearestCheckpoint, nearestCheckpointID) = native.GetDistanceFromNearestCheckpoint(new Vector2(transform.position.x, transform.position.y));
+        (nearestCheckpoint, nearestCheckpointID) = native.GetDistanceFromNearestCheckpoint(native.GetSelectedPlayerPosition());
         if (Mathf.Abs(nearestCheckpoint.x) + Mathf.Abs(nearestCheckpoint.y) > 2f && coll.onGround)
         {
-            native.CreateTargetCheckpoint(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y));
+            native.CreateTargetCheckpoint(native.GetSelectedPlayerPosition());
         }
 
     }

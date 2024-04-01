@@ -25,7 +25,13 @@ public class ThrowRockScript : MonoBehaviour
         if (ThrowRockCooldown > 0f) ThrowRockCooldown -= Time.deltaTime;
         if (ThrowRockCooldown < 0f) ThrowRockCooldown = 0f;
 
-        if (aiming) AimThrowRock();
+        if (aiming)
+        {
+
+            AimThrowRock();
+
+        }
+
 
     }
 
@@ -37,16 +43,15 @@ public class ThrowRockScript : MonoBehaviour
     {
 
         bool updateGraphic = false;
-
+        bool shoot = Input.GetMouseButton(0);
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
 
         if (mousePos != mousePosition_History) updateGraphic = true;
 
         mousePosition_History = mousePos;
 
-        if (!updateGraphic) return;
+        if (!updateGraphic && !shoot) return;
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         Vector2 playerPos = rb.position;
@@ -58,15 +63,14 @@ public class ThrowRockScript : MonoBehaviour
         float inclination = Mathf.Atan2(distance.y, distance.x);
         float angularInclination = inclination * Mathf.Rad2Deg;
 
-
         if (angularInclination < 0) angularInclination = 360f - Mathf.Abs(angularInclination);
 
-/*
-        Vector2 negatives = new Vector2(1, 1);
-        if (angularInclination > 90 && angularInclination < 180) negatives = new Vector2(-1, 1);
-        else if (angularInclination > 180 && angularInclination < 270) negatives = new Vector2(-1, -1);
-        else if (angularInclination > 270 && angularInclination < 360) negatives = new Vector2(1, -1);
-*/
+        /*
+                Vector2 negatives = new Vector2(1, 1);
+                if (angularInclination > 90 && angularInclination < 180) negatives = new Vector2(-1, 1);
+                else if (angularInclination > 180 && angularInclination < 270) negatives = new Vector2(-1, -1);
+                else if (angularInclination > 270 && angularInclination < 360) negatives = new Vector2(1, -1);
+        */
 
         Vector2 maxDistance = new Vector2(3f * Mathf.Cos(angularInclination * Mathf.Deg2Rad), 3f * Mathf.Sin(angularInclination * Mathf.Deg2Rad));
         Debug.Log(maxDistance);
@@ -79,10 +83,9 @@ public class ThrowRockScript : MonoBehaviour
 
         float magnitude = (Mathf.Abs(distance.x) + Mathf.Abs(distance.y)) * 3;
 
-
-
         Vector2 aimPos = playerPos;
-        Vector2 velocity = new Vector2(distance.x * 0.8f , distance.y * 0.8f);
+        Vector2 velocity = new Vector2(distance.x * 0.8f, distance.y * 0.8f);
+        Vector2 initialVelocity = velocity * 4.75f;
 
         foreach (Transform child in aimLayer)
         {
@@ -107,9 +110,36 @@ public class ThrowRockScript : MonoBehaviour
 
         }
 
+        if (shoot)
+        {
+            StopAiming();
+            ThrowRock(playerPos, initialVelocity);
+        }
+
 
     }
 
+    private void ThrowRock(Vector2 pos, Vector2 vel)
+    {
+        GameObject aim = new GameObject("rock");
+
+        //aim.transform.SetParent(aimLayer);
+        SpriteRenderer spriteRenderer = aim.AddComponent<SpriteRenderer>();
+        Rigidbody2D rb = aim.AddComponent<Rigidbody2D>();
+        CircleCollider2D collider = aim.AddComponent<CircleCollider2D>();
+        CircleCollider2D colliderDetector = aim.AddComponent<CircleCollider2D>();
+        aim.AddComponent<RockScript>();
+        spriteRenderer.sprite = native.BallSprite;
+        spriteRenderer.color = Color.white;
+        aim.transform.localScale = new Vector3(0.3f, 0.3f);
+        collider.radius = 0.1f;
+        colliderDetector.radius = 0.15f;
+        colliderDetector.isTrigger = true;
+        collider.excludeLayers = native.GetPlayerLayerMask();
+        collider.sharedMaterial = native.rockMaterial;
+        rb.velocity = vel;
+        aim.transform.position = pos;
+    }
     public bool IsAiming() => aiming;
     public void StartAiming() => aiming = true;
     public void StopAiming()

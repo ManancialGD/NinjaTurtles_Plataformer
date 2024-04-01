@@ -30,10 +30,15 @@ public class Enemy2 : MonoBehaviour
     public float climpForce;
     bool climbing;
     [SerializeField] private LayerMask jumpableGround;
+    SuspectScript suspectScript;
+    Vector2 lastRockDetectedPosition;
 
     EnemyHP enemyHP;
+    NativeInfo native;
 
     private enum MovementState { Idle, Walk, Jump, Falling, OnWall, Attacking, LeftAttacking };
+
+    int playerID;
 
     void Start()
     {
@@ -43,16 +48,28 @@ public class Enemy2 : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         coll = GetComponents<BoxCollider2D>();
-
+        suspectScript = GetComponent<SuspectScript>();
         enemyHP = GetComponent<EnemyHP>();
-        playerHPScript = FindObjectOfType<PlayerHP>();
-        playerScript = FindObjectOfType<Player>();
+
+        native = FindObjectOfType<NativeInfo>();
+        playerID = native.currentPlayerID;
+        playerHPScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<PlayerHP>();
+        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
 
         OnGroundCollision();
     }
 
     void Update()
     {
+        if (playerID != native.currentPlayerID)
+        {
+            playerHPScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<PlayerHP>();
+            playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
+            playerID = native.currentPlayerID;
+        }
+
+        playerRB = native.GetPlayerObj(native.currentPlayerID).GetComponent<Rigidbody2D>();
+
         OnGroundCollision();
 
         if (enemyFixed == 2)
@@ -70,53 +87,64 @@ public class Enemy2 : MonoBehaviour
     private void FollowPlayer()
     {
         //Debug.Log("ENEMY UN - " + enemyHP.GetEnemyUnconsciousCooldown());
+        float distanceX;
+        float distanceY;
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return;
+        else if (suspectScript.GetSuspectScale() < 3f) return;
+        else if (suspectScript.GetSuspectScale() >= 3f && suspectScript.GetSuspectScale() < 6f)
+        {
+
+            distanceX = suspectScript.lastRockDetectedPosition.x - rb.position.x;
+            distanceY = suspectScript.lastRockDetectedPosition.y - rb.position.y;
+
+        }
         else
         {
 
-            playerRB = playerScript.GetComponent<Rigidbody2D>();
+            distanceX = playerRB.position.x - rb.position.x;
+            distanceY = playerRB.position.y - rb.position.y;
+        }
 
-            float distanceX = playerRB.position.x - rb.position.x;
-            float distanceY = playerRB.position.y - rb.position.y;
+        sprite.flipX = distanceX < 0;
 
-            if (Mathf.Abs(distanceX) > DistanceArea)
+        if (Mathf.Abs(distanceX) > DistanceArea)
+        {
+            if (distanceX < 0)
             {
-                if (distanceX < 0)
-                {
-                    if (rb.velocity.x - EnemyAcceleration <= -EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(-EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
-                    else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x - EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
-                }
-                else
-                {
-                    if (rb.velocity.x + EnemyAcceleration >= EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
-                    else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x + EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
-                }
-            }
-
-            if (Physics2D.BoxCast(coll[0].bounds.center, coll[0].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround) && enemyFixed == 0|| Physics2D.BoxCast(coll[1].bounds.center, coll[1].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround) && enemyFixed == 0)
-            {
-                climbing = true;
-
-                int side_wall = 1;
-                if (Physics2D.BoxCast(coll[0].bounds.center, coll[0].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround)) side_wall = -1;
-
-                if (distanceX > 0 && side_wall < 0 || distanceX < 0 && side_wall > 0)
-                {
-                    if (enemyFixed == 0 && airAttacking == 0f)
-                    {
-                        Brute_AirAttack(7f, 15f);
-                        return;
-                    }
-
-                }
-
-                rb.velocity = new Vector2(distanceX / Mathf.Abs(distanceX) * EnemySpeed * 0f, climpForce); // caso a formula seja necessária futuramente
+                if (rb.velocity.x - EnemyAcceleration <= -EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(-EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
+                else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x - EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
             }
             else
             {
-                climbing = false;
+                if (rb.velocity.x + EnemyAcceleration >= EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
+                else rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(rb.velocity.x + EnemyAcceleration, rb.velocity.y)), movementLerp * Time.deltaTime);
             }
         }
+
+        if (Physics2D.BoxCast(coll[0].bounds.center, coll[0].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround) && enemyFixed == 0 || Physics2D.BoxCast(coll[1].bounds.center, coll[1].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround) && enemyFixed == 0)
+        {
+            climbing = true;
+
+            int side_wall = 1;
+            if (Physics2D.BoxCast(coll[0].bounds.center, coll[0].bounds.size, 0f, Vector2.down, 0.0f, jumpableGround)) side_wall = -1;
+
+            if (distanceX > 0 && side_wall < 0 || distanceX < 0 && side_wall > 0)
+            {
+                if (enemyFixed == 0 && airAttacking == 0f)
+                {
+                    Brute_AirAttack(7f, 15f);
+                    return;
+                }
+
+            }
+
+            rb.velocity = new Vector2(distanceX / Mathf.Abs(distanceX) * EnemySpeed * 0f, climpForce); // caso a formula seja necessária futuramente
+        }
+        else
+        {
+            climbing = false;
+        }
+
     }
 
 
@@ -136,10 +164,11 @@ public class Enemy2 : MonoBehaviour
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return 0;
         inAttackZone = Physics2D.OverlapBox((Vector2)transform.position, new Vector2(1f, 0f), 0f, playerLayer);
 
-        sprite.flipX = playerRB.position.x - rb.position.x < 0;
+        
 
         if (inAttackZone && canAttack && !isAttacking)
         {
+            sprite.flipX = playerRB.position.x - rb.position.x < 0;
             MovementState state;
             state = MovementState.Attacking;
             anim.SetInteger("state", (int)state);
@@ -232,10 +261,8 @@ public class Enemy2 : MonoBehaviour
         Debug.Log(distance.x + ", " + distance.y);
         enemyFixed = 1;
         rb.velocity = new Vector2(distance.x * JumpForce * 0.66f, distance.y * JumpForce * 0.33f);
-        
+
         yield return new WaitForSeconds(airAttackCooldown);
         enemyFixed = 0;
     }
-
-
 }

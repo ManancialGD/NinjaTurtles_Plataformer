@@ -13,6 +13,9 @@ public class Enemy_Ranger : MonoBehaviour
     EnemyAim shootScript;
     public float attackRange;
     public float[] attackTime;
+    NativeInfo native;
+
+
     void Start()
     {
         attackCooldown = Random.Range(attackTime[0], attackTime[1]);
@@ -20,20 +23,20 @@ public class Enemy_Ranger : MonoBehaviour
         flipped = false;
         playerScript = FindObjectOfType<Player>();
         thisTransform = GetComponent<Transform>();
+        native = FindObjectOfType<NativeInfo>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-
         if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
         else if (attackCooldown <= 0f)
         {
-            
-            Vector2 distance = new Vector2(transform.position.x - transform.position.x, transform.position.y - transform.position.y);
+            Vector2 playerPos = native.GetSelectedPlayerPosition();
+            Vector2 distance = new Vector2(transform.position.x - playerPos.x, transform.position.y - playerPos.y);
 
-            if (Mathf.Abs(distance.x) + Mathf.Abs(distance.x) < attackRange) // Attack player
+            if (Mathf.Abs(distance.x) + Mathf.Abs(distance.y) <= attackRange) // Attack player
             {
                 //Debug.Log("Ranger - Shoot Player");
                 shootScript.ShootBullet();
@@ -53,4 +56,5 @@ public class Enemy_Ranger : MonoBehaviour
             flipped = true;
         }
     }
+
 }
