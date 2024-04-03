@@ -90,7 +90,6 @@ public class Enemy2 : MonoBehaviour
         float distanceX;
         float distanceY;
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return;
-        else if (suspectScript.GetSuspectScale() < 3f) return;
         else if (suspectScript.GetSuspectScale() >= 3f && suspectScript.GetSuspectScale() < 6f)
         {
 
@@ -98,14 +97,14 @@ public class Enemy2 : MonoBehaviour
             distanceY = suspectScript.lastRockDetectedPosition.y - rb.position.y;
 
         }
-        else
+        else if (suspectScript.GetSuspectScale() > 6f)
         {
-
             distanceX = playerRB.position.x - rb.position.x;
             distanceY = playerRB.position.y - rb.position.y;
         }
+        else return;
 
-        sprite.flipX = distanceX < 0;
+        if (Mathf.Abs(distanceX) + Mathf.Abs(distanceY) > 0.4f) sprite.flipX = distanceX < 0; // para não alterar a direção quando pára
 
         if (Mathf.Abs(distanceX) > DistanceArea)
         {
@@ -164,7 +163,7 @@ public class Enemy2 : MonoBehaviour
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return 0;
         inAttackZone = Physics2D.OverlapBox((Vector2)transform.position, new Vector2(1f, 0f), 0f, playerLayer);
 
-        
+
 
         if (inAttackZone && canAttack && !isAttacking)
         {

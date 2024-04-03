@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NativeInfo : MonoBehaviour
@@ -229,11 +230,21 @@ public class NativeInfo : MonoBehaviour
 
         foreach (Transform enemy in enemiesLayer)
         {
-            float distance = Mathf.Abs(enemy.position.x - position.x) + Mathf.Abs(enemy.position.y - position.y);
+            float distance = GetDistance(position, enemy.transform.position).Item2;
             enemiesList.Add((enemy.gameObject, distance));
         }
 
         return enemiesList;
+    }
+
+    public (Vector2, float) GetDistance(Vector2 pos1, Vector2 pos2)
+    {
+
+        Vector2 distanceVector = pos2 - pos1;
+        float magnitude = Mathf.Abs(distanceVector.x) + Mathf.Abs(distanceVector.y);
+
+        return (distanceVector, magnitude);
+
     }
 
 }

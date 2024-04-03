@@ -355,7 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468ddf6acfc9fae409a538f813b62511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyUnconsciousCooldown: 0
   BallSprite: {fileID: 0}
   FloattingTextPrefab: {fileID: 3456831215760177807, guid: d1f61528a0d642e46bfc810a7571f37b, type: 3}
   health: 30
@@ -426,6 +425,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3a6e96fd18b0441ac929ab1bebb5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0}
+  choosenLayers:
+    serializedVersion: 2
+    m_Bits: 72
+  lastRockDetectedPosition: {x: 0, y: 0}
 --- !u!1001 &4926221843117256380
 PrefabInstance:
   m_ObjectHideFlags: 0

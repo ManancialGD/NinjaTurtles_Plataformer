@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class RockScript : MonoBehaviour
@@ -42,7 +43,7 @@ public class RockScript : MonoBehaviour
         for (int i = 0; i < enemiesDistances.Count; i++)
         {
             GameObject enemy = enemiesDistances[i].Item1;
-            float distance = enemiesDistances[i].Item2;
+            float distance = Mathf.Abs(enemiesDistances[i].Item2);
 
             int enemyType = 0; //NONE
             if (enemy.GetComponent<Enemy2>() != null) enemyType = 1; //BRUTE
@@ -50,16 +51,17 @@ public class RockScript : MonoBehaviour
 
             if (distance < suspectDistance)
             {
+                if(collided && collision.gameObject.tag == "Enemy") return;
                 if (enemyType == 1)
                 {
                     SuspectScript suspectScript = enemy.GetComponent<SuspectScript>();
-                    if (collided) suspectScript.Suspect(distance, suspectDistance * 0.1f, transform.position);
+                    if (collided) suspectScript.Suspect(distance * 10f, suspectDistance, transform.position);
                     else suspectScript.Suspect(distance, suspectDistance, transform.position);
                 }
                 else if (enemyType == 2)
                 {
                     SuspectScript suspectScript = GetComponent<SuspectScript>();
-                    if (collided) suspectScript.Suspect(distance, suspectDistance * 0.1f, transform.position);
+                    if (collided) suspectScript.Suspect(distance * 10f, suspectDistance, transform.position);
                     suspectScript.Suspect(distance, suspectDistance, transform.position);
                 }
                 else

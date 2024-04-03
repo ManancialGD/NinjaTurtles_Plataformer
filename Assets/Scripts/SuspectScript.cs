@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,6 +8,13 @@ using UnityEngine;
 public class SuspectScript : MonoBehaviour
 {
     // (MIN  01   02   MAX)
+    [SerializeField]
+    Vector2 initialPosition;
+    private LayerMask groundLayer;
+
+    [SerializeField]
+    private LayerMask choosenLayers;
+
     float suspectScale = 0f; // (0f - 3f - 6f - 10f)
     float updateCooldown = 0f;
     SpriteRenderer enemySpriteRenderer;
@@ -17,8 +25,16 @@ public class SuspectScript : MonoBehaviour
     EnemyHP enemyHP;
     public Vector2 lastRockDetectedPosition;
 
+    float playerLastViewCooldown = 0f;
+    float playerViewTime = 0f;
+    bool viewedPlayer = false;
+
     void Start()
     {
+
+        if (transform == null) return;
+
+        initialPosition = transform.position;
         enemySpriteRenderer = GetComponent<SpriteRenderer>();
         enemyHP = GetComponent<EnemyHP>();
         native = FindObjectOfType<NativeInfo>();
@@ -40,21 +56,42 @@ public class SuspectScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (transform == null) return;
+        if (viewedPlayer) playerLastViewCooldown += Time.deltaTime;
+
+        if (suspectScale >= 6)
+        {
+            viewedPlayer = true;
+            playerLastViewCooldown = 0f;
+        }
+
+        if (playerViewTime > 1.5f)
+        {
+            suspectScale = 10f;
+        }
+
+        Debug.Log("suspectScale = " + suspectScale);
+
         // Update updateCooldown timer
         if (updateCooldown > 0f) updateCooldown -= Time.deltaTime;
-        if (updateCooldown < 0f) updateCooldown = 0f;
+        if (updateCooldown < 0f)
+        {
+            updateCooldown = 0f;
+            lastRockDetectedPosition = initialPosition;
+        }
 
         // Update suspectScale timer
         if (updateCooldown <= 0f)
         {
-            float distance = 0f;
-            if (suspectScale >= 6f)
-            {
-                if (distance > enemyViewDistance * 2 && suspectScale > 0f) suspectScale -= Time.deltaTime / 2; // -0.5/sec
-            }
-            else if (distance > enemyViewDistance && suspectScale > 0f) suspectScale -= Time.deltaTime / 2; // -0.5/sec
 
+            if (suspectScale > 0f) suspectScale -= Time.deltaTime / 2; // -0.5/sec
             if (suspectScale < 0f) suspectScale = 0f;
+
+            if (suspectScale < 3f)
+            {
+                lastRockDetectedPosition = initialPosition;
+            }
+
         }
 
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f)
@@ -64,11 +101,27 @@ public class SuspectScript : MonoBehaviour
         else if (suspectScale >= 3f)
         {
             if (suspectScale >= 6f) suspectSprite.color = Color.red; // Target player
-            else suspectSprite.color = Color.yellow; // suspect
+            else suspectSprite.color = Color.yellow; // Suspect
         }
         else
         {
             suspectSprite.color = Color.clear;
+        }
+
+        //float[] rayAngles = { 180f / 6f * 5f - 90f, 180f / 6f * 4f - 90f, 180f / 6f * 3f - 90f, 180f / 6f * 2f - 90f, 180f / 6f * 1f - 90f };
+        //float[] rayAngles = new float[2];
+
+
+        View(new Vector2(transform.position.x, transform.position.y + 0.25f), choosenLayers); // Enemy head
+
+        if (playerLastViewCooldown > 3f)
+        {
+            playerLastViewCooldown = 0f;
+            viewedPlayer = false;
+            suspectScale = 2.5f;
+            updateCooldown = 2f;
+
+            lastRockDetectedPosition = initialPosition;
         }
     }
 
@@ -78,13 +131,94 @@ public class SuspectScript : MonoBehaviour
         if (distance <= maxDistance)
         {
             suspectScale += Mathf.Abs(distance - maxDistance);
-            if (suspectScale > 10f) suspectScale = 10f;
+            if (suspectScale > maxDistance) suspectScale = maxDistance;
         }
         lastRockDetectedPosition = collisionPosition;
+        Debug.Log("distance = " + distance);
         Debug.Log("suspectScale = " + suspectScale);
         return;
     }
 
     public float GetSuspectScale() => suspectScale;
+
+    private bool View(Vector2 position, LayerMask contactLayers)
+    {
+
+        Debug.Log("View");
+        bool playerViewed = false;
+
+        float minAngle = 324;
+        float maxAngle = 36;
+
+
+        if (enemySpriteRenderer.flipX)
+        {
+            minAngle = 144;
+            maxAngle = 216;
+
+        }
+
+
+        if (minAngle < 0) minAngle = 360 - Mathf.Abs(minAngle);
+        if (maxAngle < 0) maxAngle = 360 - Mathf.Abs(maxAngle);
+
+        //Debug.Log("MinAngle = " + minAngle + " | MaxAngle = " + maxAngle);
+
+        Vector2 playerPos = native.GetSelectedPlayerPosition();
+        Vector2 distance = playerPos - position;
+        float currentAngle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+        if (currentAngle < 0) currentAngle = 360 - Mathf.Abs(currentAngle);
+        Debug.Log("Current Angle: " + currentAngle + " | Limits: (" + minAngle + ", " + maxAngle + ")");
+
+        Color rayColor = Color.white;
+
+        float magnitude = native.GetDistance(playerPos, position).Item2;
+        Vector2 direction = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad));
+
+        RaycastHit2D hit = Physics2D.Linecast(position, position + direction * 10f, contactLayers);
+        //RaycastHit2D hit = Physics2D.Raycast(position, direction, contactLayers, 1, 10f);
+        //Debug.Log(hit.transform);
+
+        bool seeingPlayer = false;
+
+        if (hit.rigidbody != null && hit.rigidbody.gameObject.tag == "Player")
+        {
+            Debug.Log(hit.rigidbody.gameObject.name);
+            playerViewed = true;
+            playerLastViewCooldown = 0f;
+            rayColor = Color.red;
+            seeingPlayer = true;
+
+        }
+        else
+        {
+            playerViewTime = 0f;
+            if(suspectScale >= 6f) suspectScale -= Time.deltaTime / 10;
+        }
+
+        if (!enemySpriteRenderer.flipX) // Right
+        {
+            if (currentAngle < minAngle && currentAngle > maxAngle)
+            {
+                rayColor = Color.yellow;
+                seeingPlayer = false;
+            }
+        }
+        else // Left
+        {
+            if (currentAngle < minAngle || currentAngle > maxAngle)
+            {
+                rayColor = Color.yellow;
+                seeingPlayer = false;
+            }
+        }
+
+        if (seeingPlayer) playerViewTime += Time.deltaTime;
+
+
+        Debug.DrawRay(position, direction * 10f, rayColor);
+
+        return playerViewed;
+    }
 
 }
