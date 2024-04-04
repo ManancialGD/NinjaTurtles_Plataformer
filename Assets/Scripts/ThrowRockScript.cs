@@ -126,6 +126,7 @@ public class ThrowRockScript : MonoBehaviour
         //aim.transform.SetParent(aimLayer);
         SpriteRenderer spriteRenderer = aim.AddComponent<SpriteRenderer>();
         Rigidbody2D rb = aim.AddComponent<Rigidbody2D>();
+        rb.mass = 15f;
         CircleCollider2D collider = aim.AddComponent<CircleCollider2D>();
         CircleCollider2D colliderDetector = aim.AddComponent<CircleCollider2D>();
         aim.AddComponent<RockScript>();

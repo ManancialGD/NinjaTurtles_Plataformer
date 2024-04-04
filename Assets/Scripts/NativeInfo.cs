@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class NativeInfo : MonoBehaviour
@@ -32,8 +33,12 @@ public class NativeInfo : MonoBehaviour
     public Transform enemiesLayer;
     public PhysicsMaterial2D rockMaterial;
     private Vector2[] targetCheckPoints;
+
+    private LampScript[] lampScripts;
+
     void Start()
     {
+        lampScripts = FindObjectsOfType<LampScript>();
         ResetTargetCheckpoints(false);
     }
 
@@ -244,6 +249,18 @@ public class NativeInfo : MonoBehaviour
         float magnitude = Mathf.Abs(distanceVector.x) + Mathf.Abs(distanceVector.y);
 
         return (distanceVector, magnitude);
+
+    }
+
+    public bool isPlayerAttachToAnyLamp()
+    {
+
+        foreach (LampScript lamp in lampScripts)
+        {
+            if (lamp.isPlayerAttached()) return true;
+        }
+
+        return false;
 
     }
 

@@ -164,9 +164,10 @@ public class SuspectScript : MonoBehaviour
 
         //Debug.Log("MinAngle = " + minAngle + " | MaxAngle = " + maxAngle);
 
-        Vector2 playerPos = native.GetSelectedPlayerPosition();
+        Vector2 playerPos = native.GetSelectedPlayerPosition() + new Vector2(0f, 0.25f);
         Vector2 distance = playerPos - position;
-        float currentAngle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+        float radAngle = Mathf.Atan2(distance.y, distance.x);
+        float currentAngle = radAngle * Mathf.Rad2Deg;
         if (currentAngle < 0) currentAngle = 360 - Mathf.Abs(currentAngle);
         Debug.Log("Current Angle: " + currentAngle + " | Limits: (" + minAngle + ", " + maxAngle + ")");
 
@@ -175,7 +176,7 @@ public class SuspectScript : MonoBehaviour
         float magnitude = native.GetDistance(playerPos, position).Item2;
         Vector2 direction = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad));
 
-        RaycastHit2D hit = Physics2D.Linecast(position, position + direction * 10f, contactLayers);
+        RaycastHit2D hit = Physics2D.Linecast(position, position + direction * enemyViewDistance, contactLayers);
         //RaycastHit2D hit = Physics2D.Raycast(position, direction, contactLayers, 1, 10f);
         //Debug.Log(hit.transform);
 
@@ -193,7 +194,7 @@ public class SuspectScript : MonoBehaviour
         else
         {
             playerViewTime = 0f;
-            if(suspectScale >= 6f) suspectScale -= Time.deltaTime / 10;
+            if (suspectScale >= 6f) suspectScale -= Time.deltaTime / 10;
         }
 
         if (!enemySpriteRenderer.flipX) // Right
@@ -213,9 +214,16 @@ public class SuspectScript : MonoBehaviour
             }
         }
 
-        if (seeingPlayer) playerViewTime += Time.deltaTime;
+        if (seeingPlayer)
+        {
+            float addedValue = Mathf.Abs(Mathf.Cos(radAngle)) + (1 - Mathf.Cos(36 * Mathf.Deg2Rad));
 
+            addedValue += (addedValue - 1) * 7.5f;
 
+            Debug.Log("addedValue = " + addedValue + " | Angle: " + radAngle * Mathf.Rad2Deg + " | |Cos(Angle)|: " + Mathf.Abs(Mathf.Cos(radAngle)));
+
+            playerViewTime += addedValue * Time.deltaTime; // min: 1 (6 secs) | max: 1.7865 ( 0-6 suspectScale em 6 / 3.358 sec )
+        }
         Debug.DrawRay(position, direction * 10f, rayColor);
 
         return playerViewed;

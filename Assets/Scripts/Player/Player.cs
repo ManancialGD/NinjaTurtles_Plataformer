@@ -235,6 +235,12 @@ public class Player : MonoBehaviour
     {
         if (!canMove || isPlayerAttacking) return;
 
+        if (native.isPlayerAttachToAnyLamp())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0f);
+            Debug.Log("Player velocity = " + rb.velocity);
+        }
+
         if (coll.onGround)
         {   // Player on Ground
 
