@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class EnemyShoot : MonoBehaviour
@@ -10,26 +12,28 @@ public class EnemyShoot : MonoBehaviour
     public float rotationModifier;
     public float moveSpeed = 5f;
     public float shootDamage = 40f;
+    NativeInfo native;
+    Rigidbody2D rb;
 
     CameraFollow cameraFollow;
+    ExplosionOnDestroy explosionParticles;
 
     private void Start()
     {
+        native = FindObjectOfType<NativeInfo>();
+        explosionParticles = GetComponent<ExplosionOnDestroy>();
         cameraFollow = FindAnyObjectByType<CameraFollow>();
-        playerScript = FindObjectOfType<Player>();
+        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
         playerHPScript = FindObjectOfType<PlayerHP>();
+
+        rb = GetComponent<Rigidbody2D>();
 
         RotateTowardsPlayer();
 
+        if (playerScript != null) ShootTowardsPlayer();
+
     }
 
-    private void Update()
-    {
-        if (playerScript != null)
-        {
-            MoveTowardsPlayer();
-        }
-    }
 
     void RotateTowardsPlayer()
     {
@@ -39,18 +43,57 @@ public class EnemyShoot : MonoBehaviour
         transform.rotation = q;
     }
 
-    void MoveTowardsPlayer()
+
+
+
+
+
+
+
+
+    void ShootTowardsPlayer()
     {
-        // Move o objeto para a frente (na direção do jogador)
-        transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
+
+        (Vector2, float) distance = native.GetDistance(transform.position, playerScript.transform.position);
+
+        Vector2 normalizedDistance = distance.Item1 / distance.Item2;
+
+        float angle = Mathf.Atan2(normalizedDistance.y, normalizedDistance.x) * Mathf.Rad2Deg;
+
+        if (angle < 90 || angle > 270) angle += distance.Item2 * 3f;
+        else angle -= distance.Item2 * 3f;
+
+        if (angle > 360) angle -= 360;
+        if (angle < 0) angle = 360 - Mathf.Abs(angle);
+
+        angle = angle * Mathf.Deg2Rad;
+
+        rb.velocity = new Vector3(Mathf.Cos(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), Mathf.Sin(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), 0f);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.tag);
+
         if (!other.CompareTag("Enemy"))
         {
-            if(other.CompareTag("Player")) cameraFollow.DamageCameraShake();
+            if (other.CompareTag("Player")) cameraFollow.DamageCameraShake();
+            explosionParticles.Explode(rb.velocity);
             Destroy(gameObject);
         }
         // Destroi o objeto ao entrar em colisão com outro objeto

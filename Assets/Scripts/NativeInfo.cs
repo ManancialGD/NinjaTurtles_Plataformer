@@ -264,4 +264,6 @@ public class NativeInfo : MonoBehaviour
 
     }
 
+    public RaycastHit2D MakeLinecast(Vector2 position, Vector2 direction, float distance, LayerMask contactLayers) => Physics2D.Linecast(position, position + direction * distance, contactLayers);
+
 }

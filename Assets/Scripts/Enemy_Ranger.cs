@@ -6,14 +6,17 @@ public class Enemy_Ranger : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    Player playerScript;
-    Transform thisTransform;
     public bool flipped = false;
     public float attackCooldown;
     EnemyAim shootScript;
     public float attackRange;
     public float[] attackTime;
     NativeInfo native;
+    SuspectScript suspectScript;
+
+    bool seeingPlayer_History;
+    bool seeingPlayer;
+    LayerMask layersContact;
 
 
     void Start()
@@ -21,40 +24,66 @@ public class Enemy_Ranger : MonoBehaviour
         attackCooldown = Random.Range(attackTime[0], attackTime[1]);
         shootScript = GetComponentInChildren<EnemyAim>();
         flipped = false;
-        playerScript = FindObjectOfType<Player>();
-        thisTransform = GetComponent<Transform>();
         native = FindObjectOfType<NativeInfo>();
+        suspectScript = GetComponent<SuspectScript>();
+        layersContact = (1 << LayerMask.NameToLayer("jumpableGround")) | (1 << LayerMask.NameToLayer("Player"));
+        seeingPlayer_History = true;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-
-        if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
-        else if (attackCooldown <= 0f)
+        seeingPlayer = false;
+        float magnitude_distance = 0f;
+        if (suspectScript.GetSuspectScale() >= 6)
         {
             Vector2 playerPos = native.GetSelectedPlayerPosition();
-            Vector2 distance = new Vector2(transform.position.x - playerPos.x, transform.position.y - playerPos.y);
+            (Vector2 updatedDistance, float magnitude) = native.GetDistance(transform.position, playerPos);
+            magnitude_distance = magnitude;
+            seeingPlayer = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, magnitude, layersContact).rigidbody.gameObject.CompareTag("Player");
+        }
 
-            if (Mathf.Abs(distance.x) + Mathf.Abs(distance.y) <= attackRange) // Attack player
+        if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
+        else if (attackCooldown <= 0f && suspectScript.GetSuspectScale() >= 6)
+        {
+
+            if (seeingPlayer)
             {
-                //Debug.Log("Ranger - Shoot Player");
-                shootScript.ShootBullet();
-                attackCooldown = Random.Range(attackTime[0], attackTime[1]);
+                if (!seeingPlayer_History)
+                {
+                    attackCooldown = Random.Range(0.4f, 1.5f);
+                }
+                else
+                {
+                    Debug.Log("Seeing Player - 1");
+                    if (magnitude_distance <= attackRange) // Attack player
+                    {
+                        //Debug.Log("Ranger - Shoot Player");
+                        shootScript.ShootBullet();
+                        attackCooldown = Random.Range(attackTime[0], attackTime[1]);
+                    }
+                }
             }
         }
 
+        if (seeingPlayer)
+        {
+            Debug.Log("Seeing Player - 2");
+            GameObject playerObj = native.GetPlayerObj(native.currentPlayerID);
 
-        if (transform.position.x < thisTransform.position.x)
-        {
-            thisTransform.localScale = new Vector3(1, thisTransform.localScale.y, thisTransform.localScale.z);
-            flipped = false;
+            if (transform.position.x > playerObj.transform.position.x && flipped)
+            {
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+                flipped = false;
+            }
+            else if (transform.position.x < playerObj.transform.position.x && !flipped)
+            {
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+                flipped = true;
+            }
+
         }
-        else
-        {
-            thisTransform.localScale = new Vector3(-1, thisTransform.localScale.y, thisTransform.localScale.z);
-            flipped = true;
-        }
+        seeingPlayer_History = seeingPlayer;
     }
 
 }

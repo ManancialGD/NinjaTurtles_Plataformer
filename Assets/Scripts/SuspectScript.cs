@@ -134,8 +134,6 @@ public class SuspectScript : MonoBehaviour
             if (suspectScale > maxDistance) suspectScale = maxDistance;
         }
         lastRockDetectedPosition = collisionPosition;
-        Debug.Log("distance = " + distance);
-        Debug.Log("suspectScale = " + suspectScale);
         return;
     }
 
@@ -144,20 +142,16 @@ public class SuspectScript : MonoBehaviour
     private bool View(Vector2 position, LayerMask contactLayers)
     {
 
-        Debug.Log("View");
         bool playerViewed = false;
 
         float minAngle = 324;
         float maxAngle = 36;
 
-
         if (enemySpriteRenderer.flipX)
         {
             minAngle = 144;
             maxAngle = 216;
-
         }
-
 
         if (minAngle < 0) minAngle = 360 - Mathf.Abs(minAngle);
         if (maxAngle < 0) maxAngle = 360 - Mathf.Abs(maxAngle);
@@ -169,7 +163,6 @@ public class SuspectScript : MonoBehaviour
         float radAngle = Mathf.Atan2(distance.y, distance.x);
         float currentAngle = radAngle * Mathf.Rad2Deg;
         if (currentAngle < 0) currentAngle = 360 - Mathf.Abs(currentAngle);
-        Debug.Log("Current Angle: " + currentAngle + " | Limits: (" + minAngle + ", " + maxAngle + ")");
 
         Color rayColor = Color.white;
 
@@ -184,12 +177,10 @@ public class SuspectScript : MonoBehaviour
 
         if (hit.rigidbody != null && hit.rigidbody.gameObject.tag == "Player")
         {
-            Debug.Log(hit.rigidbody.gameObject.name);
             playerViewed = true;
             playerLastViewCooldown = 0f;
             rayColor = Color.red;
             seeingPlayer = true;
-
         }
         else
         {
@@ -219,8 +210,6 @@ public class SuspectScript : MonoBehaviour
             float addedValue = Mathf.Abs(Mathf.Cos(radAngle)) + (1 - Mathf.Cos(36 * Mathf.Deg2Rad));
 
             addedValue += (addedValue - 1) * 7.5f;
-
-            Debug.Log("addedValue = " + addedValue + " | Angle: " + radAngle * Mathf.Rad2Deg + " | |Cos(Angle)|: " + Mathf.Abs(Mathf.Cos(radAngle)));
 
             playerViewTime += addedValue * Time.deltaTime; // min: 1 (6 secs) | max: 1.7865 ( 0-6 suspectScale em 6 / 3.358 sec )
         }
