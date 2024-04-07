@@ -35,6 +35,7 @@ public class NativeInfo : MonoBehaviour
     private Vector2[] targetCheckPoints;
 
     private LampScript[] lampScripts;
+    public float staminaUse_GroundSlam;
 
     void Start()
     {

@@ -9,12 +9,17 @@ public class PlayerHP : MonoBehaviour
     public GameObject FloattingTextPrefab;
 
     [Header("Stats")]
-    public float playerHealth = 100;
-    public float playerStamina = 100;
+    public float playerHealth;
+    public float playerStamina;
 
 
     private float damageAmount;
 
+    void Start()
+    {
+        playerHealth = 100f;
+        playerStamina = 0f;
+    }
     void Update()
     {
         if (playerHealth <= 0)
@@ -22,6 +27,8 @@ public class PlayerHP : MonoBehaviour
             if (gameObject) PlayerDied();
             return;
         }
+        if (playerStamina < 100) playerStamina += Time.deltaTime * 10f; //  10 / sec  |  FULL / 10sec
+        if (playerStamina > 100) playerStamina = 100;
     }
 
     public int DamagePlayer(float damage)
@@ -69,5 +76,11 @@ public class PlayerHP : MonoBehaviour
         TextMesh textMesh = go.GetComponent<TextMesh>();
         textMesh.text = damageAmount.ToString();
         textMesh.color = Color.blue;
+    }
+
+    public void ConsumeStamina(float stamina)
+    {
+        playerStamina -= stamina;
+        if (playerStamina < 0) playerStamina = 0;
     }
 }

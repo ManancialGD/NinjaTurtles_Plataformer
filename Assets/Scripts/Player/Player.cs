@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
     BasicPlayerParticles basicPlayerParticles;
     Player_GroundSlamParticles groundSlamParticles;
     ThrowRockScript throwRockScript;
+    PlayerHP playerHP;
     public Vector2 dir;
 
 
@@ -77,6 +78,7 @@ public class Player : MonoBehaviour
 
         layerId = LayerMask.NameToLayer("Enemys");
         playerSpeed = new Vector2(groundAcceleration, 0f);
+        playerHP = GetComponent<PlayerHP>();
 
         basicPlayerParticles = FindObjectOfType<BasicPlayerParticles>();
         groundSlamParticles = FindObjectOfType<Player_GroundSlamParticles>();
@@ -523,6 +525,7 @@ public class Player : MonoBehaviour
             isPlayerDownAttacking = false;
             GroundImpact(new Vector2(rb.position.x, rb.position.y), new Vector2(rb.velocity.x, rb.velocity.y), new Vector2(7f, 1.5f));
             groundSlamParticles.DisplayGroundSlamParticles(rb.transform.position);
+            playerHP.ConsumeStamina(native.staminaUse_GroundSlam);
         }
     }
     void GroundImpact(Vector2 position, Vector2 velocity, Vector2 impactArea)

@@ -188,7 +188,7 @@ public class SuspectScript : MonoBehaviour
             if (suspectScale >= 6f) suspectScale -= Time.deltaTime / 10;
         }
 
-        if (!enemySpriteRenderer.flipX) // Right
+        if (!enemySpriteRenderer.flipX || gameObject.transform.localScale.x < 0) // Right
         {
             if (currentAngle < minAngle && currentAngle > maxAngle)
             {
@@ -196,7 +196,7 @@ public class SuspectScript : MonoBehaviour
                 seeingPlayer = false;
             }
         }
-        else // Left
+        else// Left
         {
             if (currentAngle < minAngle || currentAngle > maxAngle)
             {

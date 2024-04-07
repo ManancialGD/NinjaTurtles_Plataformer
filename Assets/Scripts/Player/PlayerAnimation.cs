@@ -31,13 +31,14 @@ public class PlayerAnimation : MonoBehaviour
     bool playerInCombatMode = false;
     bool isPlayerNPC = false;
     NativeInfo native;
+    PlayerHP playerHP;
 
     void Start()
     {
-
-        cameraFollow = FindObjectOfType<CameraFollow>();
-        playerScript = FindObjectOfType<Player>();
         native = FindObjectOfType<NativeInfo>();
+        cameraFollow = FindObjectOfType<CameraFollow>();
+        playerScript = GetComponent<Player>();
+        playerHP = GetComponent<PlayerHP>();
 
         if (playerScript.thisPlayerID != native.currentPlayerID) isPlayerNPC = true;
 
@@ -148,7 +149,7 @@ public class PlayerAnimation : MonoBehaviour
 
 
         }
-        else if (!isPlayerNPC && Input.GetButtonDown("Attack") && dir.y < -0.01 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f && playerScript.GetPlayerDistanceFromGround() <= 6f && !playerScript.isPlayerDownAttacking) //Air attack (down)
+        else if (!isPlayerNPC && Input.GetButtonDown("Attack") && dir.y < -0.01 && !coll.onGround && playerScript.GetPlayerDistanceFromGround() > 2.5f && playerScript.GetPlayerDistanceFromGround() <= 6f && !playerScript.isPlayerDownAttacking && playerHP.playerStamina > native.staminaUse_GroundSlam) //Air attack (down)
         {
             Debug.Log("GroundSlam");
             if (playerScript.isPlayerAttacking) return;

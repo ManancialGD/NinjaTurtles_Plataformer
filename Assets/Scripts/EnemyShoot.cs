@@ -7,7 +7,6 @@ using UnityEngine;
 public class EnemyShoot : MonoBehaviour
 {
     Player playerScript; // Reference to the Player script
-    PlayerHP playerHPScript;
     public float rotationSpeed = 5f;
     public float rotationModifier;
     public float moveSpeed = 5f;
@@ -24,7 +23,6 @@ public class EnemyShoot : MonoBehaviour
         explosionParticles = GetComponent<ExplosionOnDestroy>();
         cameraFollow = FindAnyObjectByType<CameraFollow>();
         playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
-        playerHPScript = FindObjectOfType<PlayerHP>();
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -42,13 +40,6 @@ public class EnemyShoot : MonoBehaviour
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = q;
     }
-
-
-
-
-
-
-
 
 
     void ShootTowardsPlayer()
@@ -70,21 +61,6 @@ public class EnemyShoot : MonoBehaviour
 
         rb.velocity = new Vector3(Mathf.Cos(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), Mathf.Sin(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), 0f);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     void OnTriggerEnter2D(Collider2D other)

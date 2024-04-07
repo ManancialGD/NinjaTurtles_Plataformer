@@ -376,6 +376,10 @@ PrefabInstance:
       propertyPath: attackRange
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 7343700226539452050, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7355381142035571744, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -20399,15 +20403,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 0ea36d73a7409df488757110683334e0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.14
+      value: 5.12
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 0ea36d73a7409df488757110683334e0, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.14
+      value: 5.12
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 0ea36d73a7409df488757110683334e0, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.14
+      value: 5.12
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 0ea36d73a7409df488757110683334e0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20762,6 +20766,7 @@ MonoBehaviour:
     m_Bits: 64
   enemiesLayer: {fileID: 1531014413}
   rockMaterial: {fileID: 6200000, guid: 990c1f6b769824345ae8c1364742e65b, type: 2}
+  staminaUse_GroundSlam: 30
 --- !u!4 &2119551857
 Transform:
   m_ObjectHideFlags: 0
