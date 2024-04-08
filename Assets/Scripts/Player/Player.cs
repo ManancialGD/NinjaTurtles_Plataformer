@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     public float airAcceleration;
     public float groundFriction;
 
+    (bool, float) dashDetector = (false, 0); // (rightSide, LastPressCooldown)
+
     Vector2 playerSpeed = new Vector2(0f, 0f);
 
     public CameraFollow cameraFollow;
@@ -50,7 +52,7 @@ public class Player : MonoBehaviour
     public bool wallSlide;
     public bool sliding;
     public bool wallJumped;
-    public bool isWallLocked;
+    bool isWallLocked = false;
 
     public Vector2 attackVelocityBoost;
 
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour
     ThrowRockScript throwRockScript;
     PlayerHP playerHP;
     public Vector2 dir;
+    bool playerDashing = false;
 
 
     bool loaded;
@@ -137,6 +140,8 @@ public class Player : MonoBehaviour
             return;
         } // Não é o player a ser controlado
 
+        DashDetection();
+
         //UpdateCheckpoints();
 
         //Debug.Log(GetFramesUntilCollision(true, false));
@@ -165,7 +170,8 @@ public class Player : MonoBehaviour
         {
             if (coll.onGround)
             {
-                Jump(jumpSpeed);
+                if (playerDashing) Jump(jumpSpeed + native.playerDashJumpForce[thisPlayerID - 1]);
+                else Jump(jumpSpeed);
             }
             else if (coll.onWall)
             {
@@ -376,7 +382,7 @@ public class Player : MonoBehaviour
         if (wallSide == dirX || dirX == 0)
         {
             cameraFollow.SetCameraReaction(cameraFollow.MAX_CAMERA_REACTION, 0f);
-            cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.5f, WallJumpForce.y * 2f));
+            cameraFollow.BoostCamera(new Vector2(WallJumpForce.x * wallSide * 1.5f, WallJumpForce.y));
             cameraFollow.SetCameraReaction(0.1f, 0.7f);
         }
         else
@@ -603,6 +609,62 @@ public class Player : MonoBehaviour
             native.CreateTargetCheckpoint(native.GetSelectedPlayerPosition());
         }
 
+    }
+
+
+    bool DashDetection()
+    {
+        if (dashDetector.Item2 < 0)
+        {
+            dashDetector.Item2 += Time.deltaTime;
+            if (dashDetector.Item2 > 0) dashDetector.Item2 = 0;
+            return false;
+        }
+        else if (dashDetector.Item2 == 0)
+        {
+            if (Input.GetKeyDown(KeyCode.A)) dashDetector = (false, 0.001f);
+            else if (Input.GetKeyDown(KeyCode.D)) dashDetector = (true, 0.001f);
+        }
+        else if (dashDetector.Item2 <= 0.2f && coll.onGround && playerHP.playerStamina >= native.staminaUse_Dash)
+        {
+            if (Input.GetKeyDown(KeyCode.A) && dashDetector.Item1 == false)
+            {
+                rb.velocity = new Vector2(-native.playerDashSpeed[thisPlayerID - 1], rb.velocity.y);
+                playerDashing = true;
+                StartCoroutine(StopDash(native.playerDashTime[thisPlayerID - 1]));
+                dashDetector = (false, -0.5f);
+                playerHP.ConsumeStamina(native.staminaUse_Dash);
+                return true;
+            }
+            else if (Input.GetKeyDown(KeyCode.D) && dashDetector.Item1 == true)
+            {
+                rb.velocity = new Vector2(native.playerDashSpeed[thisPlayerID - 1], rb.velocity.y);
+                playerDashing = true;
+                StartCoroutine(StopDash(native.playerDashTime[thisPlayerID - 1]));
+                dashDetector = (true, -0.5f);
+                playerHP.ConsumeStamina(native.staminaUse_Dash);
+                return true;
+            }
+        }
+        else if (dashDetector.Item2 >= 0.2f)
+        {
+            dashDetector.Item2 = 0;
+            return false;
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.A)) dashDetector = (false, 0.001f);
+            else if (Input.GetKeyDown(KeyCode.D)) dashDetector = (true, 0.001f);
+            else if (dashDetector.Item2 != 0) dashDetector.Item2 += Time.deltaTime;
+        }
+        return false;
+    }
+
+    private IEnumerator StopDash(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        rb.velocity = new Vector2(0f, rb.velocity.y);
+        playerDashing = false;
     }
 
 }

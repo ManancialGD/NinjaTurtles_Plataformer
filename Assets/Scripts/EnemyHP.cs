@@ -13,7 +13,7 @@ public class EnemyHP : MonoBehaviour
     [Space]
 
     [Header("Stats")]
-    public int health = 30;
+    public float health = 100;
 
     [Header("Bools")]
     public bool hasInfinitHealth;
@@ -76,7 +76,7 @@ public class EnemyHP : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Vector2 attackForce, float unconsciousTime)
+    public void TakeDamage(float damage, Vector2 attackForce, float unconsciousTime)
     {
 
         if (unconsciousTime > 0f) enemyUnconsciousCooldown = unconsciousTime;

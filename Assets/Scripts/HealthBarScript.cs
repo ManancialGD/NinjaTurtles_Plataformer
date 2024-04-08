@@ -11,7 +11,6 @@ public class HealthBarScript : MonoBehaviour
     SpriteRenderer staminaBar;
     PlayerHP playerHealthScript;
     NativeInfo native;
-
     Vector2 MAX_SIZE;
     float health_history = 0;
     float stamina_history = 0;
@@ -34,7 +33,7 @@ public class HealthBarScript : MonoBehaviour
     {
         if (playerHealthScript.playerHealth != health_history)
         {
-            healthBar.transform.localScale = new Vector2(ConvertLimit(playerHealthScript.playerHealth), staminaBar.transform.localScale.y);
+            healthBar.transform.localScale = new Vector2(ConvertLimit(playerHealthScript.playerHealth), healthBar.transform.localScale.y);
 
             if (playerHealthScript.playerHealth != health_history)
             {
@@ -51,15 +50,12 @@ public class HealthBarScript : MonoBehaviour
         {
             staminaBar.transform.localScale = new Vector2(ConvertLimit(playerHealthScript.playerStamina), staminaBar.transform.localScale.y);
             stamina_history = playerHealthScript.playerStamina;
-            Debug.Log("StaminaBar = " + ConvertLimit(playerHealthScript.playerStamina));
         }
 
-        Debug.Log("stamina = " + playerHealthScript.playerStamina);
-
-        float ConvertLimit(float value) // 0 - 100
-        {
-            float result = value / 100 * MAX_SIZE.x;
-            return result;
-        }
+    }
+    float ConvertLimit(float value) // 0 - 100
+    {
+        float result = value / 100 * MAX_SIZE.x;
+        return result;
     }
 }

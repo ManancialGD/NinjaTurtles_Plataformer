@@ -15,6 +15,9 @@ public class NativeInfo : MonoBehaviour
     public float[] PlayerGroundFriction;
     public float[] playerAirAcceleration;
     public float[] playerSlideSpeed;
+    public float[] playerDashSpeed;
+    public float[] playerDashTime;
+    public float[] playerDashJumpForce;
     public int[] playerDamage;
     public int[] playerGroundSlamDamage;
     public Vector2[] playerAttackForce;
@@ -35,7 +38,10 @@ public class NativeInfo : MonoBehaviour
     private Vector2[] targetCheckPoints;
 
     private LampScript[] lampScripts;
+
+    [Header("Stamina")]
     public float staminaUse_GroundSlam;
+    public float staminaUse_Dash;
 
     void Start()
     {

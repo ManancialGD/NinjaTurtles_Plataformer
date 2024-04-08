@@ -26,15 +26,17 @@ public class EnemyShoot : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
 
-        RotateTowardsPlayer();
-
-        if (playerScript != null) ShootTowardsPlayer();
-
+        if (playerScript != null)
+        {
+            RotateTowardsPlayer();
+            ShootTowardsPlayer();
+        }
     }
 
 
     void RotateTowardsPlayer()
     {
+        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
         Vector3 vectorToTarget = playerScript.transform.position - transform.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - rotationModifier;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -44,7 +46,7 @@ public class EnemyShoot : MonoBehaviour
 
     void ShootTowardsPlayer()
     {
-
+        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
         (Vector2, float) distance = native.GetDistance(transform.position, playerScript.transform.position);
 
         Vector2 normalizedDistance = distance.Item1 / distance.Item2;

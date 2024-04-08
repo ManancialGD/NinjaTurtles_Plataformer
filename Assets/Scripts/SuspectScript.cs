@@ -138,6 +138,7 @@ public class SuspectScript : MonoBehaviour
     }
 
     public float GetSuspectScale() => suspectScale;
+    public float SetSuspectScale(float value) => suspectScale = value;
 
     private bool View(Vector2 position, LayerMask contactLayers)
     {

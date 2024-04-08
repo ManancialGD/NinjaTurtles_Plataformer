@@ -9,21 +9,26 @@ public class RotateTowards : MonoBehaviour
     public float timeToFix;
     public GameObject thisEnemy;
     Enemy_Ranger rangerScript;
+    SuspectScript suspectScript;
+    NativeInfo native;
 
     private void Start()
     {
-        playerScript = FindObjectOfType<Player>();
+        native = FindObjectOfType<NativeInfo>();
+        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
         rangerScript = GetComponentInParent<Enemy_Ranger>();
 
         if (playerScript == null)
         {
             Debug.LogError("Script do Player não encontrado.");
         }
+        suspectScript = GetComponentInParent<SuspectScript>();
+        Debug.Log("suspectScript = " + suspectScript);
     }
 
     private void FixedUpdate()
     {
-        if (playerScript != null)
+        if (playerScript != null && suspectScript.GetSuspectScale() >= 6f)
         {
             Vector3 vectorToTarget = playerScript.transform.position - transform.position;
             float angle;
@@ -41,6 +46,7 @@ public class RotateTowards : MonoBehaviour
                 else angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
 
             }
+
 
             Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * rotationSpeed);

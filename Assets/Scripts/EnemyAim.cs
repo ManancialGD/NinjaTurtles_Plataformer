@@ -15,7 +15,6 @@ public class EnemyAim : MonoBehaviour
 
     public void ShootBullet()
     {
-
         Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
     }
 }

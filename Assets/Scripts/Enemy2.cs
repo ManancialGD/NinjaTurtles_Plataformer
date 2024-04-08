@@ -163,8 +163,6 @@ public class Enemy2 : MonoBehaviour
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return 0;
         inAttackZone = Physics2D.OverlapBox((Vector2)transform.position, new Vector2(1f, 0f), 0f, playerLayer);
 
-
-
         if (inAttackZone && canAttack && !isAttacking)
         {
             sprite.flipX = playerRB.position.x - rb.position.x < 0;
@@ -172,6 +170,7 @@ public class Enemy2 : MonoBehaviour
             state = MovementState.Attacking;
             anim.SetInteger("state", (int)state);
             MakeAttack();
+            suspectScript.SetSuspectScale(7f);
 
             return 1;
         }
