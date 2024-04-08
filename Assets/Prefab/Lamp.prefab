@@ -76,7 +76,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.10862187, y: -0.00036074244}
+  m_ConnectedAnchor: {x: 0.10862187, y: -0.0003607424}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -453,8 +453,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.05, y: 0, z: 0}
-  m_LocalScale: {x: 7.12, y: 7.12, z: 7.12}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 227.84, y: 227.84, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8211201993678809379}
   - {fileID: 6971153884419484918}
@@ -799,7 +799,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.12078587, y: 0.0012308932}
+  m_ConnectedAnchor: {x: 0.12078587, y: 0.0012308933}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -969,7 +969,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.11731184, y: 0.0003607523}
+  m_ConnectedAnchor: {x: 0.11731184, y: 0.00036075225}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -1287,7 +1287,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LampPrefabReference: {fileID: 5350222698966655743}
-  lampLastConnector: {fileID: 8391394266266690725}
 --- !u!1 &9013181327200109054
 GameObject:
   m_ObjectHideFlags: 0
@@ -1364,7 +1363,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.111518525, y: -0.0014484589}
+  m_ConnectedAnchor: {x: 0.111518525, y: -0.0014484586}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0

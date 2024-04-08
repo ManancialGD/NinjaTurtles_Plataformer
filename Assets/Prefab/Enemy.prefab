@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 7355381142035571744}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.064, y: 0.036, z: 0}
+  m_LocalPosition: {x: 5, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -393,7 +393,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.0010995865, y: 0.015117526}
-  m_Size: {x: 0.31510353, y: 0.66708875}
+  m_Size: {x: 10.063878, y: 33.61747}
   m_Direction: 0
 --- !u!114 &5910881705639263579
 MonoBehaviour:
@@ -443,12 +443,20 @@ PrefabInstance:
       value: Enemy_HealthBar
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 82422132f28837f4abfef680c4fb98dc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7816611944019460353, guid: 82422132f28837f4abfef680c4fb98dc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7816611944019460353, guid: 82422132f28837f4abfef680c4fb98dc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 82422132f28837f4abfef680c4fb98dc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 82422132f28837f4abfef680c4fb98dc, type: 3}
       propertyPath: m_LocalPosition.z
