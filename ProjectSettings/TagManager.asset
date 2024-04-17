@@ -9,6 +9,7 @@ TagManager:
   - MeeleAttack
   - ShootAttack
   - Enemy
+  - Map
   layers:
   - Default
   - TransparentFX

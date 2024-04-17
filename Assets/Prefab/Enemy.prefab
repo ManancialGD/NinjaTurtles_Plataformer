@@ -409,7 +409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flipped: 0
   attackCooldown: 3
-  attackRange: 18
+  attackRange: 576
   attackTime:
   - 2
   - 4

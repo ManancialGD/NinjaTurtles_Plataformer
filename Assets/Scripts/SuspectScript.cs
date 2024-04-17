@@ -21,7 +21,7 @@ public class SuspectScript : MonoBehaviour
     SpriteRenderer suspectSprite;
     GameObject suspectObj;
     NativeInfo native;
-    float enemyViewDistance = 10f;
+    float enemyViewDistance = 320f;
     EnemyHP enemyHP;
     public Vector2 lastRockDetectedPosition;
 
@@ -214,7 +214,7 @@ public class SuspectScript : MonoBehaviour
 
             playerViewTime += addedValue * Time.deltaTime; // min: 1 (6 secs) | max: 1.7865 ( 0-6 suspectScale em 6 / 3.358 sec )
         }
-        Debug.DrawRay(position, direction * 10f, rayColor);
+        Debug.DrawRay(position, direction * 320f, rayColor);
 
         return playerViewed;
     }

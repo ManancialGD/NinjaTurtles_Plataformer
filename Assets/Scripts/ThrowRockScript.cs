@@ -10,10 +10,10 @@ public class ThrowRockScript : MonoBehaviour
     public Transform aimLayer;
     public GameObject cameraObj;
     private float ThrowRockCooldown = 0f;
-    private Vector2 mousePosition_History = new Vector2(0f, 0f);
+    private Vector2 mousePosition_History = Vector2.zero;
     private bool aiming = false;
     NativeInfo native;
-    private float gravityScale = 0.5f;
+    private float gravityScale = 4f;
 
     void Start()
     {
@@ -47,14 +47,14 @@ public class ThrowRockScript : MonoBehaviour
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (mousePos != mousePosition_History) updateGraphic = true;
+        if (mousePos != mousePosition_History || mousePosition_History == Vector2.zero) updateGraphic = true;
 
         mousePosition_History = mousePos;
 
         if (!updateGraphic && !shoot) return;
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        Vector2 playerPos = rb.position;
+        Vector2 playerPos = new Vector2(rb.position.x, rb.position.y + 28/2);
 
         //Vector2 cameraDifference = new Vector2(playerPos.x - cameraObj.transform.position.x, playerPos.y - cameraObj.transform.position.y);
 
@@ -72,7 +72,7 @@ public class ThrowRockScript : MonoBehaviour
                 else if (angularInclination > 270 && angularInclination < 360) negatives = new Vector2(1, -1);
         */
 
-        Vector2 maxDistance = new Vector2(3f * Mathf.Cos(angularInclination * Mathf.Deg2Rad), 3f * Mathf.Sin(angularInclination * Mathf.Deg2Rad));
+        Vector2 maxDistance = new Vector2(100f * Mathf.Cos(angularInclination * Mathf.Deg2Rad), 100f * Mathf.Sin(angularInclination * Mathf.Deg2Rad));
         Debug.Log(maxDistance);
 
         if (distance.x > 0 && distance.x > maxDistance.x) distance = new Vector2(maxDistance.x, distance.y);
@@ -93,7 +93,11 @@ public class ThrowRockScript : MonoBehaviour
         }
 
         Debug.Log("AimThrowRock()");
-        for (int i = 0; i < 10; i++)
+
+        int aim_dots = 20;
+        float aim_dots_size = 15f;
+
+        for (int i = 0; i < aim_dots; i++)
         {
             GameObject aim = new GameObject("aim_" + i);
 
@@ -101,12 +105,22 @@ public class ThrowRockScript : MonoBehaviour
             SpriteRenderer spriteRenderer = aim.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = native.BallSprite;
             spriteRenderer.color = Color.white;
-            aim.transform.localScale = new Vector3(0.3f - (0.3f * i / 10), 0.3f - (0.3f * i / 10));
+            Vector3 aim_scale = new Vector3(aim_dots_size - (aim_dots_size * i / aim_dots), aim_dots_size - (aim_dots_size * i / aim_dots));
+            aim.transform.localScale = aim_scale;
 
-            aimPos += velocity / 3;
-            velocity = new Vector2(velocity.x, velocity.y - gravityScale / 3);
+            aimPos += velocity / 9;
+            velocity = new Vector2(velocity.x, velocity.y - gravityScale);
 
             aim.transform.position = aimPos;
+
+            /*
+            RaycastHit2D raycast = Physics2D.CircleCast(aimPos, aim_scale.x / 2, Vector2.zero, 0f, native.jumpableGround_layer);
+            Debug.Log("raycast = " + raycast.rigidbody);
+            if (raycast.rigidbody)
+            { //collision
+                velocity = new Vector2(velocity.x, velocity.y * -0.8f);
+            }
+            */
 
         }
 
@@ -127,12 +141,13 @@ public class ThrowRockScript : MonoBehaviour
         SpriteRenderer spriteRenderer = aim.AddComponent<SpriteRenderer>();
         Rigidbody2D rb = aim.AddComponent<Rigidbody2D>();
         rb.mass = 15f;
+        rb.gravityScale = 6f;
         CircleCollider2D collider = aim.AddComponent<CircleCollider2D>();
         CircleCollider2D colliderDetector = aim.AddComponent<CircleCollider2D>();
         aim.AddComponent<RockScript>();
         spriteRenderer.sprite = native.BallSprite;
         spriteRenderer.color = Color.white;
-        aim.transform.localScale = new Vector3(0.3f, 0.3f);
+        aim.transform.localScale = new Vector3(9.6f, 9.6f);
         collider.radius = 0.1f;
         colliderDetector.radius = 0.15f;
         colliderDetector.isTrigger = true;
@@ -146,6 +161,7 @@ public class ThrowRockScript : MonoBehaviour
     public void StopAiming()
     {
         aiming = false;
+        mousePosition_History = Vector2.zero;
         foreach (Transform child in aimLayer)
         {
             Destroy(child.gameObject);

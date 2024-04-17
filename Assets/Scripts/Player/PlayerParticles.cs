@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerParticles : MonoBehaviour
 {
 
-    static Vector2 playerSize = new Vector2(0.345f, 0.95f);
+    static Vector2 playerSize = new Vector2(14, 32);
     Transform player;
     Rigidbody2D rb;
     Player playerScript;
@@ -95,9 +95,10 @@ public class PlayerParticles : MonoBehaviour
     public void CreateParticle(float lifeTime, string spawnType, Vector2 initialVelocity)
     {
         Vector2 initialPosition;
+        Debug.Log("detecting particle - " + spawnType.ToLower());
         if (spawnType.ToLower() == "down") initialPosition = new Vector2(rb.position.x, rb.position.y - playerSize.y / 2);
-        else if (spawnType.ToLower() == "right") initialPosition = new Vector2(rb.position.x + playerSize.x / 2, rb.position.y - playerSize.y / 2);
-        else if (spawnType.ToLower() == "left") initialPosition = new Vector2(rb.position.x - playerSize.x / 2, rb.position.y - playerSize.y / 2);
+        else if (spawnType.ToLower() == "right") initialPosition = new Vector2(rb.position.x + 32, rb.position.y - playerSize.y / 2);
+        else if (spawnType.ToLower() == "left") initialPosition = new Vector2(rb.position.x - 32, rb.position.y - playerSize.y / 2);
         else
         {
             Debug.Log("ERROR 6128241 - Invalid input");
@@ -107,12 +108,12 @@ public class PlayerParticles : MonoBehaviour
         GameObject newSpriteObject = new GameObject("Particle_" + LastParticleID);
         newSpriteObject.transform.SetParent(GetComponent<Transform>());
         Rigidbody2D p_rb = newSpriteObject.AddComponent<Rigidbody2D>();
-        p_rb.gravityScale = 2.5f;
+        p_rb.gravityScale = 6f;
         SpriteRenderer spriteRenderer = newSpriteObject.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = BallSprite;
         newSpriteObject.transform.position = initialPosition;
         p_rb.velocity = new Vector2(initialVelocity.x, initialVelocity.y);
-        newSpriteObject.transform.localScale = new Vector2(0.2f, 0.2f);
+        newSpriteObject.transform.localScale = new Vector2(25f, 25f);
 
         particles.Add(LastParticleID, (lifeTime, spriteRenderer));
 

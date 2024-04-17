@@ -51,7 +51,8 @@ public class Player : MonoBehaviour
     public bool canMove;
     public bool wallSlide;
     public bool sliding;
-    public bool wallJumped;
+    private float jumped;
+    public float wallJumped;
     bool isWallLocked = false;
 
     public Vector2 attackVelocityBoost;
@@ -111,22 +112,28 @@ public class Player : MonoBehaviour
 
             int sideWall = -1;
             string sideName = "right";
+            float[] sideCorrection = { -32 * 5, UnityEngine.Random.Range(0, 32 * 5) };
             if (coll.onLeftWall)
             {
                 sideName = "left";
                 sideWall = 1;
+                sideCorrection[0] = 32 * 5;
             }
 
             float[] multiplierX = { 0.0f, 1f };
-            float[] multiplierY = { 0f, 1f };
-            float[] sideCorrection = { sideWall * 0f, sideWall * 0f };
-
-            if (particlesDisplayed > 0) basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(sideWall * 1f, 0f), multiplierX, multiplierY, sideCorrection, Color.white);
+            float[] multiplierY = { 0f, 0.2f };
+            Debug.Log("particle - " + sideName);
+            if (particlesDisplayed > 0) basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(sideWall * 0.4f, 0f), multiplierX, multiplierY, sideCorrection, Color.white);
 
         }
     }
     void Update()
     {
+        if (jumped > 0) jumped += Time.deltaTime;
+        if (jumped >= 1) jumped = 0;
+        if (wallJumped > 0) wallJumped += Time.deltaTime;
+        if (wallJumped >= 1) wallJumped = 0;
+
 
         if (lastJumpCooldown > 0f) lastJumpCooldown += Time.deltaTime;
 
@@ -168,12 +175,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetButton("Jump"))
         {
-            if (coll.onGround)
+            if (coll.onGround && jumped <= 0)
             {
                 if (playerDashing) Jump(jumpSpeed + native.playerDashJumpForce[thisPlayerID - 1]);
                 else Jump(jumpSpeed);
             }
-            else if (coll.onWall)
+            else if (coll.onWall && wallJumped <= 0)
             {
                 WallJump();
             }
@@ -222,9 +229,14 @@ public class Player : MonoBehaviour
         {
             wallSlide = false;
             sliding = false;
-            wallJumped = false;
+            if (wallJumped >= 0.05f) wallJumped = 0;
+            if (jumped >= 0.05f) jumped = 0;
         }
-        else if (coll.onWall) wallJumped = false;
+        else if (coll.onWall)
+        {
+            if (wallJumped >= 0.05f) wallJumped = 0;
+            if (jumped >= 0.05f) jumped = 0;
+        }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -252,21 +264,22 @@ public class Player : MonoBehaviour
         if (coll.onGround)
         {   // Player on Ground
 
-            if (rb.velocity.y < -4f)
+            if (rb.velocity.y < -50f)
             { // Particulas
-                int particlesDisplayed = Mathf.Abs((int)UnityEngine.Random.Range(rb.velocity.y * 0.1f, rb.velocity.y * 0.3f));
+                Debug.Log("fall velocity = " + rb.velocity.y);
+                int particlesDisplayed = (int)(Mathf.Abs(UnityEngine.Random.Range(rb.velocity.y * 0.1f, rb.velocity.y * 0.3f)) / 35);
 
                 //playerParticles.CreateParticle(1f, "down", new Vector2(rb.velocity.x * UnityEngine.Random.Range(0.5f, 0.8f) + sideCorrection, -rb.velocity.y * UnityEngine.Random.Range(0.1f, 0.4f)));
 
-                float[] multiplierX = { 0.4f, 0.8f };
+                float[] multiplierX = { 0.3f, 0.8f };
                 float[] multiplierY = { 0.1f, 0.4f };
-                float[] sideCorrection = { -3f, 3f };
+                float[] sideCorrection = { -96f, 96f };
 
                 basicPlayerParticles.CreateParticle(particlesDisplayed, "down", new Vector2(rb.velocity.x, -rb.velocity.y), multiplierX, multiplierY, sideCorrection, Color.white);
             }
 
 
-            if (rb.velocity.y < -12f && !isPlayerDownAttacking)
+            if (rb.velocity.y < -400f && !isPlayerDownAttacking)
             {
                 if (rb.velocity.y < -25f) cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, -25f * 0.05f));
                 else cameraFollow.BoostCamera(new Vector2(rb.velocity.x * 0.1f, rb.velocity.y * 0.05f));
@@ -333,7 +346,7 @@ public class Player : MonoBehaviour
     private void Jump(float yForce)
     {
 
-        if (!isPlayerAttacking)
+        if (!isPlayerAttacking && jumped <= 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, yForce);
 
@@ -342,11 +355,12 @@ public class Player : MonoBehaviour
             float[] multiplierX = { 0.05f, 0.8f };
             float[] multiplierY = { 0.05f, 0.6f };
 
-            float[] sideCorrection = { -0.1f, 0.1f };
+            float[] sideCorrection = { -3.2f, 3.2f };
 
             basicPlayerParticles.CreateParticle(particlesDisplayed, "down", new Vector2(rb.velocity.x, yForce), multiplierX, multiplierY, sideCorrection, Color.white);
             if (sliding) sliding = false;
             lastJumpCooldown = 0.001f;
+            jumped = 0.001f;
 
         }
     }
@@ -360,7 +374,7 @@ public class Player : MonoBehaviour
         if (coll.onLeftWall) wallSide = 1;
         else if (coll.onRightWall) wallSide = -1;
 
-        wallJumped = true;
+        wallJumped = 0.001f;
         rb.velocity = new Vector2(WallJumpForce.x * wallSide, WallJumpForce.y);
 
         float inputHorizontal = Input.GetAxis("Horizontal");
@@ -396,14 +410,14 @@ public class Player : MonoBehaviour
         float[] multiplierX = { 0.05f, 0.7f };
         float[] multiplierY = { 0.05f, 0.6f };
 
-        float[] sideCorrection = { -0.05f, 0.05f };
+        float[] sideCorrection = { -1.6f, 1.6f };
 
         string sideName = "right";
         if (coll.onLeftWall) sideName = "left";
 
         if (sliding) sliding = false;
 
-        basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(rb.velocity.x / Mathf.Abs(rb.velocity.x) * 6f, WallJumpForce.y), multiplierX, multiplierY, sideCorrection, Color.white);
+        basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(rb.velocity.x / Mathf.Abs(rb.velocity.x) * WallJumpForce.x, WallJumpForce.y), multiplierX, multiplierY, sideCorrection, Color.white);
 
         return;
     }

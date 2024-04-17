@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 382624116}
   m_Layer: 3
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14724,7 +14724,7 @@ Transform:
   m_GameObject: {fileID: 559691065}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -9.91, y: -2.18, z: 0}
+  m_LocalPosition: {x: -41.75, y: -2.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14811,7 +14811,7 @@ ParticleSystem:
   m_GameObject: {fileID: 559691065}
   serializedVersion: 8
   lengthInSec: 0.5
-  simulationSpeed: 1
+  simulationSpeed: 0.8
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -15056,7 +15056,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.02
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -15380,7 +15380,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2.5
+      scalar: 6
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -18395,7 +18395,7 @@ ParticleSystem:
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
-    multiplyColliderForceByCollisionAngle: 1
+    multiplyColliderForceByCollisionAngle: 0
     m_Planes: []
     m_Dampen:
       serializedVersion: 2
@@ -18453,7 +18453,7 @@ ParticleSystem:
     m_Bounce:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.34
+      scalar: 0.4
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -18562,8 +18562,8 @@ ParticleSystem:
     collidesWith:
       serializedVersion: 2
       m_Bits: 8
-    maxCollisionShapes: 256
-    quality: 1
+    maxCollisionShapes: 32
+    quality: 0
     voxelSize: 0.5
     collisionMessages: 0
     collidesWithDynamic: 1
@@ -20690,6 +20690,9 @@ MonoBehaviour:
   rockMaterial: {fileID: 6200000, guid: 990c1f6b769824345ae8c1364742e65b, type: 2}
   staminaUse_GroundSlam: 1696
   staminaUse_Dash: 1120
+  jumpableGround_layer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &2119551857
 Transform:
   m_ObjectHideFlags: 0

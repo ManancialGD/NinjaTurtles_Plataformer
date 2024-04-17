@@ -3,20 +3,26 @@ using UnityEngine;
 public class BasicPlayerParticles : MonoBehaviour
 {
 
-    static Vector2 playerSize = new Vector2(0.305f, 0.95f);
+    static Vector2 playerSize = new Vector2(8, 28);
     private ParticleSystem playerParticle;
     Player playerScript;
     ParticleSystem.MainModule mainModule;
+    NativeInfo native;
 
     void Start()
     {
-
+        native = FindObjectOfType<NativeInfo>();
         playerParticle = GetComponent<ParticleSystem>();
-        playerScript = FindAnyObjectByType<Player>(); //Iremos alterar no futuro
+        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
 
         mainModule = playerParticle.main;
         mainModule.startColor = Color.black;
 
+    }
+
+    void Update()
+    {
+        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
     }
 
     public void CreateParticle(int particlesQuantity, string spawnType, Vector2 velocity, float[] rangeX, float[] rangeY, float[] sideCorrection, Color particleColor)

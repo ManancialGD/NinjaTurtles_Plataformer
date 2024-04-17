@@ -43,6 +43,9 @@ public class NativeInfo : MonoBehaviour
     public float staminaUse_GroundSlam;
     public float staminaUse_Dash;
 
+    [Header("References")]
+    public LayerMask jumpableGround_layer;
+
     void Start()
     {
         lampScripts = FindObjectsOfType<LampScript>();
