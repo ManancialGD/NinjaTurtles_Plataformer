@@ -12,11 +12,13 @@ GameObject:
   - component: {fileID: 3742010920674272088}
   - component: {fileID: 6787046911274386625}
   - component: {fileID: 8885765521526978649}
-  - component: {fileID: 9074834963670483028}
+  - component: {fileID: 3670731983465957951}
   - component: {fileID: 6617474206497473321}
   - component: {fileID: 937131195470127001}
+  - component: {fileID: 5215620884459181572}
+  - component: {fileID: 4296607321782844811}
   m_Layer: 6
-  m_Name: Player
+  m_Name: Leo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 3708656503062212569}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.91, y: -2.18, z: 0}
+  m_LocalPosition: {x: -1.29, y: -0.37, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -113,12 +115,12 @@ MonoBehaviour:
   wallSide: 0
   wallBoxSize: {x: 3.58, y: 27.19}
   groundBoxSize: {x: 9.57, y: 2.12}
-  groundOffset: {x: 0, y: -1.02}
-  rightWallOffset: {x: 7.52, y: 15.24}
-  leftWallOffset: {x: -7.52, y: 15.24}
+  groundOffset: {x: 0, y: -16.8}
+  rightWallOffset: {x: 7.52, y: 0}
+  leftWallOffset: {x: -7.52, y: 0}
   attackCollision: {x: 0, y: 0}
   debugCollisionColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!212 &9074834963670483028
+--- !u!212 &3670731983465957951
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,7 +140,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 2b1d0785b730d5f4aada23a625813831, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -159,12 +161,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1000409932, guid: 9eba661e9137bfd43989e3f78d86a010, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 1036205837, guid: 2754634ff1b49234e9b53445c2106dd7, type: 3}
+  m_Color: {r: 0.21176472, g: 0.21176472, b: 0.21176472, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 0.9375}
+  m_Size: {x: 120, y: 120}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -229,9 +231,42 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.20421886, y: 15.373141}
-  m_Size: {x: 11.391165, y: 31.024805}
+  m_Offset: {x: -0.20421886, y: -0.61761284}
+  m_Size: {x: 11.391165, y: 31.36475}
   m_Direction: 0
+--- !u!95 &5215620884459181572
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708656503062212569}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4325b3e1d1adf9f48898303dfd46b84a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4296607321782844811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708656503062212569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce6753fd5f8aff4caa61b906a61a53c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1730730201947136873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -262,7 +297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 0ea36d73a7409df488757110683334e0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 35
+      value: 18.07
       objectReference: {fileID: 0}
     - target: {fileID: 7816611944019460353, guid: 0ea36d73a7409df488757110683334e0, type: 3}
       propertyPath: m_LocalPosition.z

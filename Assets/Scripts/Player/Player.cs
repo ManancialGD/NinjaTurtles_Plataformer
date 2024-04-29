@@ -42,7 +42,6 @@ public class Player : MonoBehaviour
     Vector2 playerSpeed = new Vector2(0f, 0f);
 
     public CameraFollow cameraFollow;
-    public PlayerAnimation playerAnimation;
     NativeInfo native;
 
     [Space]
@@ -88,7 +87,6 @@ public class Player : MonoBehaviour
         groundSlamParticles = FindObjectOfType<Player_GroundSlamParticles>();
         playerParticles = FindObjectOfType<PlayerParticles>();
         cameraFollow = FindObjectOfType<CameraFollow>();
-        playerAnimation = FindObjectOfType<PlayerAnimation>();
         throwRockScript = GetComponent<ThrowRockScript>();
 
 
@@ -431,7 +429,6 @@ public class Player : MonoBehaviour
     public void EnablePlayerAttack()
     {
         isPlayerAttacking = true;
-        playerAnimation.SetAttackCooldown(playerAttackCooldown);
         return;
     }
     public void DisablePlayerAttack()
