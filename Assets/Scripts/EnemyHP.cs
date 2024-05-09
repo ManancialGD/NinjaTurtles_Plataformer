@@ -48,7 +48,7 @@ public class EnemyHP : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    /*void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("AttackArea") && canTakeDamage)
         {
@@ -74,7 +74,7 @@ public class EnemyHP : MonoBehaviour
                 playerScript.BoostPlayer(new Vector2(native.playerAttackForce[player_id].x * 0.1f * newDir, native.playerAttackForce[player_id].y * 0.1f));
             }
         }
-    }
+    }*/
 
     public void TakeDamage(float damage, Vector2 attackForce, float unconsciousTime)
     {
@@ -95,6 +95,7 @@ public class EnemyHP : MonoBehaviour
 
     void ShowFloatingText()
     {
+        Debug.Log("Floating text spawned");
         Vector3 textPosition = new Vector3(transform.position.x, transform.position.y, -5f);
         var go = Instantiate(FloattingTextPrefab, textPosition, Quaternion.identity, transform);
         go.GetComponent<TextMesh>().text = damageAmount.ToString();

@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aabf4607be9785a479272437cc462415
-      internalID: 2058239478
+      spriteID: 33b6a4ec61713654e99bd177d0793a61
+      internalID: -442263686
       vertices: []
       indices: 
       edges: []
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 878de26a7d521064c96a75e513d4362d
-      internalID: 232879522
+      spriteID: d3fc76cad92d14c428b8500aba349273
+      internalID: -1745126507
       vertices: []
       indices: 
       edges: []
@@ -166,29 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d159c026aaa1f94ea2d54dc07591852
-      internalID: -1733987545
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LeoAttack1_3
-      rect:
-        serializedVersion: 2
-        x: 360
-        y: 0
-        width: 120
-        height: 120
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 98c74db644a087d47b17361999d0df34
-      internalID: -1985096869
+      spriteID: e409de9e98e081145ac5c0f79d54aee8
+      internalID: -493486457
       vertices: []
       indices: 
       edges: []
@@ -204,10 +183,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      LeoAttack1_0: 2058239478
-      LeoAttack1_1: 232879522
-      LeoAttack1_2: -1733987545
-      LeoAttack1_3: -1985096869
+      LeoAttack1_0: -442263686
+      LeoAttack1_1: -1745126507
+      LeoAttack1_2: -493486457
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +6,7 @@ public class LeoAnimation : MonoBehaviour
     private Animator anim;
     private Player player;
     private string currentAnimation;
-    private bool isFacingRight = true; // Assuming character starts facing right
+    public bool isFacingRight { get; private set; }
     private const float movementThreshold = 0.5f; // Threshold for significant movement
     private float movementX;
     private Rigidbody2D rb;
@@ -16,6 +15,7 @@ public class LeoAnimation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isFacingRight = true;
         anim = GetComponent<Animator>();
         player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
@@ -31,8 +31,10 @@ public class LeoAnimation : MonoBehaviour
             ChangeAnimation("LeoSlashAttack");
         }
 
-        if (Input.GetAxisRaw("Horizontal") < -.01f && !isAttacking) FlipAnimation(true);
-        else if (Input.GetAxisRaw("Horizontal") > .01f && !isAttacking) FlipAnimation(false);
+
+
+        if (rb.velocity.x < -.1f && !isAttacking) FlipAnimation(true);
+        else if (rb.velocity.x > .1f && !isAttacking) FlipAnimation(false);
         
     }
 
@@ -66,10 +68,12 @@ public class LeoAnimation : MonoBehaviour
         if (flip)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
+            isFacingRight = false;
         }
         else if (!flip)
         {
             transform.rotation = Quaternion.identity;
+            isFacingRight = true;
         }
     }
 }

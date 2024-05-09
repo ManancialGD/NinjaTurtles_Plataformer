@@ -7,7 +7,7 @@ public class FloatingText : MonoBehaviour
 
     void Start()
     {
-        Offset = new Vector3(UnityEngine.Random.Range(-.4f, .4f), .5f + UnityEngine.Random.Range(0f, .1f), 0);
+        Offset = new Vector3(UnityEngine.Random.Range(-.4f * 32, .4f * 32), .5f * 32 + UnityEngine.Random.Range(0f, .1f * 32), 0);
         Destroy(gameObject, destroyTime);
         transform.localPosition += Offset;
     }
