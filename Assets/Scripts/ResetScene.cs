@@ -10,7 +10,7 @@ public class ResetScene : MonoBehaviour
     {
         if (Input.GetButtonDown(resetButtonName))
         {
-            SceneManager.LoadScene("Tutorial");
+            SceneManager.LoadScene("Tutorial32");
         }
     }
 }
