@@ -11,7 +11,7 @@ public class LeoAnimation : MonoBehaviour
     private const float movementThreshold = 0.5f; // Threshold for significant movement
     private float movementX;
     private Rigidbody2D rb;
-    public bool isAttacking;
+    public bool isAttacking = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +29,11 @@ public class LeoAnimation : MonoBehaviour
         if (Input.GetButtonDown("Attack"))
         {
             ChangeAnimation("LeoSlashAttack");
-        } 
+        }
 
-        if (Input.GetAxisRaw("Horizontal") < -.01f) if (!isAttacking) FlipAnimation(false);
-        else if (Input.GetAxisRaw("Horizontal") > .01f) if (!isAttacking) FlipAnimation(true);
-        
+        if (Input.GetAxisRaw("Horizontal") < -.01f && !isAttacking) FlipAnimation(false);
+        else if (Input.GetAxisRaw("Horizontal") > .01f && !isAttacking) FlipAnimation(true);
+
     }
 
     private void CheckAnimation()
@@ -63,11 +63,20 @@ public class LeoAnimation : MonoBehaviour
 
     private void FlipAnimation(bool facingRight)
     {
-        if (facingRight != isFacingRight)
+        if (facingRight && !isFacingRight)
         {
-            isFacingRight = facingRight;
+            Debug.Log("FLIP - true");
+            isFacingRight = true;
             Vector3 newScale = transform.localScale;
-            newScale.x *= -1;
+            newScale.x = 1;
+            transform.localScale = newScale;
+        }
+        else if (!facingRight && isFacingRight)
+        {
+            Debug.Log("FLIP - false");
+            isFacingRight = false;
+            Vector3 newScale = transform.localScale;
+            newScale.x = -1;
             transform.localScale = newScale;
         }
     }
