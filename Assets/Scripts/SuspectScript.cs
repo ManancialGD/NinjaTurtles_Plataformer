@@ -70,7 +70,7 @@ public class SuspectScript : MonoBehaviour
             suspectScale = 10f;
         }
 
-        Debug.Log("suspectScale = " + suspectScale);
+        //Debug.Log("suspectScale = " + suspectScale);
 
         // Update updateCooldown timer
         if (updateCooldown > 0f) updateCooldown -= Time.deltaTime;

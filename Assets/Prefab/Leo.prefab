@@ -117,7 +117,7 @@ MonoBehaviour:
   onLeftWall: 0
   wallSide: 0
   wallBoxSize: {x: 3.58, y: 27.19}
-  groundBoxSize: {x: 9.57, y: 2.12}
+  groundBoxSize: {x: 9.39, y: 2.12}
   groundOffset: {x: 0, y: -16.8}
   rightWallOffset: {x: 7.52, y: 0}
   leftWallOffset: {x: -7.52, y: 0}
@@ -368,5 +368,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 10
-  knockback: {x: 200, y: 0}
+  knockbackRight: {x: 200, y: 0}
+  knockbackLeft: {x: -200, y: 0}
   leoAnimation: {fileID: 4296607321782844811}

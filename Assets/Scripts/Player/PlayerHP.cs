@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerHP : MonoBehaviour
 {
+    GameOverGUI gameOverGUIScript;
     public UnityEngine.UI.Image healthBar;
     public Enemy2 enemy2;
     public EnemyShoot enemyShoot;
@@ -20,6 +21,7 @@ public class PlayerHP : MonoBehaviour
 
     void Start()
     {
+        gameOverGUIScript = FindObjectOfType<GameOverGUI>(true);
         playerHealth = 100f;
         healthBar.fillAmount = playerHealth / 100f;
         playerStamina = 0f;
@@ -35,17 +37,19 @@ public class PlayerHP : MonoBehaviour
         if (playerStamina > 100) playerStamina = 100;
     }
 
-    public int DamagePlayer(float damage)
+    public void DamagePlayer(float damage)
     {
+        var before = playerHealth;
         playerHealth -= damage;
         healthBar.fillAmount = playerHealth / 100f;
 
-        if (playerHealth <= 0)
+        Debug.Log($"Before={before}, after={playerHealth}");
+
+        if (playerHealth <= 0f)
         {
             PlayerDied();
         }
         if (FloattingTextPrefab) ShowFloatingText();
-        return 1;
     }
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -61,17 +65,12 @@ public class PlayerHP : MonoBehaviour
             DamagePlayer(damageAmount);
         }
     }
-    int PlayerDied()
+    private void PlayerDied()
     {
-        if (gameObject)
-        {
-            Destroy(gameObject);
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        Debug.Log("Player Died");
+        gameOverGUIScript.ActivateGameOverGUI();
+        Destroy(gameObject);
+
     }
     void ShowFloatingText()
     {
