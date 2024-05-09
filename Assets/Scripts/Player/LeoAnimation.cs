@@ -31,8 +31,8 @@ public class LeoAnimation : MonoBehaviour
             ChangeAnimation("LeoSlashAttack");
         } 
 
-        if (Input.GetAxisRaw("Horizontal") < -.01f) if (!isAttacking) FlipAnimation(false);
-        else if (Input.GetAxisRaw("Horizontal") > .01f) if (!isAttacking) FlipAnimation(true);
+        if (Input.GetAxisRaw("Horizontal") < -.01f && !isAttacking) FlipAnimation(true);
+        else if (Input.GetAxisRaw("Horizontal") > .01f && !isAttacking) FlipAnimation(false);
         
     }
 
@@ -61,14 +61,15 @@ public class LeoAnimation : MonoBehaviour
         }
     }
 
-    private void FlipAnimation(bool facingRight)
+    private void FlipAnimation(bool flip)
     {
-        if (facingRight != isFacingRight)
+        if (flip)
         {
-            isFacingRight = facingRight;
-            Vector3 newScale = transform.localScale;
-            newScale.x *= -1;
-            transform.localScale = newScale;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else if (!flip)
+        {
+            transform.rotation = Quaternion.identity;
         }
     }
 }
