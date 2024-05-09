@@ -49,17 +49,19 @@ public class Enemy_Ranger : MonoBehaviour
 
             if (seeingPlayer)
             {
+                
                 if (!seeingPlayer_History)
                 {
                     attackCooldown = Random.Range(0.4f, 1.5f);
                 }
                 else
                 {
-                    Debug.Log("Seeing Player - 1");
+                    Debug.Log("Ranger - seeing (" + magnitude_distance + ")");
                     if (magnitude_distance <= attackRange) // Attack player
                     {
                         //Debug.Log("Ranger - Shoot Player");
                         shootScript.ShootBullet();
+                        Debug.Log("Ranger - shoot");
                         attackCooldown = Random.Range(attackTime[0], attackTime[1]);
                     }
                 }

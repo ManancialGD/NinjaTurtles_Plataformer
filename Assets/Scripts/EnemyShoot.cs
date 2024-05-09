@@ -48,7 +48,7 @@ public class EnemyShoot : MonoBehaviour
     {
         playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
         (Vector2, float) distance = native.GetDistance(transform.position, playerScript.transform.position);
-
+        /*
         Vector2 normalizedDistance = distance.Item1 / distance.Item2;
 
         float angle = Mathf.Atan2(normalizedDistance.y, normalizedDistance.x) * Mathf.Rad2Deg;
@@ -61,7 +61,13 @@ public class EnemyShoot : MonoBehaviour
 
         angle = angle * Mathf.Deg2Rad;
 
-        rb.velocity = new Vector3(Mathf.Cos(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), Mathf.Sin(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), 0f);
+        //rb.velocity = new Vector3(Mathf.Cos(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), Mathf.Sin(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), 0f);
+        */
+
+        Vector2 shootForce = native.ShootToTarget(200f, transform.position, playerScript.transform.position, 6f);
+        Debug.Log("shootForce - " + shootForce);
+        rb.velocity = shootForce;
+
     }
 
 
@@ -77,4 +83,6 @@ public class EnemyShoot : MonoBehaviour
         // Destroi o objeto ao entrar em colisão com outro objeto
 
     }
+
+    
 }

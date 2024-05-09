@@ -275,5 +275,76 @@ public class NativeInfo : MonoBehaviour
     }
 
     public RaycastHit2D MakeLinecast(Vector2 position, Vector2 direction, float distance, LayerMask contactLayers) => Physics2D.Linecast(position, position + direction * distance, contactLayers);
+    /*
+        def calculate_time(Vx0, x0, y0, xf, yf, g):
+        if yf == y0:
+            return 0.0
+        if g == 0:
+            return abs(yf - y0) / Vx0
+        delta_y = yf - y0
+        delta_x = xf - x0
+        time_horizontal = delta_x / Vx0
+        if delta_y > 0:  # posição final acima da inicial
+            discriminant = Vx0**2 + 2 * g * delta_y
+            time_vertical = (-Vx0 + sqrt(max(0, discriminant))) / g 
+        else:  
+            discriminant = Vx0**2 - 2 * g * delta_y
+            time_vertical = (Vx0 + sqrt(max(0, discriminant))) / g  
+        return max(time_vertical, time_horizontal)
 
+    */
+    public float CalculateProjectileTime(float Vx0, float x0, float y0, float xf, float yf, float g)
+    {
+        // Calcula os deslocamentos vertical e horizontal
+        float delta_y = yf - y0;
+        float delta_x = xf - x0;
+
+        // Calcula o tempo horizontal
+        float time_horizontal = delta_x / Vx0;
+
+        // Calcula o tempo vertical usando a fórmula simplificada para o tempo de queda livre
+        float time_vertical = Mathf.Sqrt(Mathf.Abs(2 * delta_y / g));
+
+        Debug.Log("-Shoot- (Time) = " + Mathf.Max(time_horizontal, time_vertical));
+
+        // Retorna o maior valor entre o tempo vertical e o tempo horizontal
+        return Mathf.Max(time_vertical, time_horizontal);
+    }
+
+
+    /*
+        public Vector2 ShootToTarget(float V0x, Vector2 initialPos, Vector2 finalPos, float gravity)
+        {
+
+            float neededTime = CalculateProjectileTime(V0x, initialPos[0], initialPos[1], finalPos[0], finalPos[1], gravity);
+
+            float ForceX = V0x;
+            float ForceY;
+
+            if (finalPos[0] < initialPos[0]) ForceX = -Mathf.Abs(ForceX);
+            else ForceX = Mathf.Abs(ForceX);
+
+            ForceY = Mathf.Abs((finalPos[1] - initialPos[1]) / neededTime - 0.5f * gravity * neededTime);
+            return new Vector2(ForceX, ForceY);
+        }
+    */
+
+    public Vector2 ShootToTarget(float V0x, Vector2 initialPos, Vector2 finalPos, float gravity)
+    {
+        // Calcula o tempo necessário para percorrer a distância horizontal
+        float horizontalDistance = Mathf.Abs(finalPos.x - initialPos.x);
+        float neededTime = horizontalDistance / V0x;
+
+        // Calcula a velocidade vertical inicial para atingir a posição final, considerando apenas a gravidade
+        float V0y = finalPos.y - initialPos.y / neededTime - 0.5f * gravity * neededTime;
+
+        // Calcula as componentes da força
+        float ForceX = V0x;
+        float ForceY = V0y;
+        //float ForceY = Vy0 + gravity * neededTime; // Subtrai a componente de aceleração devido à gravidade
+        
+
+        // Retorna as componentes da força
+        return new Vector2(ForceX, ForceY);
+    }
 }
