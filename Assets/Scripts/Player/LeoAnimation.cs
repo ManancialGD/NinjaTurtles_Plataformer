@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeoAnimation : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class LeoAnimation : MonoBehaviour
     private const float movementThreshold = 0.5f; // Threshold for significant movement
     private float movementX;
     private Rigidbody2D rb;
+    public bool isAttacking;
 
     // Start is called before the first frame update
     void Start()
@@ -23,24 +26,27 @@ public class LeoAnimation : MonoBehaviour
     {
         movementX = Input.GetAxis("Horizontal");
         CheckAnimation();
+        if (Input.GetButtonDown("Attack"))
+        {
+            ChangeAnimation("LeoSlashAttack");
+        } 
+
+        if (Input.GetAxisRaw("Horizontal") < -.01f) if (!isAttacking) FlipAnimation(false);
+        else if (Input.GetAxisRaw("Horizontal") > .01f) if (!isAttacking) FlipAnimation(true);
+        
     }
 
     private void CheckAnimation()
     {
-        if (Mathf.Abs(movementX) > movementThreshold)
+        if (Mathf.Abs(movementX) > movementThreshold && !isAttacking)
         {
-            if (movementX > 0) // Moving right
-                FlipAnimation(true);
-            else // Moving left
-                FlipAnimation(false);
-
             ChangeAnimation("LeoRun");
         }
-        else if (Mathf.Abs(rb.velocity.x) < 0.1f) // If velocity.x is close to zero
+        else if (Mathf.Abs(rb.velocity.x) < 0.1f && !isAttacking) // If velocity.x is close to zero
         {
             ChangeAnimation("LeoIdle");
         }
-        else
+        else if (!isAttacking)
         {
             ChangeAnimation("LeoWalk"); // Play the walk animation when moving slowly
         }

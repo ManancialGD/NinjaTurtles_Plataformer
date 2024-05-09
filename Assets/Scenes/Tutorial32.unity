@@ -19799,27 +19799,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b4b49984a06184fb8943279fffa360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraFollow: {fileID: 0}
-  playerScript: {fileID: 0}
-  coll: {fileID: 0}
-  anim: {fileID: 0}
-  sprite: {fileID: 0}
-  rb: {fileID: 0}
-  playerAttackCooldown: 0
-  holdOnWallParameter: HoldOnWall
-  canFlip: 1
-  enemyLayer:
-    m_Bits: 0
-  isAttackingLeft: 0
-  wasAttackingLeft: 0
-  combatModeArea: 5
-  todosObjetos: []
-  closestEnemy: {fileID: 0}
-  dir: {x: 0, y: 0}
-  playerInCombatMode: 0
-  isPlayerNPC: 0
-  native: {fileID: 0}
-  playerHP: {fileID: 0}
 --- !u!61 &1012772962
 BoxCollider2D:
   m_ObjectHideFlags: 0
