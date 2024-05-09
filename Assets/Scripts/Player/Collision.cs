@@ -6,6 +6,7 @@ public class Collision : MonoBehaviour
 {
     [Header("Layers")]
     public LayerMask jumpableGround;
+    public LayerMask jumpableWalls;
 
     [Space]
 
@@ -26,11 +27,11 @@ public class Collision : MonoBehaviour
     void Update()
     {
         onGround = Physics2D.OverlapBox((Vector2)transform.position + groundOffset, groundBoxSize, 0f, jumpableGround);
-        onWall = Physics2D.OverlapBox((Vector2)transform.position + leftWallOffset, wallBoxSize, 0f, jumpableGround)
-            || Physics2D.OverlapBox((Vector2)transform.position + rightWallOffset, wallBoxSize, 0f, jumpableGround);
+        onWall = Physics2D.OverlapBox((Vector2)transform.position + leftWallOffset, wallBoxSize, 0f, jumpableWalls)
+            || Physics2D.OverlapBox((Vector2)transform.position + rightWallOffset, wallBoxSize, 0f, jumpableWalls);
 
-        onRightWall = Physics2D.OverlapBox((Vector2)transform.position + rightWallOffset, wallBoxSize, 0f, jumpableGround);
-        onLeftWall = Physics2D.OverlapBox((Vector2)transform.position + leftWallOffset, wallBoxSize, 0f, jumpableGround);
+        onRightWall = Physics2D.OverlapBox((Vector2)transform.position + rightWallOffset, wallBoxSize, 0f, jumpableWalls);
+        onLeftWall = Physics2D.OverlapBox((Vector2)transform.position + leftWallOffset, wallBoxSize, 0f, jumpableWalls);
 
         wallSide = onRightWall ? -1 : 1;
     }

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHP : MonoBehaviour
 {
+    public UnityEngine.UI.Image healthBar;
     public Enemy2 enemy2;
     public EnemyShoot enemyShoot;
     public GameObject FloattingTextPrefab;
@@ -18,6 +21,7 @@ public class PlayerHP : MonoBehaviour
     void Start()
     {
         playerHealth = 100f;
+        healthBar.fillAmount = playerHealth / 100f;
         playerStamina = 0f;
     }
     void Update()
@@ -34,6 +38,7 @@ public class PlayerHP : MonoBehaviour
     public int DamagePlayer(float damage)
     {
         playerHealth -= damage;
+        healthBar.fillAmount = playerHealth / 100f;
 
         if (playerHealth <= 0)
         {
