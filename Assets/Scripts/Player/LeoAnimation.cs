@@ -11,7 +11,7 @@ public class LeoAnimation : MonoBehaviour
     private const float movementThreshold = 0.5f; // Threshold for significant movement
     private float movementX;
     private Rigidbody2D rb;
-    public bool isAttacking;
+    public bool isAttacking = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,7 @@ public class LeoAnimation : MonoBehaviour
         if (Input.GetButtonDown("Attack"))
         {
             ChangeAnimation("LeoSlashAttack");
-        } 
+        }
 
         if (Input.GetAxisRaw("Horizontal") < -.01f && !isAttacking) FlipAnimation(true);
         else if (Input.GetAxisRaw("Horizontal") > .01f && !isAttacking) FlipAnimation(false);
