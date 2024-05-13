@@ -16,7 +16,7 @@ public class Enemy_Ranger : MonoBehaviour
 
     bool seeingPlayer_History;
     bool seeingPlayer;
-    LayerMask layersContact;
+    [SerializeField] int layersContact;
 
 
     void Start()
@@ -26,7 +26,6 @@ public class Enemy_Ranger : MonoBehaviour
         flipped = false;
         native = FindObjectOfType<NativeInfo>();
         suspectScript = GetComponent<SuspectScript>();
-        layersContact = (1 << LayerMask.NameToLayer("jumpableGround")) | (1 << LayerMask.NameToLayer("Player"));
         seeingPlayer_History = true;
     }
 
@@ -40,7 +39,8 @@ public class Enemy_Ranger : MonoBehaviour
             Vector2 playerPos = native.GetSelectedPlayerPosition();
             (Vector2 updatedDistance, float magnitude) = native.GetDistance(transform.position, playerPos);
             magnitude_distance = magnitude;
-            seeingPlayer = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, 320, layersContact).rigidbody.gameObject.CompareTag("Player");
+            RaycastHit2D hit = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, 320, layersContact);
+            if (hit.rigidbody != null && hit.rigidbody.gameObject != null) seeingPlayer = hit.rigidbody.gameObject.CompareTag("Player");
         }
 
         if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
@@ -49,7 +49,7 @@ public class Enemy_Ranger : MonoBehaviour
 
             if (seeingPlayer)
             {
-                
+
                 if (!seeingPlayer_History)
                 {
                     attackCooldown = Random.Range(0.4f, 1.5f);
@@ -70,7 +70,7 @@ public class Enemy_Ranger : MonoBehaviour
 
         if (seeingPlayer)
         {
-            
+
             GameObject playerObj = native.GetPlayerObj(native.currentPlayerID);
 
             if (transform.position.x > playerObj.transform.position.x && flipped)

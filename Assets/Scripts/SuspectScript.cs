@@ -20,7 +20,7 @@ public class SuspectScript : MonoBehaviour
     SpriteRenderer suspectSprite;
     GameObject suspectObj;
     NativeInfo native;
-    float enemyViewDistance = 200f;
+    float enemyViewDistance = 300f;
     EnemyHP enemyHP;
     public Vector2 lastRockDetectedPosition;
 
@@ -55,8 +55,7 @@ public class SuspectScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform == null) return;
-        Debug.Log(gameObject.name);
+
         if (viewedPlayer) playerLastViewCooldown += Time.deltaTime;
 
         if (suspectScale >= 6)
@@ -111,9 +110,9 @@ public class SuspectScript : MonoBehaviour
         //float[] rayAngles = { 180f / 6f * 5f - 90f, 180f / 6f * 4f - 90f, 180f / 6f * 3f - 90f, 180f / 6f * 2f - 90f, 180f / 6f * 1f - 90f };
         //float[] rayAngles = new float[2];
 
-        Debug.Log(choosenLayers);
+        int layerMaskValue = LayerMask.GetMask("Player", "jumpableGround"); //72
 
-        View(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.25f), choosenLayers); // Enemy head
+        View(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.25f), layerMaskValue); // Enemy head
 
         if (playerLastViewCooldown > 3f)
         {
@@ -141,7 +140,7 @@ public class SuspectScript : MonoBehaviour
     public float GetSuspectScale() => suspectScale;
     public float SetSuspectScale(float value) => suspectScale = value;
 
-    private bool View(Vector2 position, LayerMask contactLayers)
+    private bool View(Vector2 position, int contactLayers)
     {
 
         bool playerViewed = false;
@@ -173,11 +172,10 @@ public class SuspectScript : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Linecast(position, position + (direction * enemyViewDistance), contactLayers);
         //RaycastHit2D hit = Physics2D.Raycast(position, direction, contactLayers, 1, 10f);
-        Debug.Log(hit.transform.name);
 
         bool seeingPlayer = false;
-
-        if (hit.rigidbody != null && hit.rigidbody.gameObject.tag == "Player")
+        if (hit.rigidbody != null && hit.rigidbody.gameObject != null) Debug.Log("Hit: " + hit.rigidbody.gameObject.name);
+        if (hit.rigidbody != null && hit.rigidbody.gameObject != null && hit.rigidbody.gameObject.CompareTag("Player"))
         {
             playerViewed = true;
             playerLastViewCooldown = 0f;
@@ -215,7 +213,7 @@ public class SuspectScript : MonoBehaviour
 
             playerViewTime += addedValue * Time.deltaTime; // min: 1 (6 secs) | max: 1.7865 ( 0-6 suspectScale em 6 / 3.358 sec )
         }
-        Debug.DrawRay(position, direction * 320f, rayColor);
+        Debug.DrawRay(position, direction * enemyViewDistance, rayColor);
 
         return playerViewed;
     }
