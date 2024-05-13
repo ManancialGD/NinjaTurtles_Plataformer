@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class LeoAnimation : MonoBehaviour
 {
+    Collision coll;
     private Animator anim;
     private Player player;
     private string currentAnimation;
@@ -19,6 +20,7 @@ public class LeoAnimation : MonoBehaviour
         anim = GetComponent<Animator>();
         player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collision>();
     }
 
     // Update is called once per frame
@@ -40,7 +42,19 @@ public class LeoAnimation : MonoBehaviour
 
     private void CheckAnimation()
     {
-        if (Mathf.Abs(movementX) > movementThreshold && !isAttacking)
+        if (rb.velocity.y > .01f && coll.isNearGround)
+        {
+            ChangeAnimation("LeoJump");
+        }
+        else if (rb.velocity.y > .01f || rb.velocity.y < -.01f && !coll.isNearGround)
+        {
+            ChangeAnimation("LeoAirRoll");
+        }
+        else if (rb.velocity.y < -.01f)
+        {
+            ChangeAnimation("LeoFall");
+        }
+        else if (Mathf.Abs(movementX) > movementThreshold && !isAttacking)
         {
             ChangeAnimation("LeoRun");
         }
@@ -52,6 +66,8 @@ public class LeoAnimation : MonoBehaviour
         {
             ChangeAnimation("LeoWalk"); // Play the walk animation when moving slowly
         }
+
+
     }
 
     private void ChangeAnimation(string newAnimation)
