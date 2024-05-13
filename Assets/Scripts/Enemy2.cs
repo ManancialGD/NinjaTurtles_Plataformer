@@ -79,8 +79,11 @@ public class Enemy2 : MonoBehaviour
             return;
         }
 
-        FollowPlayer();
-        AttackPlayer_Event();
+        if (suspectScript.GetSuspectScale() > 6f)
+        {
+            FollowPlayer();
+            AttackPlayer_Event();
+        }
         GroundFriction();
     }
 

@@ -12,8 +12,7 @@ public class SuspectScript : MonoBehaviour
     Vector2 initialPosition;
     private LayerMask groundLayer;
 
-    [SerializeField]
-    private LayerMask choosenLayers;
+    [SerializeField] LayerMask choosenLayers;
 
     float suspectScale = 0f; // (0f - 3f - 6f - 10f)
     float updateCooldown = 0f;
@@ -21,7 +20,7 @@ public class SuspectScript : MonoBehaviour
     SpriteRenderer suspectSprite;
     GameObject suspectObj;
     NativeInfo native;
-    float enemyViewDistance = 320f;
+    float enemyViewDistance = 200f;
     EnemyHP enemyHP;
     public Vector2 lastRockDetectedPosition;
 
@@ -57,6 +56,7 @@ public class SuspectScript : MonoBehaviour
     void Update()
     {
         if (transform == null) return;
+        Debug.Log(gameObject.name);
         if (viewedPlayer) playerLastViewCooldown += Time.deltaTime;
 
         if (suspectScale >= 6)
@@ -111,8 +111,9 @@ public class SuspectScript : MonoBehaviour
         //float[] rayAngles = { 180f / 6f * 5f - 90f, 180f / 6f * 4f - 90f, 180f / 6f * 3f - 90f, 180f / 6f * 2f - 90f, 180f / 6f * 1f - 90f };
         //float[] rayAngles = new float[2];
 
+        Debug.Log(choosenLayers);
 
-        View(new Vector2(transform.position.x, transform.position.y + 0.25f), choosenLayers); // Enemy head
+        View(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.25f), choosenLayers); // Enemy head
 
         if (playerLastViewCooldown > 3f)
         {
@@ -170,9 +171,9 @@ public class SuspectScript : MonoBehaviour
         float magnitude = native.GetDistance(playerPos, position).Item2;
         Vector2 direction = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad));
 
-        RaycastHit2D hit = Physics2D.Linecast(position, position + direction * enemyViewDistance, contactLayers);
+        RaycastHit2D hit = Physics2D.Linecast(position, position + (direction * enemyViewDistance), contactLayers);
         //RaycastHit2D hit = Physics2D.Raycast(position, direction, contactLayers, 1, 10f);
-        //Debug.Log(hit.transform);
+        Debug.Log(hit.transform.name);
 
         bool seeingPlayer = false;
 
