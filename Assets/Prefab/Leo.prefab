@@ -123,8 +123,8 @@ MonoBehaviour:
   rightWallOffset: {x: 7.52, y: 0}
   leftWallOffset: {x: -7.52, y: 0}
   attackCollision: {x: 0, y: 0}
-  nearGroundOffset: {x: 0.5, y: 50}
-  nearGroundBoxSize: {x: 0.5, y: 50}
+  nearGroundOffset: {x: 0.5, y: -35.6}
+  nearGroundBoxSize: {x: 0.5, y: 42.1}
   debugCollisionColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!212 &3670731983465957951
 SpriteRenderer:
@@ -146,7 +146,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2b1d0785b730d5f4aada23a625813831, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,7 +203,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &937131195470127001
 CapsuleCollider2D:
