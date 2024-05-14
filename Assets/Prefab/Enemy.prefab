@@ -413,6 +413,7 @@ MonoBehaviour:
   attackTime:
   - 2
   - 4
+  layersContact: 72
 --- !u!114 &188202118249310329
 MonoBehaviour:
   m_ObjectHideFlags: 0
