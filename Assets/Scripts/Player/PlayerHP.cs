@@ -66,10 +66,7 @@ public class PlayerHP : MonoBehaviour
     private void PlayerDied()
     {
         SceneManager.LoadScene("GameOver");
-        Debug.Log("Player Died");
-        Destroy(gameObject);
-        
-
+        Debug.Log("Player Died");      
     }
     void ShowFloatingText()
     {
