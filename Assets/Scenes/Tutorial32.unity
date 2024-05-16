@@ -895,7 +895,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 188202118249310329, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: choosenLayers.m_Bits
-      value: 64
+      value: 584
       objectReference: {fileID: 0}
     - target: {fileID: 5470069968321341843, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21245,7 +21245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 749159620577409699, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: choosenLayers.m_Bits
-      value: 64
+      value: 584
       objectReference: {fileID: 0}
     - target: {fileID: 890562569084857483, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: m_Name
@@ -21574,6 +21574,10 @@ PrefabInstance:
     - target: {fileID: 6617474206497473321, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_GravityScale
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6617474206497473321, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: enemy2
