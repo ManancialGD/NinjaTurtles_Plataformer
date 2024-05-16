@@ -110,7 +110,7 @@ public class SuspectScript : MonoBehaviour
         //float[] rayAngles = { 180f / 6f * 5f - 90f, 180f / 6f * 4f - 90f, 180f / 6f * 3f - 90f, 180f / 6f * 2f - 90f, 180f / 6f * 1f - 90f };
         //float[] rayAngles = new float[2];
 
-        int layerMaskValue = LayerMask.GetMask("Player", "jumpableGround"); //72
+        int layerMaskValue = LayerMask.GetMask("Player", "jumpableGround",  "jumpableWalls"); 
 
         View(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.25f), layerMaskValue); // Enemy head
 
