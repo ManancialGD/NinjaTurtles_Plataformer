@@ -8,6 +8,7 @@ public class PlayerHP : MonoBehaviour
 {
     public UnityEngine.UI.Image healthBar;
     public UnityEngine.UI.Image staminaBar;
+    Player player;
     public Enemy2 enemy2;
     public EnemyShoot enemyShoot;
     public GameObject FloattingTextPrefab;
@@ -21,9 +22,10 @@ public class PlayerHP : MonoBehaviour
 
     void Start()
     {
+        player = GetComponent<Player>();
         playerHealth = 100f;
         healthBar.fillAmount = playerHealth / 100f;
-        playerStamina = 0f;
+        playerStamina = 100f;
     }
     void Update()
     {
@@ -32,8 +34,16 @@ public class PlayerHP : MonoBehaviour
             if (gameObject) PlayerDied();
             return;
         }
-        if (playerStamina < 100) playerStamina += Time.deltaTime * 10f; //  10 / sec  |  FULL / 10sec
-        if (playerStamina > 100) playerStamina = 100;
+        if (playerStamina < 100 && !player.isPlayerAttacking)
+        {
+            playerStamina += Time.deltaTime * 25f; //  10 / sec  |  FULL / 10sec
+            staminaBar.fillAmount = playerStamina/100f;
+        }
+        if (playerStamina > 100)
+        {
+            playerStamina = 100;
+            staminaBar.fillAmount = 1;
+        }
     }
 
     public void DamagePlayer(float damage)
@@ -83,6 +93,11 @@ public class PlayerHP : MonoBehaviour
     {
         playerStamina -= stamina;
         staminaBar.fillAmount = stamina / 100f;
-        if (playerStamina < 0) playerStamina = 0; staminaBar.fillAmount = 0f;
+        if (playerStamina < 0) 
+        {
+            playerStamina = 0; 
+            staminaBar.fillAmount = 0f;
+        }
+
     }
 }

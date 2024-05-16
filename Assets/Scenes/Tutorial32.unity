@@ -897,6 +897,10 @@ PrefabInstance:
       propertyPath: choosenLayers.m_Bits
       value: 584
       objectReference: {fileID: 0}
+    - target: {fileID: 3193924946443966639, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: health
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 5470069968321341843, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: m_LocalPosition.x
       value: 553
@@ -21539,6 +21543,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5900050123916188917, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      propertyPath: health
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 6620105168819788184, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -21727,6 +21735,10 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
       value: -0.24604285
       objectReference: {fileID: 0}
+    - target: {fileID: 211582633077952753, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3670731983465957951, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_FlipY
       value: 0
@@ -21856,6 +21868,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4516696517550643802, guid: 1f7c8bbb029640941bea20402fc7d6c0, type: 3}
     - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: staminaBar
+      value: 
+      objectReference: {fileID: 1743458363}
+    - target: {fileID: 6787046911274386625, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: PlayerHealth
       value: 50
       objectReference: {fileID: 0}
@@ -21918,6 +21934,10 @@ PrefabInstance:
     - target: {fileID: 7421136128042834879, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: knockbackRight.y
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039194638745206637, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
+      propertyPath: stabVelocityLeft.x
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 8198336051422378985, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_LocalPosition.x
