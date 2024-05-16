@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerHP : MonoBehaviour
 {
     public UnityEngine.UI.Image healthBar;
+    public UnityEngine.UI.Image staminaBar;
     public Enemy2 enemy2;
     public EnemyShoot enemyShoot;
     public GameObject FloattingTextPrefab;
@@ -81,6 +82,7 @@ public class PlayerHP : MonoBehaviour
     public void ConsumeStamina(float stamina)
     {
         playerStamina -= stamina;
-        if (playerStamina < 0) playerStamina = 0;
+        staminaBar.fillAmount = stamina / 100f;
+        if (playerStamina < 0) playerStamina = 0; staminaBar.fillAmount = 0f;
     }
 }

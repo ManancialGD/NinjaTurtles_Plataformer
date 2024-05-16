@@ -28,15 +28,9 @@ public class LeoAnimation : MonoBehaviour
     {
         movementX = Input.GetAxis("Horizontal");
         CheckAnimation();
-        if (Input.GetButtonDown("Attack"))
-        {
-            ChangeAnimation("LeoSlashAttack");
-        }
 
-
-
-        if (rb.velocity.x < -.1f && !isAttacking) FlipAnimation(true);
-        else if (rb.velocity.x > .1f && !isAttacking) FlipAnimation(false);
+        if (movementX < -.1f && !isAttacking) FlipAnimation(true);
+        else if (movementX > .1f && !isAttacking) FlipAnimation(false);
         
     }
 
@@ -70,11 +64,12 @@ public class LeoAnimation : MonoBehaviour
 
     }
 
-    private void ChangeAnimation(string newAnimation)
+    public void ChangeAnimation(string newAnimation)
     {
-        if (currentAnimation != newAnimation)
+        if (currentAnimation != newAnimation && !isAttacking)
         {
             currentAnimation = newAnimation;
+            Debug.Log("playing now: " + newAnimation);
             anim.Play(newAnimation);
         }
     }
