@@ -13,7 +13,7 @@ public class RockScript : MonoBehaviour
 
     bool collided = false;
 
-    float suspectDistance = 7f;
+    float suspectDistance = 150f;
 
     public
     void Start()
@@ -39,7 +39,7 @@ public class RockScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         List<(GameObject, float)> enemiesDistances = native.GetEnemiesDistances(transform.position);
-
+        Debug.Log("colisao");
         for (int i = 0; i < enemiesDistances.Count; i++)
         {
             GameObject enemy = enemiesDistances[i].Item1;
@@ -62,7 +62,7 @@ public class RockScript : MonoBehaviour
                 {
                     SuspectScript suspectScript = GetComponent<SuspectScript>();
                     if (collided) suspectScript.Suspect(distance * 10f, suspectDistance, transform.position);
-                    suspectScript.Suspect(distance, suspectDistance, transform.position);
+                    else suspectScript.Suspect(distance, suspectDistance, transform.position);
                 }
                 else
                 {

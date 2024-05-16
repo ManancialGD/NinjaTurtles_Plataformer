@@ -10,7 +10,8 @@ public class Enemy2 : MonoBehaviour
     float airAttacking = 0f;
     bool onGround;
     public LayerMask playerLayer;
-    static float groundFriction = 0.99f;
+    static float groundFriction = 0.9f;
+    [SerializeField] private float attackArea;
     PlayerHP playerHPScript;
     Player playerScript;
     Rigidbody2D rb;
@@ -84,6 +85,8 @@ public class Enemy2 : MonoBehaviour
             FollowPlayer();
             AttackPlayer_Event();
         }
+
+
         GroundFriction();
     }
 
@@ -92,6 +95,12 @@ public class Enemy2 : MonoBehaviour
         //Debug.Log("ENEMY UN - " + enemyHP.GetEnemyUnconsciousCooldown());
         float distanceX;
         float distanceY;
+        bool freezeEnemy = false;
+        if (native.GetDistance(transform.position, playerRB.position).Item2 < DistanceArea && suspectScript.GetSuspectScale() > 6f)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            freezeEnemy = true;
+        }
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return;
         else if (suspectScript.GetSuspectScale() >= 3f && suspectScript.GetSuspectScale() < 6f)
         {
@@ -109,8 +118,9 @@ public class Enemy2 : MonoBehaviour
 
         if (Mathf.Abs(distanceX) + Mathf.Abs(distanceY) > 0.4f) sprite.flipX = distanceX < 0; // para não alterar a direção quando pára
 
-        if (Mathf.Abs(distanceX) > DistanceArea)
+        if (Mathf.Abs(distanceX) > DistanceArea || suspectScript.GetSuspectScale() < 6f)
         {
+            Debug.Log("MOVE");
             if (distanceX < 0)
             {
                 if (rb.velocity.x - EnemyAcceleration <= -EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(-EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
@@ -139,8 +149,7 @@ public class Enemy2 : MonoBehaviour
                 }
 
             }
-
-            rb.velocity = new Vector2(distanceX / Mathf.Abs(distanceX) * EnemySpeed * 0f, climpForce); // caso a formula seja necessária futuramente
+            if (!freezeEnemy) rb.velocity = new Vector2(distanceX / Mathf.Abs(distanceX) * EnemySpeed * 0f, climpForce); // caso a formula seja necessária futuramente
         }
         else
         {
@@ -164,8 +173,13 @@ public class Enemy2 : MonoBehaviour
     private int AttackPlayer_Event()
     {
         if (enemyHP.GetEnemyUnconsciousCooldown() > 0f) return 0;
-        inAttackZone = Physics2D.OverlapBox((Vector2)transform.position, new Vector2(1f, 0f), 0f, playerLayer);
+        //inAttackZone = Physics2D.OverlapBox((Vector2)transform.position, new Vector2(1f, 0f), 0f, playerLayer);
 
+        Vector2 realDistance = native.GetDistance(transform.position, playerRB.transform.position).Item1;
+        float magnitude = native.GetDistance(transform.position, playerRB.transform.position).Item2;
+
+        if (magnitude <= attackArea) inAttackZone = true;
+        else inAttackZone = false;
         if (inAttackZone && canAttack && !isAttacking)
         {
             sprite.flipX = playerRB.position.x - rb.position.x < 0;
