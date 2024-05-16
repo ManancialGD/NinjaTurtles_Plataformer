@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerHP : MonoBehaviour
 {
-    GameOverGUI gameOverGUIScript;
     public UnityEngine.UI.Image healthBar;
     public Enemy2 enemy2;
     public EnemyShoot enemyShoot;
@@ -20,7 +20,6 @@ public class PlayerHP : MonoBehaviour
 
     void Start()
     {
-        gameOverGUIScript = FindObjectOfType<GameOverGUI>(true);
         playerHealth = 100f;
         healthBar.fillAmount = playerHealth / 100f;
         playerStamina = 0f;
@@ -66,9 +65,10 @@ public class PlayerHP : MonoBehaviour
     }
     private void PlayerDied()
     {
+        SceneManager.LoadScene("GameOver");
         Debug.Log("Player Died");
-        gameOverGUIScript.ActivateGameOverGUI();
         Destroy(gameObject);
+        
 
     }
     void ShowFloatingText()
