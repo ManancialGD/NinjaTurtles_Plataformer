@@ -73,7 +73,6 @@ public class ThrowRockScript : MonoBehaviour
         */
 
         Vector2 maxDistance = new Vector2(100f * Mathf.Cos(angularInclination * Mathf.Deg2Rad), 100f * Mathf.Sin(angularInclination * Mathf.Deg2Rad));
-        Debug.Log(maxDistance);
 
         if (distance.x > 0 && distance.x > maxDistance.x) distance = new Vector2(maxDistance.x, distance.y);
         else if (distance.x < 0 && distance.x < maxDistance.x) distance = new Vector2(maxDistance.x, distance.y);
@@ -149,7 +148,7 @@ public class ThrowRockScript : MonoBehaviour
         spriteRenderer.color = Color.white;
         aim.transform.localScale = new Vector3(9.6f, 9.6f);
         collider.radius = 0.1f;
-        colliderDetector.radius = 0.15f;
+        colliderDetector.radius = 0.3f;
         colliderDetector.isTrigger = true;
         collider.excludeLayers = native.GetPlayerLayerMask();
         collider.sharedMaterial = native.rockMaterial;

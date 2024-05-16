@@ -130,10 +130,12 @@ public class SuspectScript : MonoBehaviour
         updateCooldown = 2f;
         if (distance <= maxDistance)
         {
-            suspectScale += Mathf.Abs(distance - maxDistance);
-            if (suspectScale > maxDistance) suspectScale = maxDistance;
+            suspectScale += Mathf.Abs((maxDistance - distance) / 10);
+            if (suspectScale > 10) suspectScale = 10;
         }
         lastRockDetectedPosition = collisionPosition;
+        Debug.Log("SUSPECT: " + distance + " | " + maxDistance);
+        Debug.Log("suspectScale = " + suspectScale);
         return;
     }
 
