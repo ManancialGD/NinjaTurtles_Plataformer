@@ -14,10 +14,11 @@ public class Attacks : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        // initiate scripts
         player = FindObjectOfType<Player>();
         leoAttacks = FindObjectOfType<LeoAttacks>();
-        
 
+        // setup veriables
         leoAttacks.isAttacking = true;
         player.canMove = false;
     }
@@ -33,24 +34,22 @@ public class Attacks : StateMachineBehaviour
         float currentTime = stateInfo.normalizedTime * animationLength; // Current time in the animation
         int currentFrame = Mathf.FloorToInt(currentTime / frameDuration); // Current frame index
 
-        // Debug log to see the current frame
-        //Debug.Log("Current Frame: " + currentFrame);
 
         // Actions based on specific frames
 
         if (currentFrame == 2) // At frame 2
         {
-            attackCollisionActivator.animationAttackType = attackType;
+            attackCollisionActivator.animationAttackType = attackType; // Will activate the collider, sending the code to AttaclCollisionActivator.cs, so it knows which collider to activate.
         }
         
         if (currentFrame == 3) // At frame 3
         {
-            attackCollisionActivator.animationAttackType = 0;
+            attackCollisionActivator.animationAttackType = 0; // This will make AttackCollisionActivator.cs desactivate the collider.
         }
 
         if (currentFrame == 6) // At frame 6
         {
-            leoAttacks.isAttacking = false;
+            leoAttacks.isAttacking = false; // attacking is false if it reach the end of the animation
         }
         
     }
@@ -58,10 +57,12 @@ public class Attacks : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        leoAttacks.isAttacking = false; // Ensure isAttacking is false when exiting the state
+        // Setting up variables
+        leoAttacks.isAttacking = false;
         if (leoAttacks.hasHit) leoAttacks.hasHit = false;
         if (!player.canMove) player.canMove = true;
     }
+
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
