@@ -9,13 +9,19 @@ public class LeoAttacks : MonoBehaviour
     Rigidbody2D rb;
     Collision coll;
     LeoAnimation anim;
-    
+
     [SerializeField] private Vector2 slashAttackVelocity = new Vector2();
     [SerializeField] private Vector2 slashAttackVelocityLeft = new Vector2();
     [SerializeField] private Vector2 stabVelocity = new Vector2();
     [SerializeField] private Vector2 stabVelocityLeft = new Vector2();
+    [SerializeField] private Vector2 upperCutVelocity = new Vector2();
+    [SerializeField] private Vector2 upperCutVelocityLeft = new Vector2();
     [SerializeField] private Vector2 groundSlamVelocity = new Vector2();
-    // Start is called before the first frame update
+
+
+    public bool isAttacking;
+    public bool hasHit = false;
+
     void Start()
     {
         player = GetComponent<Player>();
@@ -25,27 +31,46 @@ public class LeoAttacks : MonoBehaviour
         hp = GetComponent<PlayerHP>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Attack") && ( Input.GetAxis("Horizontal") > .01f || Input.GetAxis("Horizontal") < -.01f ) && coll.onGround && !player.isPlayerAttacking && hp.playerStamina >= 25f)
+        if (Input.GetKeyDown(KeyCode.G)) anim.ChangeAnimation("LeoIdle");
+        Debug.Log(!isAttacking || hasHit);
+        if (Input.GetButtonDown("Attack") && hp.playerStamina >= 25f)
         {
-            anim.ChangeAnimation("LeoStab");
-            hp.ConsumeStamina(25);
-            if (anim.isFacingRight && !anim.isAttacking) rb.velocity += stabVelocity;
-            else if (!anim.isAttacking) rb.velocity += stabVelocityLeft;
+            if(!isAttacking || hasHit)
+            {    
+                if (coll.onGround)
+                {
+                    if (Input.GetAxis("Vertical") < -.01f && (!isAttacking || hasHit))
+                    {
+                        ExecuteAttack("LeoUpperCut", upperCutVelocity, upperCutVelocityLeft);
+                    }
+                    else if (( Input.GetAxis("Horizontal") > .01f || Input.GetAxis("Horizontal") < -.01f ) && (!isAttacking || hasHit))
+                    {
+                        ExecuteAttack("LeoStab", stabVelocity, stabVelocityLeft);
+                    }
+                    else if (!isAttacking || hasHit)
+                    {
+                        ExecuteAttack("LeoSlashAttack", slashAttackVelocity, slashAttackVelocityLeft);
+                    }
+                    /*else if (Input.GetButtonDown("Attack") && Input.GetAxis("Vertical") < 0 && !coll.isNearGround)
+                    {
+                        ExecuteAttack("LeoSlashAttack", groundSlamVelocity, Vector2.zero); // Groundslam
+                    }*/
+                }
+            }
         }
-        if (Input.GetButtonDown("Attack") && coll.onGround && !player.isPlayerAttacking && hp.playerStamina >= 25f)
-        {
-            anim.ChangeAnimation("LeoSlashAttack");
-            hp.ConsumeStamina(25);
-            if (anim.isFacingRight && !anim.isAttacking) rb.velocity += slashAttackVelocity;
-            else if (!anim.isAttacking) rb.velocity += slashAttackVelocityLeft;
-        }
-        /*else if (Input.GetButtonDown("Attack") && Input.GetAxis("Vertical") < 0 && !coll.isNearGround)
-        {
-            anim.ChangeAnimation("LeoSlashAttack");
-            if (!anim.isAttacking && !coll.isNearGround) rb.velocity += groundSlamVelocity;
-        }*/ // THIS IS FOR THE GROUND SLAM, NOT WORKING CUZ DON'T HAVE THE ANIMATIONS FOR IT YET
+    }
+
+    void ExecuteAttack(string animationName, Vector2 velocityRight, Vector2 velocityLeft)
+    {
+        anim.ChangeAnimation(animationName);
+        hp.ConsumeStamina(25);
+        if (anim.isFacingRight && (!isAttacking)) rb.velocity += velocityRight;
+        else if (!isAttacking) rb.velocity += velocityLeft;
+    }
+    public void FinishAttack()
+    {
+        if (hasHit) hasHit = false;
     }
 }

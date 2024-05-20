@@ -8,25 +8,26 @@ public class DetectAndDamageEnemy : MonoBehaviour
     [SerializeField] private Vector2 knockbackRight = new Vector2(200, 0);
     [SerializeField] private Vector2 knockbackLeft = new Vector2(-200, 0);
     [SerializeField] LeoAnimation leoAnimation;
+    [SerializeField] LeoAttacks attacks;
 
-    private void Start() {
+    private void Start()
+    {
         leoAnimation = FindObjectOfType<LeoAnimation>();
+        attacks = FindObjectOfType<LeoAttacks>();
     }
 
-    // This method is called when another collider enters this collider's trigger
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the other collider has an EnemyHP component
         EnemyHP enemyHP = other.GetComponent<EnemyHP>();
         if (enemyHP != null)
         {
-            // Check if leoAnimation is initialized
             if (leoAnimation != null)
             {
                 if (leoAnimation.isFacingRight) enemyHP.TakeDamage(damageAmount, knockbackRight, 1f);
                 else enemyHP.TakeDamage(damageAmount, knockbackLeft, 1f);
             }
-            
+
+            attacks.hasHit = true;
         }
     }
 }

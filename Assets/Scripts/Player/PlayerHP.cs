@@ -9,6 +9,7 @@ public class PlayerHP : MonoBehaviour
     public UnityEngine.UI.Image healthBar;
     public UnityEngine.UI.Image staminaBar;
     Player player;
+    LeoAttacks leoAttacks;
     public Enemy2 enemy2;
     public EnemyShoot enemyShoot;
     public GameObject FloattingTextPrefab;
@@ -17,11 +18,17 @@ public class PlayerHP : MonoBehaviour
     public float playerHealth;
     public float playerStamina;
 
+    [Space]
+
+    [Header("Bools")]
+    [SerializeField] private bool infStamina = false;
+
 
     private float damageAmount;
 
     void Start()
     {
+        leoAttacks = GetComponent<LeoAttacks>();
         player = GetComponent<Player>();
         playerHealth = 100f;
         healthBar.fillAmount = playerHealth / 100f;
@@ -34,7 +41,7 @@ public class PlayerHP : MonoBehaviour
             if (gameObject) PlayerDied();
             return;
         }
-        if (playerStamina < 100 && !player.isPlayerAttacking)
+        if (playerStamina < 100 && !leoAttacks.isAttacking)
         {
             playerStamina += Time.deltaTime * 25f; //  10 / sec  |  FULL / 10sec
             staminaBar.fillAmount = playerStamina/100f;
@@ -91,6 +98,7 @@ public class PlayerHP : MonoBehaviour
 
     public void ConsumeStamina(float stamina)
     {
+        if (infStamina) return;
         playerStamina -= stamina;
         staminaBar.fillAmount = stamina / 100f;
         if (playerStamina < 0) 

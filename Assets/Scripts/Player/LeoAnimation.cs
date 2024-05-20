@@ -6,17 +6,18 @@ public class LeoAnimation : MonoBehaviour
     Collision coll;
     private Animator anim;
     private Player player;
+    private LeoAttacks leoAttacks;
     private string currentAnimation;
     public bool isFacingRight { get; private set; }
     private const float movementThreshold = 0.5f; // Threshold for significant movement
     private float movementX;
     private Rigidbody2D rb;
-    public bool isAttacking = false;
 
     // Start is called before the first frame update
     void Start()
     {
         isFacingRight = true;
+        leoAttacks = GetComponent<LeoAttacks>();
         anim = GetComponent<Animator>();
         player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
@@ -29,34 +30,34 @@ public class LeoAnimation : MonoBehaviour
         movementX = Input.GetAxis("Horizontal");
         CheckAnimation();
 
-        if (movementX < -.1f && !isAttacking) FlipAnimation(true);
-        else if (movementX > .1f && !isAttacking) FlipAnimation(false);
+        if (movementX < -.1f && !leoAttacks.isAttacking) FlipAnimation(true);
+        else if (movementX > .1f && !leoAttacks.isAttacking) FlipAnimation(false);
         
     }
 
     private void CheckAnimation()
     {
-        if (rb.velocity.y > .01f && coll.isNearGround)
+        if (rb.velocity.y > .01f && coll.isNearGround && !leoAttacks.isAttacking)
         {
             ChangeAnimation("LeoJump");
         }
-        else if (rb.velocity.y > .01f || rb.velocity.y < -.01f && !coll.isNearGround)
+        else if ((rb.velocity.y > .01f || rb.velocity.y < -.01f) && !coll.isNearGround && !leoAttacks.isAttacking)
         {
             ChangeAnimation("LeoAirRoll");
         }
-        else if (rb.velocity.y < -.01f)
+        else if (rb.velocity.y < -.01f && !leoAttacks.isAttacking)
         {
             ChangeAnimation("LeoFall");
         }
-        else if (Mathf.Abs(movementX) > movementThreshold && !isAttacking)
+        else if (Mathf.Abs(movementX) > movementThreshold && !leoAttacks.isAttacking)
         {
             ChangeAnimation("LeoRun");
         }
-        else if (Mathf.Abs(rb.velocity.x) < 0.1f && !isAttacking) // If velocity.x is close to zero
+        else if (Mathf.Abs(rb.velocity.x) < 0.1f && !leoAttacks.isAttacking) // If velocity.x is close to zero
         {
             ChangeAnimation("LeoIdle");
         }
-        else if (!isAttacking)
+        else if (!leoAttacks.isAttacking)
         {
             ChangeAnimation("LeoWalk"); // Play the walk animation when moving slowly
         }
@@ -66,10 +67,9 @@ public class LeoAnimation : MonoBehaviour
 
     public void ChangeAnimation(string newAnimation)
     {
-        if (currentAnimation != newAnimation && !isAttacking)
+        if (currentAnimation != newAnimation)
         {
             currentAnimation = newAnimation;
-            Debug.Log("playing now: " + newAnimation);
             anim.Play(newAnimation);
         }
     }

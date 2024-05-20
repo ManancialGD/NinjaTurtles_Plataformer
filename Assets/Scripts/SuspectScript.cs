@@ -176,7 +176,6 @@ public class SuspectScript : MonoBehaviour
         //RaycastHit2D hit = Physics2D.Raycast(position, direction, contactLayers, 1, 10f);
 
         bool seeingPlayer = false;
-        if (hit.rigidbody != null && hit.rigidbody.gameObject != null) Debug.Log("Hit: " + hit.rigidbody.gameObject.name);
         if (hit.rigidbody != null && hit.rigidbody.gameObject != null && hit.rigidbody.gameObject.CompareTag("Player"))
         {
             playerViewed = true;

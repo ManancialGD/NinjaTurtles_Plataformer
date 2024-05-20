@@ -95,7 +95,6 @@ public class EnemyHP : MonoBehaviour
 
     void ShowFloatingText()
     {
-        Debug.Log("Floating text spawned");
         Vector3 textPosition = new Vector3(transform.position.x, transform.position.y, -5f);
         var go = Instantiate(FloattingTextPrefab, textPosition, Quaternion.identity, transform);
         go.GetComponent<TextMesh>().text = damageAmount.ToString();

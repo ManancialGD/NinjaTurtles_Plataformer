@@ -59,7 +59,6 @@ public class Player : MonoBehaviour
     private Collision collisionScript;
     int layerId;
     Vector2 dir_History = new Vector2(0f, 0f);
-    public bool isPlayerAttacking = false;
     public bool isPlayerDownAttacking;
     public int airAttack_Down_Damage;
     BasicPlayerParticles basicPlayerParticles;
@@ -69,6 +68,8 @@ public class Player : MonoBehaviour
     public Vector2 dir;
     bool playerDashing = false;
 
+    LeoAttacks leoAttacks;
+
 
     bool loaded;
 
@@ -77,7 +78,8 @@ public class Player : MonoBehaviour
         loaded = false;
         native = FindObjectOfType<NativeInfo>();
         UpdatePlayerInfo(thisPlayerID);
-
+        
+        leoAttacks = GetComponent<LeoAttacks>();
 
         layerId = LayerMask.NameToLayer("Enemys");
         playerSpeed = new Vector2(groundAcceleration, 0f);
@@ -251,7 +253,7 @@ public class Player : MonoBehaviour
 
     private void Move(Vector2 dir)
     {
-        if (!canMove || isPlayerAttacking) return;
+        if (!canMove || leoAttacks.isAttacking) return;
 
         if (native.isPlayerAttachToAnyLamp())
         {
@@ -344,7 +346,7 @@ public class Player : MonoBehaviour
     private void Jump(float yForce)
     {
 
-        if (!isPlayerAttacking && jumped <= 0)
+        if (!leoAttacks.isAttacking && jumped <= 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, yForce);
 
@@ -423,18 +425,6 @@ public class Player : MonoBehaviour
     public int GetDamage()
     {
         return damageAmount;
-    }
-
-
-    public void EnablePlayerAttack()
-    {
-        isPlayerAttacking = true;
-        return;
-    }
-    public void DisablePlayerAttack()
-    {
-        isPlayerAttacking = false;
-        return;
     }
 
     public Vector2 GetPlayerPosition()
