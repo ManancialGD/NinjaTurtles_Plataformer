@@ -31,27 +31,28 @@ public class LeoAttacks : MonoBehaviour
         hp = GetComponent<PlayerHP>();
     }
 
+    /// <summary>
+    /// Check Inputs for playing the right attack animations and aplying the right velocities
+    /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G)) anim.ChangeAnimation("LeoIdle");
-        Debug.Log(!isAttacking || hasHit);
-        if (Input.GetButtonDown("Attack") && hp.playerStamina >= 25f)
+        if (Input.GetButtonDown("Attack") && hp.playerStamina >= 25f) // Needs 25 Stamina to attack
         {
-            if(!isAttacking || hasHit)
+            if(!isAttacking || hasHit) // If is already attacking, can't attack again. BUT only if the attack hit.
             {    
                 if (coll.onGround)
                 {
-                    if (Input.GetAxis("Vertical") < -.01f && (!isAttacking || hasHit))
+                    if (Input.GetAxis("Vertical") < -.01f) // Check if player is pressing "S"
                     {
-                        ExecuteAttack("LeoUpperCut", upperCutVelocity, upperCutVelocityLeft);
+                        ExecuteAttack("LeoUpperCut", upperCutVelocity, upperCutVelocityLeft); // UpperCut Attack
                     }
-                    else if (( Input.GetAxis("Horizontal") > .01f || Input.GetAxis("Horizontal") < -.01f ) && (!isAttacking || hasHit))
+                    else if ( Input.GetAxis("Horizontal") > .01f || Input.GetAxis("Horizontal") < -.01f ) // Check if player is pressing "a" or "d"
                     {
-                        ExecuteAttack("LeoStab", stabVelocity, stabVelocityLeft);
+                        ExecuteAttack("LeoStab", stabVelocity, stabVelocityLeft); // Stab Attack
                     }
-                    else if (!isAttacking || hasHit)
+                    else // if is not pressing left/right nor down
                     {
-                        ExecuteAttack("LeoSlashAttack", slashAttackVelocity, slashAttackVelocityLeft);
+                        ExecuteAttack("LeoSlashAttack", slashAttackVelocity, slashAttackVelocityLeft); // Slash Attack
                     }
                     /*else if (Input.GetButtonDown("Attack") && Input.GetAxis("Vertical") < 0 && !coll.isNearGround)
                     {
@@ -62,15 +63,12 @@ public class LeoAttacks : MonoBehaviour
         }
     }
 
+
     void ExecuteAttack(string animationName, Vector2 velocityRight, Vector2 velocityLeft)
     {
         anim.ChangeAnimation(animationName);
         hp.ConsumeStamina(25);
         if (anim.isFacingRight && (!isAttacking)) rb.velocity += velocityRight;
         else if (!isAttacking) rb.velocity += velocityLeft;
-    }
-    public void FinishAttack()
-    {
-        if (hasHit) hasHit = false;
     }
 }
