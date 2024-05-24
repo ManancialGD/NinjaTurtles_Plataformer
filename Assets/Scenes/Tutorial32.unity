@@ -20557,6 +20557,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1507980908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 890562569084857483, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+  m_PrefabInstance: {fileID: 2027333982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &1507980919
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507980908}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 4
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1531014412
 GameObject:
   m_ObjectHideFlags: 0
@@ -21599,10 +21631,14 @@ PrefabInstance:
       propertyPath: airAttackCooldown
       value: 5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1026764355752917809, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 890562569084857483, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1507980919}
   m_SourcePrefab: {fileID: 100100000, guid: 70f9b416d2852424387ae558d4ad95a2, type: 3}
 --- !u!1 &2119551855
 GameObject:
@@ -21667,15 +21703,15 @@ MonoBehaviour:
   - 320
   - 320
   playerWallJumpForce:
-  - {x: 224, y: 320}
-  - {x: 224, y: 320}
+  - {x: 185, y: 320}
+  - {x: 185, y: 320}
   PLAYER_MAX_GROUND_VELOCITY:
   - 160
   - 160
   PLAYER_MAX_AIR_VELOCITY:
   - 160
   - 160
-  npcGroundAcceleration: 800
+  npcGroundAcceleration: 1500
   NPC_MAX_GROUND_VELOCITY: 144
   BallSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   playerLayerMask:
@@ -21877,7 +21913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6617474206497473321, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_GravityScale
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6617474206497473321, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: m_IncludeLayers.m_Bits

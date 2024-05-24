@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
             isWallLocked = false;
         }
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             if (coll.onGround && jumped <= 0)
             {
