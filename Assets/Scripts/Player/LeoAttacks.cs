@@ -42,11 +42,11 @@ public class LeoAttacks : MonoBehaviour
             {    
                 if (coll.onGround)
                 {
-                    if (Input.GetAxis("Vertical") < -.01f) // Check if player is pressing "S"
+                    if (Input.GetButton("DownButton")) // Check if player is pressing "S"
                     {
                         ExecuteAttack("LeoUpperCut", upperCutVelocity, upperCutVelocityLeft); // UpperCut Attack
                     }
-                    else if ( Input.GetAxis("Horizontal") > .01f || Input.GetAxis("Horizontal") < -.01f ) // Check if player is pressing "a" or "d"
+                    else if ( Input.GetButton("Move") ) // Check if player is pressing "a" or "d"
                     {
                         ExecuteAttack("LeoStab", stabVelocity, stabVelocityLeft); // Stab Attack
                     }

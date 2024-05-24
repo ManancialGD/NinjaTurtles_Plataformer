@@ -32,22 +32,22 @@ public class Attacks : StateMachineBehaviour
         float frameDuration = 1f / sampleRate; // Duration of a single frame in seconds
 
         float currentTime = stateInfo.normalizedTime * animationLength; // Current time in the animation
-        int currentFrame = Mathf.FloorToInt(currentTime / frameDuration); // Current frame index
+        float currentFrame = currentTime / frameDuration; // Current frame index
 
 
         // Actions based on specific frames
 
-        if (currentFrame == 2) // At frame 2
+        if (currentFrame > 2 && currentFrame < 2.6) // At frame 2
         {
             attackCollisionActivator.animationAttackType = attackType; // Will activate the collider, sending the code to AttaclCollisionActivator.cs, so it knows which collider to activate.
         }
         
-        if (currentFrame == 3) // At frame 3
+        if (currentFrame > 3 && currentFrame < 3.6) // At frame 3
         {
             attackCollisionActivator.animationAttackType = 0; // This will make AttackCollisionActivator.cs desactivate the collider.
         }
 
-        if (currentFrame == 6) // At frame 6
+        if (currentFrame >= 6) // At frame 6
         {
             leoAttacks.isAttacking = false; // attacking is false if it reach the end of the animation
         }
