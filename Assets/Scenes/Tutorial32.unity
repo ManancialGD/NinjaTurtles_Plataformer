@@ -955,7 +955,7 @@ PrefabInstance:
       objectReference: {fileID: 471820561}
     - target: {fileID: 9134058782061564005, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Shooter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21805,7 +21805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: groundFriction
-      value: 0.004
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3742010920674272088, guid: 473d2693a9340c7478840fc1c132a426, type: 3}
       propertyPath: WallJumpForce.x
