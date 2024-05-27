@@ -65,36 +65,28 @@ public class PlayerHP : MonoBehaviour
         {
             PlayerDied();
         }
-        if (FloattingTextPrefab) ShowFloatingText();
+        if (FloattingTextPrefab) ShowFloatingText(damage);
     }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("MeeleAttack"))
-        {
-            damageAmount = enemy2.damageAmount;
-            DamagePlayer(damageAmount);
 
-        }
-        if (other.CompareTag("ShootAttack"))
-        {
-            damageAmount = enemyShoot.shootDamage;
-            DamagePlayer(damageAmount);
-        }
-    }
     private void PlayerDied()
     {
         SceneManager.LoadScene("GameOver");
         Debug.Log("Player Died");      
     }
-    void ShowFloatingText()
+    void ShowFloatingText(float damageAmount)
     {
+        // Use the world position for the floating text
         Vector3 textPosition = new Vector3(transform.position.x, transform.position.y, -5f);
-        var go = Instantiate(FloattingTextPrefab, textPosition, Quaternion.identity, transform);
-        go.GetComponent<TextMesh>().text = damageAmount.ToString();
+        
+        // Instantiate the floating text prefab in the scene, not as a child of the player
+        var go = Instantiate(FloattingTextPrefab, textPosition, Quaternion.identity);
+        
+        // Set the text of the floating text prefab
         TextMesh textMesh = go.GetComponent<TextMesh>();
         textMesh.text = damageAmount.ToString();
         textMesh.color = Color.blue;
     }
+
 
     public void ConsumeStamina(float stamina)
     {

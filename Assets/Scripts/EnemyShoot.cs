@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,83 +6,50 @@ using UnityEngine;
 
 public class EnemyShoot : MonoBehaviour
 {
-    Player playerScript; // Reference to the Player script
-    public float rotationSpeed = 5f;
-    public float rotationModifier;
-    public float moveSpeed = 5f;
-    public float shootDamage = 40f;
-    NativeInfo native;
+    public float speed = 50.0f;
+
     Rigidbody2D rb;
-
-    CameraFollow cameraFollow;
+    PlayerHP playerHP;
+    SpriteRenderer sp;
+    ParticleSystem particleS;
     ExplosionOnDestroy explosionParticles;
+    private bool alreadyAttacked;
 
-    private void Start()
+    void Start()
     {
-        native = FindObjectOfType<NativeInfo>();
         explosionParticles = GetComponent<ExplosionOnDestroy>();
-        cameraFollow = FindAnyObjectByType<CameraFollow>();
-        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
+        alreadyAttacked = false;
+        particleS = GetComponentInChildren<ParticleSystem>();
+        sp = GetComponent<SpriteRenderer>();
+        playerHP = FindObjectOfType<PlayerHP>();
+        Destroy(gameObject, 5.0f);
+    }
 
-        rb = GetComponent<Rigidbody2D>();
-
-        if (playerScript != null)
+    public void SetVelocity(Vector2 vec)
+    {
+        if (rb == null)
         {
-            RotateTowardsPlayer();
-            ShootTowardsPlayer();
+            rb = GetComponent<Rigidbody2D>();
         }
+
+        rb.velocity = vec;
     }
 
-
-    void RotateTowardsPlayer()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
-        Vector3 vectorToTarget = playerScript.transform.position - transform.position;
-        float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - rotationModifier;
-        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = q;
-    }
+        sp.color = new Color(0, 0, 0, 0);
+        var em = particleS.emission;
+        em.enabled = false;
 
-
-    void ShootTowardsPlayer()
-    {
-        playerScript = native.GetPlayerObj(native.currentPlayerID).GetComponent<Player>();
-        (Vector2, float) distance = native.GetDistance(transform.position, playerScript.transform.position);
-        /*
-        Vector2 normalizedDistance = distance.Item1 / distance.Item2;
-
-        float angle = Mathf.Atan2(normalizedDistance.y, normalizedDistance.x) * Mathf.Rad2Deg;
-
-        if (angle < 90 || angle > 270) angle += distance.Item2 * 3f;
-        else angle -= distance.Item2 * 3f;
-
-        if (angle > 360) angle -= 360;
-        if (angle < 0) angle = 360 - Mathf.Abs(angle);
-
-        angle = angle * Mathf.Deg2Rad;
-
-        //rb.velocity = new Vector3(Mathf.Cos(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), Mathf.Sin(angle) * (moveSpeed + (distance.Item2 * (distance.Item2 * 0.015f))), 0f);
-        */
-
-        Vector2 shootForce = native.ShootToTarget(200f, transform.position, playerScript.transform.position, 6f);
-        Debug.Log("shootForce - " + shootForce);
-        rb.velocity = shootForce;
-
-    }
-
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-
-        if (!other.CompareTag("Enemy"))
+        if (!alreadyAttacked)
         {
-            if (other.CompareTag("Player")) cameraFollow.DamageCameraShake();
+            if (other.GetComponent<Player>() != null)playerHP.DamagePlayer(25);
             explosionParticles.Explode(rb.velocity);
-            Destroy(gameObject);
         }
-        // Destroi o objeto ao entrar em colisão com outro objeto
+        alreadyAttacked = true;
 
+
+
+        Destroy(gameObject, 5f);
     }
-
-    
 }

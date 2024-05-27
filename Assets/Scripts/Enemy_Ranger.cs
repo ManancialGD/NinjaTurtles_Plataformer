@@ -8,11 +8,14 @@ public class Enemy_Ranger : MonoBehaviour
 
     public bool flipped = false;
     public float attackCooldown;
-    EnemyAim shootScript;
+    EnemyAim aimScript;
+    EnemyShoot shootScript;
     public float attackRange;
     public float[] attackTime;
     NativeInfo native;
     SuspectScript suspectScript;
+    Transform target;
+    EnemyShoot bullet;
 
     bool seeingPlayer_History;
     bool seeingPlayer;
@@ -20,9 +23,11 @@ public class Enemy_Ranger : MonoBehaviour
 
 
     void Start()
-    {
+    {   
+        shootScript = FindAnyObjectByType<EnemyShoot>();
+        target = FindObjectOfType<Player>().transform;
         attackCooldown = Random.Range(attackTime[0], attackTime[1]);
-        shootScript = GetComponentInChildren<EnemyAim>();
+        aimScript = GetComponentInChildren<EnemyAim>();
         flipped = false;
         native = FindObjectOfType<NativeInfo>();
         suspectScript = GetComponent<SuspectScript>();
@@ -32,19 +37,25 @@ public class Enemy_Ranger : MonoBehaviour
 
     void Update()
     {
+        if (gameObject.transform.position.x > target.transform.position.x)
+        {
+            Flip(true);
+        }
+        else Flip(false);
+
         seeingPlayer = false;
         float magnitude_distance = 0f;
-        if (suspectScript.GetSuspectScale() >= 6)
+        /*if (suspectScript.GetSuspectScale() >= 6)
         {
             Vector2 playerPos = native.GetSelectedPlayerPosition();
             (Vector2 updatedDistance, float magnitude) = native.GetDistance(transform.position, playerPos);
             magnitude_distance = magnitude;
             RaycastHit2D hit = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, 320, layersContact);
             if (hit.rigidbody != null && hit.rigidbody.gameObject != null) seeingPlayer = hit.rigidbody.gameObject.CompareTag("Player");
-        }
+        }*/
 
         if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
-        else if (attackCooldown <= 0f && suspectScript.GetSuspectScale() >= 6)
+        else if (attackCooldown <= 0f /*&& suspectScript.GetSuspectScale() >= 6*/)
         {
 
             if (seeingPlayer)
@@ -59,9 +70,15 @@ public class Enemy_Ranger : MonoBehaviour
                     Debug.Log("Ranger - seeing (" + magnitude_distance + ")");
                     if (magnitude_distance <= attackRange) // Attack player
                     {
-                        //Debug.Log("Ranger - Shoot Player");
-                        shootScript.ShootBullet();
-                        Debug.Log("Ranger - shoot");
+                        if (aimScript.ComputeVelocity(transform.position, target.position, shootScript.speed, Physics2D.gravity.y, aimScript.minimizeTime, out Vector2 vel))
+                        {
+                            var newShot = Instantiate(bullet, transform.position, Quaternion.identity);
+                            newShot.SetVelocity(vel);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Impossible to hit target!");
+                        }
                         attackCooldown = Random.Range(attackTime[0], attackTime[1]);
                     }
                 }
@@ -75,12 +92,12 @@ public class Enemy_Ranger : MonoBehaviour
 
             if (transform.position.x > playerObj.transform.position.x && flipped)
             {
-                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(1, 1, 1);
                 flipped = false;
             }
             else if (transform.position.x < playerObj.transform.position.x && !flipped)
             {
-                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(-1, 1, 1);
                 flipped = true;
             }
 
@@ -88,4 +105,17 @@ public class Enemy_Ranger : MonoBehaviour
         seeingPlayer_History = seeingPlayer;
     }
 
+    private void Flip(bool b)
+    {
+        if (b)
+        {
+            transform.localScale = new Vector3(-1, 1, 1); // Flip horizontally
+            flipped = true;
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1); // Reset flip
+            flipped = false;
+        }
+    }
 }

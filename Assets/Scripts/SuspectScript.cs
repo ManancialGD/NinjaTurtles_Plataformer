@@ -93,19 +93,6 @@ public class SuspectScript : MonoBehaviour
 
         }
 
-        if (enemyHP.GetEnemyUnconsciousCooldown() > 0f)
-        {
-            suspectSprite.color = Color.white;
-        }
-        else if (suspectScale >= 3f)
-        {
-            if (suspectScale >= 6f) suspectSprite.color = Color.red; // Target player
-            else suspectSprite.color = Color.yellow; // Suspect
-        }
-        else
-        {
-            suspectSprite.color = Color.clear;
-        }
 
         //float[] rayAngles = { 180f / 6f * 5f - 90f, 180f / 6f * 4f - 90f, 180f / 6f * 3f - 90f, 180f / 6f * 2f - 90f, 180f / 6f * 1f - 90f };
         //float[] rayAngles = new float[2];
