@@ -29,6 +29,9 @@ public class LeoAttacks : MonoBehaviour
         coll = GetComponent<Collision>();
         anim = GetComponent<LeoAnimation>();
         hp = GetComponent<PlayerHP>();
+
+        // Insure that hasHit starts as false
+        hasHit = false;
     }
 
     /// <summary>
