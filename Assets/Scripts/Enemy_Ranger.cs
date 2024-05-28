@@ -35,32 +35,37 @@ public class Enemy_Ranger : MonoBehaviour
     {
         seeingPlayer = false;
         float magnitude_distance = 0f;
+        Debug.log("AAA");
+        Debug.Log("GetSuspectScale: " + suspectScript.GetSuspectScale());
         if (suspectScript.GetSuspectScale() >= 6)
         {
             Vector2 playerPos = native.GetSelectedPlayerPosition();
             (Vector2 updatedDistance, float magnitude) = native.GetDistance(transform.position, playerPos);
             magnitude_distance = magnitude;
-            seeingPlayer = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, magnitude, layersContact).rigidbody.gameObject.CompareTag("Player");
+            seeingPlayer = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, magnitude, layersContact).rigidbody.gameObject.GetComponent<PlayerScript>();
+            Debug.log("seeingPlayer: " + seeingPlayer);
         }
 
         if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
-        else if (attackCooldown <= 0f && suspectScript.GetSuspectScale() >= 6)
+        else if (attackCooldown <= 0f)
         {
-
-            if (seeingPlayer)
+            if (suspectScript.GetSuspectScale() >= 6)
             {
-                if (!seeingPlayer_History)
+                if (seeingPlayer)
                 {
-                    attackCooldown = Random.Range(0.4f, 1.5f);
-                }
-                else
-                {
-                    Debug.Log("Seeing Player - 1");
-                    if (magnitude_distance <= attackRange) // Attack player
+                    Debug.log("attackCooldown: " + attackCooldown);
+                    if (!seeingPlayer_History)
                     {
-                        //Debug.Log("Ranger - Shoot Player");
-                        shootScript.ShootBullet();
-                        attackCooldown = Random.Range(attackTime[0], attackTime[1]);
+                        attackCooldown = Random.Range(0.4f, 1.5f);
+                    }
+                    else
+                    {
+                        if (magnitude_distance <= attackRange) // Attack player
+                        {
+                            //Debug.Log("Ranger - Shoot Player");
+                            shootScript.ShootBullet();
+                            attackCooldown = Random.Range(attackTime[0], attackTime[1]);
+                        }
                     }
                 }
             }
@@ -68,7 +73,6 @@ public class Enemy_Ranger : MonoBehaviour
 
         if (seeingPlayer)
         {
-            Debug.Log("Seeing Player - 2");
             GameObject playerObj = native.GetPlayerObj(native.currentPlayerID);
 
             if (transform.position.x > playerObj.transform.position.x && flipped)
