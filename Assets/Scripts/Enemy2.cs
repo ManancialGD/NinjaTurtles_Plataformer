@@ -120,7 +120,6 @@ public class Enemy2 : MonoBehaviour
 
         if (Mathf.Abs(distanceX) > DistanceArea || suspectScript.GetSuspectScale() < 6f)
         {
-            Debug.Log("MOVE");
             if (distanceX < 0)
             {
                 if (rb.velocity.x - EnemyAcceleration <= -EnemySpeed) rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(-EnemySpeed, rb.velocity.y)), movementLerp * Time.deltaTime);
@@ -161,7 +160,6 @@ public class Enemy2 : MonoBehaviour
 
     public void Brute_AirAttack(float JumpForce, float Damage)
     {
-        Debug.Log("Brute Air Attack");
 
         airAttacking = Damage;
         enemyFixed = 2;
@@ -273,7 +271,6 @@ public class Enemy2 : MonoBehaviour
 
         Vector2 playerPos = playerRB.position;
         Vector2 distance = playerPos - rb.position;
-        Debug.Log(distance.x + ", " + distance.y);
         enemyFixed = 1;
         rb.velocity = new Vector2(distance.x * JumpForce * 0.66f, distance.y * JumpForce * 0.33f);
 
