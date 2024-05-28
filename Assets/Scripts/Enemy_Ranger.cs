@@ -8,78 +8,60 @@ public class Enemy_Ranger : MonoBehaviour
 
     public bool flipped = false;
     public float attackCooldown;
-    EnemyAim aimScript;
-    EnemyShoot shootScript;
+    EnemyAim shootScript;
     public float attackRange;
     public float[] attackTime;
     NativeInfo native;
     SuspectScript suspectScript;
-    Transform target;
-    EnemyShoot bullet;
 
     bool seeingPlayer_History;
     bool seeingPlayer;
-    [SerializeField] int layersContact;
+    LayerMask layersContact;
 
 
     void Start()
-    {   
-        shootScript = FindAnyObjectByType<EnemyShoot>();
-        target = FindObjectOfType<Player>().transform;
+    {
         attackCooldown = Random.Range(attackTime[0], attackTime[1]);
-        aimScript = GetComponentInChildren<EnemyAim>();
+        shootScript = GetComponentInChildren<EnemyAim>();
         flipped = false;
         native = FindObjectOfType<NativeInfo>();
         suspectScript = GetComponent<SuspectScript>();
+        layersContact = (1 << LayerMask.NameToLayer("jumpableGround")) | (1 << LayerMask.NameToLayer("Player"));
         seeingPlayer_History = true;
     }
 
 
     void Update()
     {
-        if (gameObject.transform.position.x > target.transform.position.x)
-        {
-            Flip(true);
-        }
-        else Flip(false);
-
         seeingPlayer = false;
         float magnitude_distance = 0f;
-        /*if (suspectScript.GetSuspectScale() >= 6)
+        if (suspectScript.GetSuspectScale() >= 6)
         {
             Vector2 playerPos = native.GetSelectedPlayerPosition();
             (Vector2 updatedDistance, float magnitude) = native.GetDistance(transform.position, playerPos);
             magnitude_distance = magnitude;
-            RaycastHit2D hit = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, 320, layersContact);
-            if (hit.rigidbody != null && hit.rigidbody.gameObject != null) seeingPlayer = hit.rigidbody.gameObject.CompareTag("Player");
-        }*/
+            seeingPlayer = native.MakeLinecast(transform.position + new Vector3(0f, 0.25f, 0f), updatedDistance / magnitude, magnitude, layersContact).rigidbody.gameObject.GetComponent<Player>();
+        }
 
         if (attackCooldown > 0f) attackCooldown -= Time.deltaTime;
-        else if (attackCooldown <= 0f /*&& suspectScript.GetSuspectScale() >= 6*/)
+        else if (attackCooldown <= 0f)
         {
-
-            if (seeingPlayer)
+            if (suspectScript.GetSuspectScale() >= 6)
             {
-
-                if (!seeingPlayer_History)
+                if (seeingPlayer)
                 {
-                    attackCooldown = Random.Range(0.4f, 1.5f);
-                }
-                else
-                {
-                    Debug.Log("Ranger - seeing (" + magnitude_distance + ")");
-                    if (magnitude_distance <= attackRange) // Attack player
+                    if (!seeingPlayer_History)
                     {
-                        if (aimScript.ComputeVelocity(transform.position, target.position, shootScript.speed, Physics2D.gravity.y, aimScript.minimizeTime, out Vector2 vel))
+                        attackCooldown = Random.Range(0.4f, 1.5f);
+                    }
+                    else
+                    {
+                        if (magnitude_distance <= attackRange) // Attack player
                         {
-                            var newShot = Instantiate(bullet, transform.position, Quaternion.identity);
-                            newShot.SetVelocity(vel);
+                            //Debug.Log("Ranger - Shoot Player");
+                            shootScript.ShootBullet();
+                            attackCooldown = Random.Range(attackTime[0], attackTime[1]);
                         }
-                        else
-                        {
-                            Debug.LogWarning("Impossible to hit target!");
-                        }
-                        attackCooldown = Random.Range(attackTime[0], attackTime[1]);
                     }
                 }
             }
@@ -87,17 +69,16 @@ public class Enemy_Ranger : MonoBehaviour
 
         if (seeingPlayer)
         {
-
             GameObject playerObj = native.GetPlayerObj(native.currentPlayerID);
 
             if (transform.position.x > playerObj.transform.position.x && flipped)
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
                 flipped = false;
             }
             else if (transform.position.x < playerObj.transform.position.x && !flipped)
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
                 flipped = true;
             }
 
@@ -105,17 +86,4 @@ public class Enemy_Ranger : MonoBehaviour
         seeingPlayer_History = seeingPlayer;
     }
 
-    private void Flip(bool b)
-    {
-        if (b)
-        {
-            transform.localScale = new Vector3(-1, 1, 1); // Flip horizontally
-            flipped = true;
-        }
-        else
-        {
-            transform.localScale = new Vector3(1, 1, 1); // Reset flip
-            flipped = false;
-        }
-    }
 }

@@ -122,7 +122,7 @@ public class Player : MonoBehaviour
 
             float[] multiplierX = { 0.0f, 1f };
             float[] multiplierY = { 0f, 0.2f };
-            Debug.Log("particle - " + sideName);
+
             if (particlesDisplayed > 0) basicPlayerParticles.CreateParticle(particlesDisplayed, sideName, new Vector2(sideWall * 0.4f, 0f), multiplierX, multiplierY, sideCorrection, Color.white);
 
         }

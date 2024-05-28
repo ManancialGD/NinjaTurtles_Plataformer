@@ -73,14 +73,9 @@ public class NativeInfo : MonoBehaviour
         return -1;
     }
 
-    void Update()
-    {
-
-        OnChangePlayer();
-
-    }
-
     public LayerMask GetPlayerLayerMask() => playerLayerMask;
+    
+    /*
     private int OnChangePlayer()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && currentPlayerID != 1)
@@ -110,6 +105,8 @@ public class NativeInfo : MonoBehaviour
 
         return 0;
     }
+
+    */
 
     public Vector2 GetSelectedPlayerPosition() => playerObj[currentPlayerID - 1].transform.position;
 

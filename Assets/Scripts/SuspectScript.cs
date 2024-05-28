@@ -206,4 +206,6 @@ public class SuspectScript : MonoBehaviour
         return playerViewed;
     }
 
+    public (bool, float) IsVisualisingPlayer() => (playerViewTime > 0, playerViewTime);
+
 }
