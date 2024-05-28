@@ -901,6 +901,30 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2762188122850297070, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: flipped
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2762188122850297070, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: attackRange
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 2762188122850297070, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: attackCooldown
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2762188122850297070, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: attackTime.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2762188122850297070, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: attackTime.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2762188122850297070, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: attackTime.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3193924946443966639, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: health
       value: 60
@@ -965,10 +989,18 @@ PrefabInstance:
       propertyPath: prefabToSpawn
       value: 
       objectReference: {fileID: 490199067072695586, guid: 14b8676f99d9bbd4c9b5a0c7a148910d, type: 3}
+    - target: {fileID: 7429233829109816141, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: displayTrajectory
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8524863459710116188, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: thisEnemy
       value: 
       objectReference: {fileID: 471820561}
+    - target: {fileID: 8524863459710116188, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
+      propertyPath: rotationSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9134058782061564005, guid: ba4e4417490d33d42a611ea0c815c107, type: 3}
       propertyPath: m_Name
       value: Shooter

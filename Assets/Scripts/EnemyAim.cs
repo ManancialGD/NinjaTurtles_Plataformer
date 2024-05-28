@@ -4,41 +4,25 @@ using UnityEngine;
 public class EnemyAim : MonoBehaviour
 {
 
-    public EnemyShoot prefabToSpawn;
-    private float prefabGravityScale;
+    [SerializeField] EnemyShoot prefabToSpawn;
     [SerializeField] private bool displayTrajectory;
     [SerializeField] Transform target;
     [SerializeField] public bool minimizeTime;
+    SuspectScript suspectScript;
+    Enemy_Ranger rangerScript;
 
     private RotateTowards rotateTowardsScript;
+    NativeInfo native;
     // Start is called before the first frame update
     void Start()
     {
-        Player player = FindObjectOfType<Player>();
-        target = player.GetComponent<Transform>();
-
+        native = FindObjectOfType<NativeInfo>();
+        target = native.GetPlayerObj(native.currentPlayerID).transform;
+        Debug.Log("target: " + Physics2D.gravity.y);
+        suspectScript = GetComponentInParent<Transform>().GetComponentInParent<SuspectScript>();
+        rangerScript = GetComponentInParent<Transform>().GetComponentInParent<Enemy_Ranger>();
         rotateTowardsScript = FindObjectOfType<RotateTowards>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (Input.GetKeyDown("5"))
-        {
-            // Compute and set the velocity
-            if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
-            {
-                var newShot = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
-                newShot.SetVelocity(vel);
-            }
-            else
-            {
-                Debug.LogWarning("Impossible to hit target!");
-            }
-        }
-    }
-
     private void FixedUpdate()
     {
         ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel);
@@ -70,6 +54,7 @@ public class EnemyAim : MonoBehaviour
         if (D < 0.0f)
         {
             // Equation is unsolveable
+            rotateTowardsScript.SetRotationAngle(Mathf.PI/4 * 3);
             return false;
         }
         D = Mathf.Sqrt(D);
@@ -88,6 +73,7 @@ public class EnemyAim : MonoBehaviour
             if (t2 < 0.0f)
             {
                 // Equation is unsolveable
+                rotateTowardsScript.SetRotationAngle(Mathf.PI/4 * 3);
                 return false;
             }
             else
@@ -120,7 +106,8 @@ public class EnemyAim : MonoBehaviour
 
         shotVelocty = new Vector2(invX * speed * Mathf.Cos(theta), speed * Mathf.Sin(theta));
 
-        rotateTowardsScript.SetRotationAngle(theta);
+        if (suspectScript.GetSuspectScale() >= 6 && rangerScript.attackCooldown - 1 <= 0) rotateTowardsScript.SetRotationAngle(theta);
+        else rotateTowardsScript.SetRotationAngle(Mathf.PI*2);
 
         return true;
     }

@@ -4,7 +4,6 @@ public class RotateTowards : MonoBehaviour
 {
     public float rotationSpeed;
     Transform target;
-    
     void Start()
     {
         target = FindObjectOfType<Player>().transform; // Finds the player as the target
@@ -18,6 +17,7 @@ public class RotateTowards : MonoBehaviour
     /// <param name="theta"></param>
     public void SetRotationAngle(float theta)
     {
+        Debug.Log("rotate: " + theta);
         float angle = theta * Mathf.Rad2Deg; // Convert from radians to degrees
 
         // If the player's position is less than the game object's position, set the angle to negative
