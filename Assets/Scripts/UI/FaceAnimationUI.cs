@@ -15,7 +15,7 @@ public class FaceAnimationUI : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        randomNumber = Random.Range(120, 220);
+        randomNumber = Random.Range(350, 500);
     }
 
 private void FixedUpdate()
@@ -36,7 +36,7 @@ private void FixedUpdate()
             }
             else
             {
-                randomNumber = Random.Range(80,120);
+                randomNumber = Random.Range(350, 500);
                 blinkedTwice = false;
             }
             anim.SetBool("Blink", true);
