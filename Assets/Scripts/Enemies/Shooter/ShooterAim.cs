@@ -1,34 +1,52 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShooterAim : MonoBehaviour
 {
-    RotateArm rotateArm;
+    // Reference to the RotateArm component
+    private RotateArm rotateArm;
+
+    // Bullet prefab to spawn
     public EnemyBullet prefabToSpawn;
+
+    // Gravity scale of the bullet prefab
     private float prefabGravityScale;
+
+    // Flag to display trajectory in the editor
     [SerializeField] private bool displayTrajectory;
-    Transform target; 
+
+    // Reference to the target transform
+    private Transform target;
+
+    // Flag to minimize time or maximize distance in trajectory calculation
     [SerializeField] public bool minimizeTime;
 
     void Awake()
     {
+        // Find and assign the target (Leo) at the start
         target = FindObjectOfType<LeoMovement>().transform;
+
+        // Get the RotateArm component from the parent
         rotateArm = GetComponentInParent<RotateArm>();
 
+        // Get the gravity scale of the bullet prefab's Rigidbody2D component
         prefabGravityScale = prefabToSpawn.GetComponent<Rigidbody2D>().gravityScale;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha5)) // Changed to KeyCode for better readability
+        // Check for the input to shoot (KeyCode 5)
+        if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            // Compute and set the velocity
+            // Compute and set the velocity for the shot
             if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
             {
+                // Instantiate the bullet prefab and set its velocity
                 var newShot = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
                 newShot.SetVelocity(vel);
+
+                // Start the recoil coroutine
+                StartCoroutine(rotateArm.Recoil());
             }
             else
             {
@@ -39,18 +57,27 @@ public class ShooterAim : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Compute the velocity continuously in FixedUpdate
         ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel);
     }
 
     /// <summary>
-    /// This Method was made by professor Diogo
+    /// Computes the angle needed to hit the target and translates it into the initial velocity vector.
     ///
-    /// here is the link, if you want to know more about it:
+    /// This piece of code was created by professor Diogo
+    /// If you want to know more checkout the link:
     /// https://github.com/DiogoDeAndrade/projetil
-    ///</summary>
-        public bool ComputeVelocity(Vector3 srcPos, Vector3 targetPos, float speed, float gravity, bool minimizeTime, out Vector2 shotVelocty)
+    /// </summary>
+    /// <param name="srcPos">The source position.</param>
+    /// <param name="targetPos">The target position.</param>
+    /// <param name="speed">The initial speed of the projectile.</param>
+    /// <param name="gravity">The gravitational acceleration.</param>
+    /// <param name="minimizeTime">Flag to minimize time or maximize distance.</param>
+    /// <param name="shotVelocity">The computed initial velocity vector.</param>
+    /// <returns>True if a valid velocity is found; false otherwise.</returns>
+    public bool ComputeVelocity(Vector3 srcPos, Vector3 targetPos, float speed, float gravity, bool minimizeTime, out Vector2 shotVelocity)
     {
-        shotVelocty = Vector2.zero;
+        shotVelocity = Vector2.zero;
 
         float invX = 1.0f;
         float deltaX = targetPos.x - srcPos.x;
@@ -66,23 +93,19 @@ public class ShooterAim : MonoBehaviour
 
         if (Mathf.Abs(a) < 1e-6)
         {
-            // Equation is unsolveable
             return false;
         }
 
         float D = b * b - 4 * c * a;
         if (D < 0.0f)
         {
-            // Equation is unsolveable
             return false;
         }
         D = Mathf.Sqrt(D);
 
-        // Two solutions
         float theta1 = Mathf.Atan((-b - D) / (2.0f * a));
         float theta2 = Mathf.Atan((-b + D) / (2.0f * a));
 
-        // Find the times for impact
         float t1 = deltaX / (speed * Mathf.Cos(theta1));
         float t2 = deltaX / (speed * Mathf.Cos(theta2));
 
@@ -91,12 +114,10 @@ public class ShooterAim : MonoBehaviour
         {
             if (t2 < 0.0f)
             {
-                // Equation is unsolveable
                 return false;
             }
             else
             {
-                // Only one valid solution
                 theta = theta2;
             }
         }
@@ -104,7 +125,6 @@ public class ShooterAim : MonoBehaviour
         {
             if (t2 < 0.0f)
             {
-                // Only one valid solution
                 theta = theta1;
             }
             else
@@ -122,8 +142,9 @@ public class ShooterAim : MonoBehaviour
             }
         }
 
-        shotVelocty = new Vector2(invX * speed * Mathf.Cos(theta), speed * Mathf.Sin(theta));
+        shotVelocity = new Vector2(invX * speed * Mathf.Cos(theta), speed * Mathf.Sin(theta));
 
+        // Set the rotation angle of the RotateArm
         rotateArm.SetRotationAngle(theta);
 
         return true;
@@ -133,12 +154,24 @@ public class ShooterAim : MonoBehaviour
     {
         if (!displayTrajectory) return;
 
+        // Initialize target if null
+        if (target == null)
+        {
+            target = FindObjectOfType<LeoMovement>()?.transform;
+            if (target == null) return;
+        }
+
         if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
         {
             GizmoSimulation(Color.cyan, vel);
         }
     }
 
+    /// <summary>
+    /// Simulates and draws the projectile's trajectory in the editor.
+    /// </summary>
+    /// <param name="color">Color of the trajectory line.</param>
+    /// <param name="vel">Initial velocity of the projectile.</param>
     void GizmoSimulation(Color color, Vector2 vel)
     {
         float timeStep = 0.01f;
