@@ -9,7 +9,7 @@ public class EnemyHP : MonoBehaviour
     
     [SerializeField] private int hp = 100;
     public int HP { get { return hp; } set { hp = value; if (hp <= 0) Die(); else if (hp >= maxHealth) hp = maxHealth; } }
-    [SerializeField] private readonly int maxHealth;
+    [SerializeField] private readonly int maxHealth = 100;
     [SerializeField] private bool hasInfHP;
 
     [Space]
@@ -30,7 +30,7 @@ public class EnemyHP : MonoBehaviour
     public virtual void TakeDamage(int damageAmount, float stunTime = 0, Vector2? knockback = null)
     {
         if (hasInfHP) damageAmount = 0; // if has damage amount, will damage 0 
-
+        
         HP -= damageAmount;
  
         if (stunTime <= 0) Stun(stunTime);
