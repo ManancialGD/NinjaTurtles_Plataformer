@@ -16,10 +16,8 @@ public class ShooterAim : MonoBehaviour
     {
         target = FindObjectOfType<LeoMovement>().transform;
         rotateArm = GetComponentInChildren<RotateArm>();
-        if (prefabToSpawn != null)
-        {
-            prefabGravityScale = prefabToSpawn.GetComponent<Rigidbody2D>().gravityScale;
-        }
+
+        prefabGravityScale = prefabToSpawn.GetComponent<Rigidbody2D>().gravityScale;
     }
 
     void Update()
