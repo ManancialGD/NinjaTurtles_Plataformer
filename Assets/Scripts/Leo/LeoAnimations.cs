@@ -53,8 +53,6 @@ public class LeoAnimation : MonoBehaviour
         {
             ChangeAnimation("LeoWalk"); // Play the walk animation when moving slowly
         }
-
-
     }
 
     public void ChangeAnimation(string newAnimation)

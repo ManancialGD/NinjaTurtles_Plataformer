@@ -78,5 +78,6 @@ public class LeoAttacks : MonoBehaviour
         /*hp.ConsumeStamina(25);*/
         if (leoMov.IsFacingRight && !isAttacking) rb.velocity += velocityRight;
         else if (!isAttacking) rb.velocity += velocityLeft;
+        isAttacking = true;
     }
 }

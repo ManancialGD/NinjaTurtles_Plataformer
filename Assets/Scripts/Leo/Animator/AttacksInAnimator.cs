@@ -50,6 +50,9 @@ public class AttacksInAnimator : StateMachineBehaviour
         if (currentFrame >= 6) // At frame 6
         {
             leoAttacks.isAttacking = false; // attacking is false if it reach the end of the animation
+            if (leoAttacks.hasHit) leoAttacks.hasHit = false;
+            if (!player.CanMove) player.SetCanMove(true);
+            if (!player.CanJump) player.SetCanJump(true);
         }
         
     }
