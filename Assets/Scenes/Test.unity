@@ -1727,8 +1727,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f342aae496e01544fb8a954cfe39ca71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLeoInArea: 0
-  collisionRadius: 180
+  leoOnRight: 0
+  IsFacingRight: 1
+  isFacingLeo: 0
+  collisionRadius: 80
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1701823745
 GameObject:
   m_ObjectHideFlags: 0
