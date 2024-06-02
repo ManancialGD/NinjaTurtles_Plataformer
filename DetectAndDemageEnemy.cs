@@ -39,9 +39,9 @@ public class DetectAndDamageEnemy : MonoBehaviour
                     if (attacks.hasHit == false)
                     {
                         if (leoMov.isFacingRight)
-                            enemyHP.TakeDamage(damageAmount, knockbackRight, 1f);
+                            enemyHP.TakeDamage(damageAmount, 1f, knockbackRight);
                         else
-                            enemyHP.TakeDamage(damageAmount, knockbackLeft, 1f);
+                            enemyHP.TakeDamage(damageAmount, 1f, knockbackLeft);
                     }
                 }
 
