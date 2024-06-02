@@ -12,7 +12,7 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField] private float destroyTime = 5f;
 
     Rigidbody2D rb;
-    LeoHP leoHP;
+    LeoStats leoStats;
     SpriteRenderer sp;
     private bool alreadyAttacked;
 
@@ -20,7 +20,7 @@ public class EnemyBullet : MonoBehaviour
     {
         alreadyAttacked = false;
         sp = GetComponent<SpriteRenderer>();
-        leoHP = FindObjectOfType<LeoHP>();
+        leoStats = FindObjectOfType<LeoStats>();
         rb = GetComponent<Rigidbody2D>(); // Ensure Rigidbody2D is initialized here
         Destroy(gameObject, destroyTime);
     }
@@ -40,8 +40,8 @@ public class EnemyBullet : MonoBehaviour
 
         if (!alreadyAttacked)
         {
-            if (other.GetComponent<LeoHP>() != null)
-                leoHP.TakeDamage(25);
+            if (other.GetComponent<LeoStats>() != null)
+                leoStats.TakeDamage(25);
             alreadyAttacked = true;
         }
 

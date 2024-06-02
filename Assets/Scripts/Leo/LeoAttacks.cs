@@ -9,6 +9,7 @@ public class LeoAttacks : MonoBehaviour
     LeoMovement leoMov;
     LeoAnimation leoAnim;
     PlayerInputs inputs;
+    LeoStats leoStats;
 
     private Vector2 input;
 
@@ -18,8 +19,6 @@ public class LeoAttacks : MonoBehaviour
     [SerializeField] private Vector2 stabVelocityLeft = new Vector2();
     [SerializeField] private Vector2 upperCutVelocity = new Vector2();
     [SerializeField] private Vector2 upperCutVelocityLeft = new Vector2();
-    [SerializeField] private Vector2 groundSlamVelocity = new Vector2();
-
 
     public bool isAttacking;
     public bool hasHit = false;
@@ -31,51 +30,58 @@ public class LeoAttacks : MonoBehaviour
         coll = GetComponent<LeoCollisionDetector>();
         leoAnim = GetComponent<LeoAnimation>();
         leoMov = GetComponent<LeoMovement>();
-        //hp = GetComponent<PlayerHP>();
+        leoStats = GetComponent<LeoStats>();
 
         // Insure that hasHit starts as false
         hasHit = false;
     }
 
-    /// <summary>
-    /// Check Inputs for playing the right attack animations and aplying the right velocities
-    /// </summary>
+
     void Update()
     {
-        input = inputs.input; // Taking the input from the PlayerInput.cs to this class
-
-        if (Input.GetButtonDown("Attack") /*&& hp.playerStamina >= 25f*/) // Needs 25 Stamina to attack
+        if (Input.GetButtonDown("Attack"))
         {
-            if(!isAttacking || hasHit) // If is already attacking, can't attack again. BUT only if the attack hit.
-            {    
-                if (coll.onGround)
+            if (coll.onGround)
+            {
+                if (leoStats.Stamina >= 20) // Needs 25 Stamina to attack
                 {
-                    if (input.y < -0.01f) // Check if player is pressing "S"
-                    {
-                        ExecuteAttack("LeoUpperCut", upperCutVelocity, upperCutVelocityLeft); // UpperCut Attack
-                    }
-                    else if (input.x > 0.01f || input.x < -0.01f) // Check if player is pressing "a" or "d"
-                    {
-                        ExecuteAttack("LeoStab", stabVelocity, stabVelocityLeft); // Stab Attack
-                    }
-                    else // if is not pressing left/right nor down
-                    {
-                        ExecuteAttack("LeoSlashAttack", slashAttackVelocity, slashAttackVelocityLeft); // Slash Attack
-                    }
-                    /*else if (Input.GetButtonDown("Attack") && Input.GetAxis("Vertical") < 0 && !coll.isNearGround)
-                    {
-                        ExecuteAttack("LeoSlashAttack", groundSlamVelocity, Vector2.zero); // Groundslam
-                    }*/
+                    if (!leoStats.InStaminaBreak) CheckAttackType();
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Check Inputs for playing the right attack based on the input of the player
+    /// </summary>
+    private void CheckAttackType()
+    {
+        input = inputs.input; // Taking the input from the PlayerInput.cs to this class
+
+        if (!isAttacking || hasHit) // If is already attacking, can't attack again. BUT only if the attack hit.
+        {
+
+            if (input.y < -0.01f) // Check if player is pressing "S"
+            {
+                ExecuteAttack("LeoUpperCut", upperCutVelocity, upperCutVelocityLeft); // UpperCut Attack
+            }
+            else if (input.x > 0.01f || input.x < -0.01f) // Check if player is pressing "a" or "d"
+            {
+                ExecuteAttack("LeoStab", stabVelocity, stabVelocityLeft); // Stab Attack
+            }
+            else // if is not pressing left/right nor down
+            {
+                ExecuteAttack("LeoSlashAttack", slashAttackVelocity, slashAttackVelocityLeft); // Slash Attack
+            }
+        }
+
     }
 
 
     void ExecuteAttack(string animationName, Vector2 velocityRight, Vector2 velocityLeft)
     {
         leoAnim.ChangeAnimation(animationName);
-        /*hp.ConsumeStamina(25);*/
+        leoStats.ConsumeStamina(25);
         if (leoMov.IsFacingRight && !isAttacking) rb.velocity += velocityRight;
         else if (!isAttacking) rb.velocity += velocityLeft;
         isAttacking = true;

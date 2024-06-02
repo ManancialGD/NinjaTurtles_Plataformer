@@ -15,7 +15,7 @@
         [Space]
 
         [Header("Speed")]
-        [SerializeField] private int MovementeSpeed = 150;
+        [SerializeField] private int movementeSpeed = 150;
         [SerializeField] private int jumpSpeed = 200;
 
         [Space]
@@ -106,7 +106,7 @@
         {
             Vector3 leoVelocity = rb.velocity;
 
-            leoVelocity.x = playerInput.x *  MovementeSpeed; // if the input is negative, player will go to the left
+            leoVelocity.x = playerInput.x *  movementeSpeed; // if the input is negative, player will go to the left
 
             // Flip Leo acording to the movement
             if (playerInput.x < -0.01f && !alreadyFlipped) Flip(true);
@@ -141,5 +141,16 @@
         public void SetCanJump(bool b)
         {
             canJump = b;
+        }
+
+        public void StaminaBroke()
+        {
+            movementeSpeed = 50;
+            SetCanJump(false);
+        }
+        public void StaminaRecovered()
+        {
+            movementeSpeed = 150;
+            if (!CanJump) SetCanJump(true);
         }
     }

@@ -63,7 +63,7 @@ public class DetectLeo : MonoBehaviour
         }
 
         // Check if there's a clear line of sight to Leo if the object is facing Leo
-        if (isFacingLeo)
+        if (isFacingLeo || IsLeoInArea)
         {
             canSeeLeo = CanSeeLeo();
             leoDetected = canSeeLeo;
