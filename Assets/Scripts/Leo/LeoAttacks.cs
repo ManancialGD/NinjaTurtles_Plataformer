@@ -23,7 +23,6 @@ public class LeoAttacks : MonoBehaviour
 
     public bool isAttacking;
     public bool hasHit = false;
-    public bool alreadyHasHitVelocity; // This is to prevent spamming the button and gaining velocity even if it's not atacking
 
     void Awake()
     {

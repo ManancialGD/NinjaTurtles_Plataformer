@@ -10,11 +10,11 @@
 
         public bool isFacingRight { get; private set; }
 
-        [SerializeField] private int MovementeSpeed = 200;
-        [SerializeField] private int jumpSpeed = 250;
+        [SerializeField] private int MovementeSpeed = 150;
+        [SerializeField] private int jumpSpeed = 200;
 
         [SerializeField] private float jumpTime;
-        [SerializeField] private float maxJumpTime = 0.1f;
+        [SerializeField] private float maxJumpTime = 0.4f;
 
         [SerializeField] private bool canMove = true;
         public bool CanMove { get { return canMove; } private set { canMove = value; } }
@@ -91,8 +91,8 @@
             leoVelocity.x = playerInput.x *  MovementeSpeed; // if the input is negative, player will go to the left
 
             // Flip Leo acording to the movement
-            if (playerInput.x > -0.01f) Flip(true);
-            else if (playerInput.x < 0.01f) Flip(false);
+            if (playerInput.x < -0.01f) Flip(true);
+            else if (playerInput.x > 0.01f) Flip(false);
 
             rb.velocity = leoVelocity;
         }

@@ -157,7 +157,7 @@ MonoBehaviour:
   knockbackLeft: {x: -25, y: 150}
   leoMov: {fileID: 0}
   attacks: {fileID: 0}
-  circleRadius: 25.8
+  circleRadius: 21.8
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -170,7 +170,7 @@ Transform:
   m_GameObject: {fileID: 216691145}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.2, y: 11.7, z: 0}
+  m_LocalPosition: {x: 15.2, y: 6.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -596,7 +596,7 @@ MonoBehaviour:
   knockbackLeft: {x: -55, y: 0}
   leoMov: {fileID: 0}
   attacks: {fileID: 0}
-  circleRadius: 19.8
+  circleRadius: 21
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -932,7 +932,7 @@ SpriteRenderer:
   m_Size: {x: 32, y: 32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1188878252
@@ -1153,18 +1153,17 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1524879723}
-  - component: {fileID: 1524879737}
   - component: {fileID: 1524879736}
   - component: {fileID: 1524879735}
-  - component: {fileID: 1524879738}
   - component: {fileID: 1524879734}
   - component: {fileID: 1524879733}
   - component: {fileID: 1524879722}
   - component: {fileID: 1524879721}
-  - component: {fileID: 1524879726}
   - component: {fileID: 1524879727}
-  - component: {fileID: 1524879732}
   - component: {fileID: 1524879731}
+  - component: {fileID: 1524879738}
+  - component: {fileID: 1524879737}
+  - component: {fileID: 1524879732}
   m_Layer: 6
   m_Name: Leo
   m_TagString: Untagged
@@ -1269,19 +1268,6 @@ Transform:
   - {fileID: 216691148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1524879726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524879720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d69de05e2ac76d94c885a3d0a55b2a63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: {x: 0, y: 0}
 --- !u!95 &1524879727
 Animator:
   serializedVersion: 5
@@ -1347,18 +1333,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1524879720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d86b7fd40837c154b87df1de01acb8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1524879733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524879720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0707e8d189411f4899177965786dbfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -1366,75 +1340,7 @@ MonoBehaviour:
   stabAttack: {fileID: 308673855}
   upperCutAttack: {fileID: 216691145}
   animationAttackType: 0
---- !u!114 &1524879734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524879720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d69de05e2ac76d94c885a3d0a55b2a63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: {x: 0, y: 0}
---- !u!114 &1524879735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524879720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f3db30feed34324c8e9c94858cf2728, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 100
-  hasInfHP: 0
-  isStunned: 0
-  stunTime: 0
---- !u!114 &1524879736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524879720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 837bcd56fcd940f4a8e0edf0f28c610b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slashAttackVelocity: {x: 0, y: 0}
-  slashAttackVelocityLeft: {x: 0, y: 0}
-  stabVelocity: {x: 0, y: 0}
-  stabVelocityLeft: {x: 0, y: 0}
-  upperCutVelocity: {x: 0, y: 0}
-  upperCutVelocityLeft: {x: 0, y: 0}
-  groundSlamVelocity: {x: 0, y: 0}
-  isAttacking: 0
-  hasHit: 0
---- !u!114 &1524879737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524879720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41d01fd97ad02a2479e10e0c4ef12161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MovementeSpeed: 150
-  jumpSpeed: 200
-  jumpTime: 0
-  maxJumpTime: 0.4
-  canMove: 1
-  canJump: 1
---- !u!114 &1524879738
+--- !u!114 &1524879733
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1457,15 +1363,95 @@ MonoBehaviour:
   onRightWall: 0
   onLeftWall: 0
   isNearGround: 0
-  wallBoxSize: {x: 1.19, y: 18.27}
-  rightWallOffset: {x: 5.82, y: 0}
-  leftWallOffset: {x: -7.01, y: 0}
+  wallBoxSize: {x: 0.99, y: 18.11}
+  rightWallOffset: {x: 5.93, y: 0}
+  leftWallOffset: {x: -7.04, y: 0}
   debugWallCollisionColor: {r: 0, g: 0, b: 1, a: 1}
-  groundBoxSize: {x: 1.91, y: 1.3}
-  groundOffset: {x: 0, y: -16.57}
+  groundBoxSize: {x: 1.16, y: 1}
+  groundOffset: {x: 0, y: -16.5}
   nearGroundBoxSize: {x: 0.5, y: 50}
-  nearGroundOffset: {x: 0.5, y: -41}
+  nearGroundOffset: {x: 0.5, y: -41.1}
   debugGroundCollisionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1524879734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524879720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3db30feed34324c8e9c94858cf2728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  hasInfHP: 0
+  isStunned: 0
+  stunTime: 0
+--- !u!114 &1524879735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524879720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837bcd56fcd940f4a8e0edf0f28c610b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slashAttackVelocity: {x: 0, y: 0}
+  slashAttackVelocityLeft: {x: 0, y: 0}
+  stabVelocity: {x: 0, y: 0}
+  stabVelocityLeft: {x: 0, y: 0}
+  upperCutVelocity: {x: 0, y: 0}
+  upperCutVelocityLeft: {x: 0, y: 0}
+  groundSlamVelocity: {x: 0, y: 0}
+  isAttacking: 0
+  hasHit: 0
+--- !u!114 &1524879736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524879720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41d01fd97ad02a2479e10e0c4ef12161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovementeSpeed: 150
+  jumpSpeed: 200
+  jumpTime: 0
+  maxJumpTime: 0.4
+  canMove: 1
+  canJump: 1
+--- !u!114 &1524879737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524879720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69de05e2ac76d94c885a3d0a55b2a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {x: 0, y: 0}
+--- !u!114 &1524879738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524879720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d86b7fd40837c154b87df1de01acb8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1569659772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2532,7 +2518,7 @@ MonoBehaviour:
   knockbackLeft: {x: -75, y: -5}
   leoMov: {fileID: 0}
   attacks: {fileID: 0}
-  circleRadius: 26.3
+  circleRadius: 18.3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
