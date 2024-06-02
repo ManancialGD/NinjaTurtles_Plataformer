@@ -15,14 +15,14 @@ public class ShooterAim : MonoBehaviour
     void Awake()
     {
         target = FindObjectOfType<LeoMovement>().transform;
-        rotateArm = GetComponentInChildren<RotateArm>();
+        rotateArm = GetComponentInParent<RotateArm>();
 
         prefabGravityScale = prefabToSpawn.GetComponent<Rigidbody2D>().gravityScale;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown("5"))
+        if (Input.GetKeyDown(KeyCode.Alpha5)) // Changed to KeyCode for better readability
         {
             // Compute and set the velocity
             if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
@@ -48,7 +48,7 @@ public class ShooterAim : MonoBehaviour
     /// here is the link, if you want to know more about it:
     /// https://github.com/DiogoDeAndrade/projetil
     ///</summary>
-    public bool ComputeVelocity(Vector3 srcPos, Vector3 targetPos, float speed, float gravity, bool minimizeTime, out Vector2 shotVelocty)
+        public bool ComputeVelocity(Vector3 srcPos, Vector3 targetPos, float speed, float gravity, bool minimizeTime, out Vector2 shotVelocty)
     {
         shotVelocty = Vector2.zero;
 
@@ -59,7 +59,7 @@ public class ShooterAim : MonoBehaviour
             deltaX = -deltaX;
             invX = -1.0f;
         }
-        float tmp = gravity * (deltaX * deltaX) / (2.0f * speed * speed) * 6;
+        float tmp = gravity * (deltaX * deltaX) / (2.0f * speed * speed) * prefabGravityScale;
         float a = tmp;
         float b = deltaX;
         float c = (srcPos.y - targetPos.y + tmp);
@@ -150,7 +150,7 @@ public class ShooterAim : MonoBehaviour
 
         while (t < 5.0f)
         {
-            Vector2 pos = startPos + vel * t + 0.5f * Physics2D.gravity * t * t;
+            Vector2 pos = startPos + vel * t + 0.5f * Physics2D.gravity * t * t * prefabGravityScale;
 
             Gizmos.DrawLine(prevPos, pos);
 

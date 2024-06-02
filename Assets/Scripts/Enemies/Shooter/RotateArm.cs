@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RotateArm : MonoBehaviour
 {
-    public float rotationSpeed;
+    public float rotationSpeed = 10;
     Transform target;
     
     void Awake()
@@ -13,7 +13,7 @@ public class RotateArm : MonoBehaviour
     }
 
     /// <summary>
-    /// This Method will receive the Theta forneced from the ComputeVelocity
+    /// This Method will receive the Theta provided from the ComputeVelocity
     /// and will use that value to rotate the object.
     /// if the player is on the left, the angle will be inverted
     /// </summary>
@@ -31,5 +31,4 @@ public class RotateArm : MonoBehaviour
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * rotationSpeed);
     }
-    
 }

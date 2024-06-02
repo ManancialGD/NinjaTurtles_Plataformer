@@ -8,9 +8,7 @@ public class EnemyBullet : MonoBehaviour
     public float speed = 50.0f;
 
     [Space]
-
     [Header("Destroy Time")]
-
     [SerializeField] private float destroyTime = 5f;
 
     Rigidbody2D rb;
@@ -23,6 +21,7 @@ public class EnemyBullet : MonoBehaviour
         alreadyAttacked = false;
         sp = GetComponent<SpriteRenderer>();
         leoHP = FindObjectOfType<LeoHP>();
+        rb = GetComponent<Rigidbody2D>(); // Ensure Rigidbody2D is initialized here
         Destroy(gameObject, destroyTime);
     }
 
@@ -32,7 +31,6 @@ public class EnemyBullet : MonoBehaviour
         {
             rb = GetComponent<Rigidbody2D>();
         }
-
         rb.velocity = vec;
     }
 
@@ -42,9 +40,10 @@ public class EnemyBullet : MonoBehaviour
 
         if (!alreadyAttacked)
         {
-            if (other.GetComponent<LeoHP>() != null)leoHP.TakeDamage(25);
+            if (other.GetComponent<LeoHP>() != null)
+                leoHP.TakeDamage(25);
+            alreadyAttacked = true;
         }
-        alreadyAttacked = true;
 
         Destroy(gameObject, 5f);
     }
