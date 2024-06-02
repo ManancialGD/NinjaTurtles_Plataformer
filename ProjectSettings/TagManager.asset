@@ -17,8 +17,8 @@ TagManager:
   - jumpableGround
   - Water
   - UI
-  - Player
-  - PlayerAttack
+  - Leo
+  - LeoAttack
   - Enemy
   - jumpableWalls
   - enemyAttack

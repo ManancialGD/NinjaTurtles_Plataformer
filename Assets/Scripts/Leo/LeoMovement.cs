@@ -8,27 +8,42 @@
         Rigidbody2D rb;
         PlayerInputs playerInputs;
 
-        public bool isFacingRight { get; private set; }
+        [Header("Colliders")]
+        [SerializeField] Collider2D groundCollider;
+        [SerializeField] Collider2D airCollider;
 
+        [Space]
+
+        [Header("Speed")]
         [SerializeField] private int MovementeSpeed = 150;
         [SerializeField] private int jumpSpeed = 200;
 
+        [Space]
+
+        [Header("Times")]
+        
         [SerializeField] private float jumpTime;
         [SerializeField] private float maxJumpTime = 0.4f;
 
+        [Space]
+
+        [Header("Bools")]
         [SerializeField] private bool canMove = true;
         public bool CanMove { get { return canMove; } private set { canMove = value; } }
 
         [SerializeField] private bool canJump = true;
         public bool CanJump { get { return canJump; } private set { canJump = value; } }
 
+        public bool IsFacingRight { get; private set; }
+
 
         private float defaultGravityScale;
         private Vector2 playerInput;
+        private bool alreadyFlipped;
 
         void Awake()
         {
-            isFacingRight = true; // Is facing right start as true
+            IsFacingRight = true; // Is facing right start as true
 
             playerInputs = GetComponent<PlayerInputs>();
 
@@ -43,7 +58,11 @@
         {
             // Get player Inputs
             playerInput = playerInputs.input;
-            
+
+            // Change collisions if is in air
+            airCollider.enabled = !coll.onGround;
+            groundCollider.enabled = coll.onGround;
+
             if (canJump) Jump(); // Jump Logics
         }
 
@@ -54,20 +73,20 @@
 
         /// <summary>
         /// This method will make the leo jump higher and fall slower if the player is holding the Jump button
-        /// Code made by Professor Diogo
+        /// This piece of code was made by professor Diogo
         /// </summary>
         private void Jump()
         {
             Vector3 leoVelocity = rb.velocity;   
             
-            if (Input.GetButtonDown("Jump") && coll.onGround)
+            if (Input.GetButtonDown("Jump") && coll.onGround) 
             {
                 leoVelocity.y = jumpSpeed;
                 rb.gravityScale = 1.0f;
-                jumpTime = Time.time;
+                jumpTime = Time.time; // This will prevent to fall slowly whitout jumping first
 
             }
-            else if (Input.GetButton("Jump") && ((Time.time - jumpTime) < maxJumpTime))
+            else if (Input.GetButton("Jump") && ((Time.time - jumpTime) < maxJumpTime)) // If is holding jump, then fall slowly
             {
                 rb.gravityScale = 1.0f;
             }
@@ -82,7 +101,6 @@
         /// <summary>
         /// Make the player Move
         /// This doesn't have acceleration
-        /// Made by Professor Diogo
         /// </summary>
         private void Move()
         {
@@ -91,23 +109,26 @@
             leoVelocity.x = playerInput.x *  MovementeSpeed; // if the input is negative, player will go to the left
 
             // Flip Leo acording to the movement
-            if (playerInput.x < -0.01f) Flip(true);
-            else if (playerInput.x > 0.01f) Flip(false);
+            if (playerInput.x < -0.01f && !alreadyFlipped) Flip(true);
+            else if (playerInput.x > 0.01f && alreadyFlipped) Flip(false);
 
             rb.velocity = leoVelocity;
         }
 
+        // Rotate 180 degrees in the y axis
         private void Flip(bool flip)
         {
             if (flip)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-                isFacingRight = false;
+                IsFacingRight = false;
+                alreadyFlipped = true;
             }
             else if (!flip)
             {
                 transform.rotation = Quaternion.identity;
-                isFacingRight = true;
+                IsFacingRight = true;
+                alreadyFlipped = false;
             }
         }
 

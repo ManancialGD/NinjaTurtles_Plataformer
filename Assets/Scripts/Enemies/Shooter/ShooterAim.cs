@@ -3,30 +3,24 @@ using UnityEngine;
 
 public class ShooterAim : MonoBehaviour
 {
-    // Reference to the RotateArm component
+    private Transform target;
     private RotateArm rotateArm;
+    private DetectLeo leoDetection;
 
-    // Bullet prefab to spawn
+    [Header("Prefab")]
     public EnemyBullet prefabToSpawn;
-
-    // Gravity scale of the bullet prefab
     private float prefabGravityScale;
 
-    // Flag to display trajectory in the editor
+    [Space]
+
+    [Header("Bools")]
     [SerializeField] private bool displayTrajectory;
-
-    // Reference to the target transform
-    private Transform target;
-
-    // Flag to minimize time or maximize distance in trajectory calculation
     [SerializeField] public bool minimizeTime;
 
     void Awake()
     {
-        // Find and assign the target (Leo) at the start
+        leoDetection = FindObjectOfType<DetectLeo>();
         target = FindObjectOfType<LeoMovement>().transform;
-
-        // Get the RotateArm component from the parent
         rotateArm = GetComponentInParent<RotateArm>();
 
         // Get the gravity scale of the bullet prefab's Rigidbody2D component
@@ -57,8 +51,12 @@ public class ShooterAim : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Compute the velocity continuously in FixedUpdate
-        ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel);
+        if (leoDetection.leoDetected)
+        {
+            // Compute the velocity continuously in FixedUpdate
+            ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel);
+        }
+        else rotateArm.SetRotationAngle(0);
     }
 
     /// <summary>
@@ -150,28 +148,30 @@ public class ShooterAim : MonoBehaviour
         return true;
     }
 
-    void OnDrawGizmos()
+ void OnDrawGizmos()
     {
         if (!displayTrajectory) return;
 
-        // Initialize target if null
+        // Initialize leoDetection and target if null
+        if (leoDetection == null)
+        {
+            leoDetection = FindObjectOfType<DetectLeo>();
+        }
         if (target == null)
         {
             target = FindObjectOfType<LeoMovement>()?.transform;
             if (target == null) return;
         }
 
-        if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
+        if (leoDetection != null && leoDetection.leoDetected)
         {
-            GizmoSimulation(Color.cyan, vel);
+            if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
+            {
+                GizmoSimulation(Color.cyan, vel);
+            }
         }
     }
 
-    /// <summary>
-    /// Simulates and draws the projectile's trajectory in the editor.
-    /// </summary>
-    /// <param name="color">Color of the trajectory line.</param>
-    /// <param name="vel">Initial velocity of the projectile.</param>
     void GizmoSimulation(Color color, Vector2 vel)
     {
         float timeStep = 0.01f;
