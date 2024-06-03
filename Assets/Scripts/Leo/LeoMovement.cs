@@ -17,6 +17,8 @@
         [Header("Speed")]
         [SerializeField] private int movementeSpeed = 150;
         [SerializeField] private int jumpSpeed = 200;
+        private int defaultMovementSpeed;
+        private int defaultJumpSpeed;
 
         [Space]
 
@@ -43,6 +45,9 @@
 
         void Awake()
         {
+            defaultJumpSpeed = jumpSpeed;
+            defaultMovementSpeed = movementeSpeed;
+
             IsFacingRight = true; // Is facing right start as true
 
             playerInputs = GetComponent<PlayerInputs>();
@@ -146,11 +151,11 @@
         public void StaminaBroke()
         {
             movementeSpeed = 50;
-            SetCanJump(false);
+            jumpSpeed = 50;
         }
         public void StaminaRecovered()
         {
-            movementeSpeed = 150;
-            if (!CanJump) SetCanJump(true);
+            movementeSpeed = defaultMovementSpeed;
+            jumpSpeed = defaultJumpSpeed;
         }
     }
