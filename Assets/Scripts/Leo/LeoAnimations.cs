@@ -6,6 +6,7 @@ public class LeoAnimation : MonoBehaviour
     LeoCollisionDetector coll;
     private Animator anim;
     private LeoAttacks leoAttacks;
+    private LeoStats leoStats;
     private string currentAnimation;
 
     private const float movementThreshold = 0.5f; // Threshold for significant movement
@@ -16,6 +17,7 @@ public class LeoAnimation : MonoBehaviour
     void Start()
     {
         leoAttacks = GetComponent<LeoAttacks>();
+        leoStats = GetComponent<LeoStats>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<LeoCollisionDetector>();
@@ -41,18 +43,16 @@ public class LeoAnimation : MonoBehaviour
         {
             ChangeAnimation("LeoFall");
         }
-        else if (Mathf.Abs(movementX) > movementThreshold && !leoAttacks.isAttacking)
+        else if (Mathf.Abs(rb.velocity.x) > movementThreshold && !leoAttacks.isAttacking)
         {
-            ChangeAnimation("LeoRun");
+            if (leoStats.InStaminaBreak)  ChangeAnimation("LeoWalk");
+            else ChangeAnimation("LeoRun");
         }
         else if (Mathf.Abs(rb.velocity.x) < 0.1f && !leoAttacks.isAttacking) // If velocity.x is close to zero
         {
             ChangeAnimation("LeoIdle");
         }
-        else if (!leoAttacks.isAttacking)
-        {
-            ChangeAnimation("LeoWalk"); // Play the walk animation when moving slowly
-        }
+
     }
 
     public void ChangeAnimation(string newAnimation)
