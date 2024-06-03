@@ -1787,13 +1787,13 @@ MonoBehaviour:
     m_Bits: 8
   jumpableWalls:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 8
   onGround: 0
   onWall: 0
   onRightWall: 0
   onLeftWall: 0
   isNearGround: 0
-  wallBoxSize: {x: 0.99, y: 18.11}
+  wallBoxSize: {x: 1.82, y: 18.11}
   rightWallOffset: {x: 5.93, y: 0}
   leftWallOffset: {x: -7.04, y: 0}
   debugWallCollisionColor: {r: 0, g: 0, b: 1, a: 1}
@@ -1909,10 +1909,12 @@ MonoBehaviour:
   airCollider: {fileID: 1524879739}
   movementeSpeed: 150
   jumpSpeed: 200
+  wallJumpSpeed: {x: 150, y: 200}
   jumpTime: 0
   maxJumpTime: 0.4
   canMove: 1
   canJump: 1
+  wallJumped: 0
 --- !u!114 &1524879741
 MonoBehaviour:
   m_ObjectHideFlags: 0

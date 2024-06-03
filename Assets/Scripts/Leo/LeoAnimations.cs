@@ -7,6 +7,7 @@ public class LeoAnimation : MonoBehaviour
     private Animator anim;
     private LeoAttacks leoAttacks;
     private LeoStats leoStats;
+    private LeoMovement leoMov;
     private string currentAnimation;
 
     private const float movementThreshold = 0.5f; // Threshold for significant movement
@@ -18,6 +19,7 @@ public class LeoAnimation : MonoBehaviour
     {
         leoAttacks = GetComponent<LeoAttacks>();
         leoStats = GetComponent<LeoStats>();
+        leoMov = GetComponent<LeoMovement>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<LeoCollisionDetector>();
@@ -31,7 +33,11 @@ public class LeoAnimation : MonoBehaviour
 
     private void CheckAnimation()
     {
-        if (rb.velocity.y > .01f && coll.isNearGround && !leoAttacks.isAttacking)
+        if (leoMov.Sliding)
+        {
+            ChangeAnimation("LeoWallSlide");
+        }
+        else if (rb.velocity.y > .01f && coll.isNearGround && !leoAttacks.isAttacking)
         {
             ChangeAnimation("LeoJump");
         }
