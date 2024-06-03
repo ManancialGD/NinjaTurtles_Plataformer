@@ -9,6 +9,7 @@ TagManager:
   - MeeleAttack
   - ShootAttack
   - Enemy
+  - Map
   layers:
   - Default
   - TransparentFX
@@ -16,11 +17,11 @@ TagManager:
   - jumpableGround
   - Water
   - UI
-  - Player
-  - PlayerAttack
+  - Leo
+  - LeoAttack
   - Enemy
-  - 
-  - 
+  - jumpableWalls
+  - enemyAttack
   - 
   - 
   - 
