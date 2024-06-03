@@ -61,7 +61,7 @@ public class LeoAttacks : MonoBehaviour
 
         if (!isAttacking || hasHit) // If is already attacking, can't attack again. BUT only if the attack hit.
         {
-            
+
             if (input.y < -0.01f) // Check if player is pressing "S"
             {
                 ExecuteAttack("LeoUpperCut", upperCutVelocity, upperCutVelocityLeft); // UpperCut Attack
@@ -80,8 +80,6 @@ public class LeoAttacks : MonoBehaviour
 
     void ExecuteAttack(string animationName, Vector2 velocityRight, Vector2 velocityLeft)
     {
-        isAttacking = true;
-        
         string currentAttack = "";
         if (currentAttack == animationName)
         {
@@ -90,10 +88,14 @@ public class LeoAttacks : MonoBehaviour
         else changedAttacks = true;
 
         currentAttack = animationName;
-
-        leoAnim.ChangeAnimation(animationName);
-        leoStats.ConsumeStamina(25);
-        if (leoMov.IsFacingRight && !isAttacking) rb.velocity += velocityRight;
-        else if (!isAttacking) rb.velocity += velocityLeft;
+        
+        if (changedAttacks)
+        {
+            leoAnim.ChangeAnimation(animationName);
+            isAttacking = true;
+            leoStats.ConsumeStamina(25);
+            if (leoMov.IsFacingRight && !isAttacking) rb.velocity += velocityRight;
+            else if (!isAttacking) rb.velocity += velocityLeft;
+        }
     }
 }

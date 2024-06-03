@@ -42,9 +42,10 @@ public class AttacksInAnimator : StateMachineBehaviour
             attackCollisionActivator.animationAttackType = attackType; // Will activate the collider, sending the code to AttaclCollisionActivator.cs.
         }
         
-        if (currentFrame > 4 && currentFrame < 4.6) // At frame 4
+        if (currentFrame > 5 && currentFrame < 5.6) // At frame 5
         {
             attackCollisionActivator.animationAttackType = 0; // This will make AttackCollisionActivator.cs desactivate the collider.
+            if (leoAttacks.hasHit) leoAttacks.hasHit = false;
         }
 
         if (currentFrame >= 6) // At frame 6
@@ -63,6 +64,7 @@ public class AttacksInAnimator : StateMachineBehaviour
         // Setting up variables
         leoAttacks.isAttacking = false;
         if (leoAttacks.hasHit) leoAttacks.hasHit = false;
+        attackCollisionActivator.animationAttackType = 0;
         if (!player.CanMove) player.SetCanMove(true);
         if (!player.CanJump) player.SetCanJump(true);
     }
