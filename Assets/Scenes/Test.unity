@@ -916,8 +916,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smoothTime: 0.2
   positionOffset: {x: 0, y: 0, z: -10}
-  xLimit: {x: -114.1, y: 85.5}
-  yLimit: {x: -42.1, y: 1.7}
+  xLimit: {x: -117, y: 85}
+  yLimit: {x: -42, y: 1.7}
+  debugColour: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &581927955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1820,6 +1821,7 @@ MonoBehaviour:
   upperCutVelocity: {x: 55, y: 0}
   upperCutVelocityLeft: {x: -55, y: 0}
   isAttacking: 0
+  changedAttacks: 0
   hasHit: 0
 --- !u!114 &1524879737
 MonoBehaviour:

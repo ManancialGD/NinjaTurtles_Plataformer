@@ -14,6 +14,8 @@ public class CameraFollow : MonoBehaviour
     public Vector2 xLimit; // Vector2(Xmin, Xmax)
     public Vector2 yLimit; // Vector2(Ymin, Ymax)
 
+    [SerializeField] Color debugColour = Color.blue;
+
     Camera cam;
 
     private void Update()
@@ -57,8 +59,8 @@ public class CameraFollow : MonoBehaviour
             cam = GetComponent<Camera>();
             if (cam == null) return;
         }
-
-        Gizmos.color = Color.red;
+    
+        Gizmos.color = debugColour;
 
         // Calculate the center and size of the rectangle, adjusted for camera size
         float camHeight = cam.orthographicSize * 2;

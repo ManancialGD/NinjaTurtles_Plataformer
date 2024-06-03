@@ -28,24 +28,25 @@ public class DetectAndDamageEnemy : MonoBehaviour
     private void DetectEnemies()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, circleRadius, enemyLayer);
-
-        foreach (Collider2D enemy in hitEnemies)
+        if (!attacks.hasHit)
         {
-            EnemyHP enemyHP = enemy.GetComponent<EnemyHP>();
-            if (enemyHP != null)
+            foreach (Collider2D enemy in hitEnemies)
             {
-                if (leoMov != null)
+                EnemyHP enemyHP = enemy.GetComponent<EnemyHP>();
+                if (enemyHP != null)
                 {
-                    if (attacks.hasHit == false)
+                    if (leoMov != null)
                     {
-                        if (leoMov.IsFacingRight)
-                            enemyHP.TakeDamage(damageAmount, 1f, knockbackRight);
-                        else
-                            enemyHP.TakeDamage(damageAmount, 1f, knockbackLeft);
+                        if (!attacks.hasHit && attacks.changedAttacks)
+                        {
+                            if (leoMov.IsFacingRight)
+                                enemyHP.TakeDamage(damageAmount, 1f, knockbackRight);
+                            else
+                                enemyHP.TakeDamage(damageAmount, 1f, knockbackLeft);
+                        }
                     }
+                    attacks.hasHit = true;
                 }
-
-                attacks.hasHit = true;
             }
         }
     }

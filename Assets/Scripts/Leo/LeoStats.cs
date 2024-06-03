@@ -9,6 +9,8 @@ public class LeoStats : MonoBehaviour
     LeoMovement leoMov;
     LeoAttacks attacks;
 
+    private bool wasAttacking;
+
     [Header("Health")]
     [SerializeField] private Image hpImage;
     [SerializeField] private int hp = 100;
@@ -27,11 +29,14 @@ public class LeoStats : MonoBehaviour
     [SerializeField] public bool InStaminaBreak { get; private set; }
     [SerializeField] private GameObject staminaBreakPrefab;
     [SerializeField] private Vector3 spawnPrefabOffset;
+
     [Space]
 
     [Header("Stun")]
     [SerializeField] private bool isStunned;
     [SerializeField] private float stunTime;
+
+    private Coroutine passiveStaminaCoroutine;
 
     private void Awake()
     {
@@ -45,9 +50,29 @@ public class LeoStats : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (attacks.isAttacking)
+        {
+            if (passiveStaminaCoroutine != null)
+            {
+                StopCoroutine(passiveStaminaCoroutine);
+                passiveStaminaCoroutine = null;
+            }
+            wasAttacking = true;
+        }
+
         if (Stamina < maxStamina)
         {
-            if (!attacks.isAttacking) ReceiveStamina(1);
+            if (wasAttacking && !attacks.isAttacking)
+            {
+                if (passiveStaminaCoroutine == null)
+                {
+                    passiveStaminaCoroutine = StartCoroutine(PassiveStaminaCoroutine());
+                }
+            }
+            else if (!wasAttacking && !attacks.isAttacking)
+            {
+                ReceiveStamina(1);
+            }
         }
     }
 
@@ -76,6 +101,16 @@ public class LeoStats : MonoBehaviour
 
     // Stamina Logics
 
+    private IEnumerator PassiveStaminaCoroutine()
+    {
+        yield return new WaitForSeconds(.5f);
+        wasAttacking = false;
+        if (Stamina < maxStamina)
+        {
+            ReceiveStamina(1);
+        }
+    }
+
     public void ConsumeStamina(int staminaAmount)
     {
         if (hasInfStamina) staminaAmount = 0;
@@ -98,23 +133,30 @@ public class LeoStats : MonoBehaviour
         staminaImage.fillAmount = Stamina / 100f;
     }
 
-    private void StaminaBreak()
+    private IEnumerator StaminaBreakCoroutine()
     {
-        stamina = 0;
-        InStaminaBreak = true;
+        while (attacks.isAttacking)
+        {
+            yield return null; // Wait for the next frame until the attack is finished
+        }
+
+        stamina = 0; // Set stamina to 0 only after the attack is finished
 
         InstantiateStaminaBreakPrefab();
 
         leoMov.StaminaBroke();
     }
 
+    private void StaminaBreak()
+    {
+        InStaminaBreak = true;
+        StartCoroutine(StaminaBreakCoroutine());
+    }
+
     public void InstantiateStaminaBreakPrefab()
     {
-
         Vector3 spawnPosition = transform.position + spawnPrefabOffset;
         Instantiate(staminaBreakPrefab, spawnPosition, Quaternion.identity);
-
-
     }
 
     // KnockBack and Stun
