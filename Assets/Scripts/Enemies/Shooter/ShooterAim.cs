@@ -27,38 +27,6 @@ public class ShooterAim : MonoBehaviour
         prefabGravityScale = prefabToSpawn.GetComponent<Rigidbody2D>().gravityScale;
     }
 
-    void Update()
-    {
-        // Check for the input to shoot (KeyCode 5)
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            // Compute and set the velocity for the shot
-            if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
-            {
-                // Instantiate the bullet prefab and set its velocity
-                var newShot = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
-                newShot.SetVelocity(vel);
-
-                // Start the recoil coroutine
-                StartCoroutine(rotateArm.Recoil());
-            }
-            else
-            {
-                Debug.LogWarning("Impossible to hit target!");
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (leoDetection.leoDetected)
-        {
-            // Compute the velocity continuously in FixedUpdate
-            ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel);
-        }
-        else rotateArm.SetRotationAngle(0);
-    }
-
     /// <summary>
     /// Computes the angle needed to hit the target and translates it into the initial velocity vector.
     ///
