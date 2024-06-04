@@ -26,9 +26,10 @@ public class DashController : MonoBehaviour
 
     void Update()
     {
-        if (menuManager.GamePaused)return;
+        if (menuManager.GamePaused) return;
 
-    	DoubleClickDash();
+        if (menuManager.DoubleClickDash) DoubleClickDash();
+        else ShiftDash();
     }
 
     private void DoubleClickDash()
@@ -79,7 +80,21 @@ public class DashController : MonoBehaviour
         if (currentSidePressed != 'I') lastSidePressed = currentSidePressed;
     }
 
-    IEnumerator Dash(Vector2 velocity, float time, char side)
+    private void ShiftDash()
+    {
+        if (Input.GetButtonDown("Dash"))
+        {
+            Vector2 dashVelocity;
+            if (leoMovement.IsFacingRight)
+            {
+                dashVelocity = new Vector2(dashForce, 0);
+            }
+            else dashVelocity = new Vector2(-dashForce, 0);
+
+            StartCoroutine(Dash(dashVelocity, dashTime));
+        }
+    }
+    IEnumerator Dash(Vector2 velocity, float time, char side = 'N')
     {
         canDash = false;
         rb.velocity = velocity;
