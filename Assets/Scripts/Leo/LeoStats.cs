@@ -12,6 +12,8 @@ public class LeoStats : MonoBehaviour
     LeoAttacks attacks;
 
     private bool wasAttacking;
+    private bool justConsumedStamina;
+    private Coroutine passiveStaminaCoroutine;
 
     [Header("Health")]
     [SerializeField] private Image hpImage; // Image component to display health bar
@@ -38,8 +40,6 @@ public class LeoStats : MonoBehaviour
     [SerializeField] private bool isStunned; // Flag indicating if Leo is currently stunned
     [SerializeField] private float stunTime; // Duration of stun
 
-    private Coroutine passiveStaminaCoroutine; // Coroutine reference for passive stamina recovery
-
     /// <summary>
     /// Initializes necessary components and sets initial states.
     /// </summary>
@@ -58,30 +58,52 @@ public class LeoStats : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        // Check if Leo is currently attacking
         if (attacks.isAttacking)
         {
-            if (passiveStaminaCoroutine != null)
-            {
-                StopCoroutine(passiveStaminaCoroutine);
-                passiveStaminaCoroutine = null;
-            }
             wasAttacking = true;
         }
 
-        if (Stamina < maxStamina)
+        // Check if Leo's stamina is less than maximum and Leo is not attacking
+        if (Stamina < maxStamina && !attacks.isAttacking)
         {
-            if (wasAttacking && !attacks.isAttacking)
+            // Check if Leo was attacking in the previous frame
+            if (wasAttacking)
             {
+                // If Leo was attacking, start the passive stamina recovery coroutine
                 if (passiveStaminaCoroutine == null)
                 {
                     passiveStaminaCoroutine = StartCoroutine(PassiveStaminaCoroutine());
                 }
             }
-            else if (!wasAttacking && !attacks.isAttacking)
+            else
             {
-                ReceiveStamina(1);
+                // If Leo was not attacking and just consumed stamina, wait for 2 seconds before recovering stamina passively
+                if (justConsumedStamina)
+                {
+                    if (passiveStaminaCoroutine == null)
+                    {
+                        passiveStaminaCoroutine = StartCoroutine(WaitAndRecoverStamina());
+                    }
+                }
+                else
+                {
+                    // If Leo was not attacking and didn't just consume stamina, passively recover stamina
+                    ReceiveStamina(1);
+                }
             }
         }
+        
+        // Reset the wasAttacking flag for the next frame
+        wasAttacking = false;
+    }
+
+    // Coroutine to wait for X seconds after receiving stamina and then reset the justConsumedStamina flag
+    private IEnumerator WaitAndRecoverStamina()
+    {
+        yield return new WaitForSeconds(1f);
+        justConsumedStamina = false;
+        passiveStaminaCoroutine = null; // Reset the coroutine reference to allow passive stamina recovery again
     }
 
     // Method to heal Leo
@@ -139,6 +161,9 @@ public class LeoStats : MonoBehaviour
 
         Stamina -= staminaAmount;
         staminaImage.fillAmount = Stamina / 100f;
+
+        // Set justConsumedStamina to true when stamina is consumed
+        justConsumedStamina = true;
     }
 
     // Method to receive stamina
