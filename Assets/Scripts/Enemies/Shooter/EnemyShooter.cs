@@ -52,11 +52,9 @@ public class EnemyShooter : MonoBehaviour
         if (leodetection.leoDetected)
         {
             // Always aim towards the target if detected
-            aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed, Physics2D.gravity.y, aim.minimizeTime, out Vector2 vel);
-            
-            // Set the rotation angle for the arm based on the velocity
-            float angle = Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg;
-            arm.SetRotationAngle(angle);
+            if(aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed, Physics2D.gravity.y, aim.minimizeTime, out Vector2 vel, out float theta))
+        
+            arm.SetRotationAngle(theta);
 
             // Start shooting if not already waiting to shoot
             if (!waitingToShoot)

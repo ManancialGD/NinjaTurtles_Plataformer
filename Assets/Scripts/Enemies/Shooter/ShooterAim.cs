@@ -41,9 +41,10 @@ public class ShooterAim : MonoBehaviour
     /// <param name="minimizeTime">Flag to minimize time or maximize distance.</param>
     /// <param name="shotVelocity">The computed initial velocity vector.</param>
     /// <returns>True if a valid velocity is found; false otherwise.</returns>
-    public bool ComputeVelocity(Vector3 srcPos, Vector3 targetPos, float speed, float gravity, bool minimizeTime, out Vector2 shotVelocity)
+    public bool ComputeVelocity(Vector3 srcPos, Vector3 targetPos, float speed, float gravity, bool minimizeTime, out Vector2 shotVelocity, out float theta)
     {
         shotVelocity = Vector2.zero;
+        theta = 0.0f;
 
         float invX = 1.0f;
         float deltaX = targetPos.x - srcPos.x;
@@ -75,7 +76,6 @@ public class ShooterAim : MonoBehaviour
         float t1 = deltaX / (speed * Mathf.Cos(theta1));
         float t2 = deltaX / (speed * Mathf.Cos(theta2));
 
-        float theta = 0.0f;
         if (t1 < 0.0f)
         {
             if (t2 < 0.0f)
