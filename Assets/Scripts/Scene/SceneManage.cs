@@ -5,19 +5,22 @@ public class SceneManage : MonoBehaviour
 {
     Transform leo;
     CameraFollow cameraFollow;
-    public string currentScene;
+    MenuManager menuManager;
+    public string CurrentScene { get; private set; }
     private void Awake()
     {
 
         // Create a temporary reference to the current scene.
-        Scene currentSceneScene = SceneManager.GetActiveScene();
+        Scene CurrentSceneScene = SceneManager.GetActiveScene();
 
         // Retrieve the name of this scene.
-        currentScene = currentSceneScene.name;
+        CurrentScene = CurrentSceneScene.name;
 
-        if (currentScene == "MainMenu")
+        menuManager = FindObjectOfType<MenuManager>();
+
+        if (CurrentScene == "MainMenu")
         {
-
+            
         }
         else
         {
@@ -38,7 +41,8 @@ public class SceneManage : MonoBehaviour
     public void ChangeScene(string scene)
     {
         SceneManager.LoadScene(scene);
-        currentScene = scene;
+        CurrentScene = scene;
+        menuManager.ContinueGame();
     }
     public void Quit()
     {

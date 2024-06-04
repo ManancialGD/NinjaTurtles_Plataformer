@@ -3,6 +3,9 @@ using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
+    SaveOptionsSystem saveSystem;
+    SceneManage sceneManage;
+
     [SerializeField] private GameObject PausePanel;
     [SerializeField] private GameObject OptionsPanel;
     [SerializeField] private GameObject DashTypeTextObject;  // GameObject
@@ -13,15 +16,13 @@ public class MenuManager : MonoBehaviour
 
     private enum MenuState { Playing, Pause, Settings }
     private MenuState menuState = MenuState.Playing;
-
-    SaveOptionsSystem saveSystem;
-
     private void Awake()
     {
         saveSystem = GetComponent<SaveOptionsSystem>();
+        sceneManage = FindObjectOfType<SceneManage>();
 
         DoubleClickDash = true;
-        
+
         int i = saveSystem.LoadData();
         if (i == 0) ChangeDashType();
     }
@@ -29,17 +30,28 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Pause"))
         {
-            if (menuState == MenuState.Settings)
+            if (sceneManage.CurrentScene == "Test")
             {
-                ReturnSetting();
+                if (menuState == MenuState.Settings)
+                {
+                    ReturnSetting();
+                }
+                else if (menuState == MenuState.Pause)
+                {
+                    ContinueGame();
+                }
+                else
+                {
+                    PauseGame();
+                }
+
             }
-            else if (menuState == MenuState.Pause)
+            else if (sceneManage.CurrentScene == "MainMenu")
             {
-                ContinueGame();
-            }
-            else
-            {
-                PauseGame();
+                if (menuState == MenuState.Settings)
+                {
+                    ReturnSetting();
+                }
             }
         }
     }
