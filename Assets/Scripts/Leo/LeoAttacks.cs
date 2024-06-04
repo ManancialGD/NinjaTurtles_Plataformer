@@ -47,7 +47,7 @@ public class LeoAttacks : MonoBehaviour
         {
             if (coll.onGround)
             {
-                if (leoStats.Stamina >= 20) // Needs 25 Stamina to attack
+                if (leoStats.Stamina >= 25) // Needs 25 Stamina to attack
                 {
                     if (!leoStats.InStaminaBreak) CheckAttackType();
                 }
