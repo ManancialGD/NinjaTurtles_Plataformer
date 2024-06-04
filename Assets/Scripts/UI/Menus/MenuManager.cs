@@ -14,9 +14,17 @@ public class MenuManager : MonoBehaviour
     private enum MenuState { Playing, Pause, Settings }
     private MenuState menuState = MenuState.Playing;
 
+    SaveOptionsSystem saveSystem;
+
     private void Awake()
     {
+
+        saveSystem = GetComponent<SaveOptionsSystem>();
+
         DoubleClickDash = true;
+        
+        int i = saveSystem.LoadData();
+        if (i == 0) ChangeDashType();
     }
     private void Update()
     {
@@ -78,12 +86,14 @@ public class MenuManager : MonoBehaviour
             DoubleClickDash = false;
             dashTypeText.text = "Shift to dash: ";
             dashButtonText.text = "";
+            saveSystem.SaveDashType(0);
         }
         else
         {
             DoubleClickDash = true;
             dashTypeText.text = "Double click dash: ";
             dashButtonText.text = "O";
+            saveSystem.SaveDashType(1);
         }
     }
 }
