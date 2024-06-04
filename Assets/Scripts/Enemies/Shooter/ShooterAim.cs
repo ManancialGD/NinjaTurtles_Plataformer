@@ -116,30 +116,6 @@ public class ShooterAim : MonoBehaviour
         return true;
     }
 
- void OnDrawGizmos()
-    {
-        if (!displayTrajectory) return;
-
-        // Initialize leoDetection and target if null
-        if (leoDetection == null)
-        {
-            leoDetection = FindObjectOfType<DetectLeo>();
-        }
-        if (target == null)
-        {
-            target = FindObjectOfType<LeoMovement>()?.transform;
-            if (target == null) return;
-        }
-
-        if (leoDetection != null && leoDetection.leoDetected)
-        {
-            if (ComputeVelocity(transform.position, target.position, prefabToSpawn.speed, Physics2D.gravity.y, minimizeTime, out Vector2 vel))
-            {
-                GizmoSimulation(Color.cyan, vel);
-            }
-        }
-    }
-
     void GizmoSimulation(Color color, Vector2 vel)
     {
         float timeStep = 0.01f;
