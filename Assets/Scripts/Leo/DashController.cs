@@ -1,26 +1,31 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class DashController : MonoBehaviour
 {
-    [SerializeField] float dashForce = 150;
+    [SerializeField] float dashForce = 150f;
     [SerializeField] float dashTime = 0.3f;
+    [SerializeField] float dashCooldown = 0.5f;
+    [SerializeField] float airDashCooldown = 0.5f;
+    [SerializeField] float airDashForceMultiplier = 0.5f;
+
     int timesPressed = 0;
     char lastSidePressed = 'I';
     float detectionTime = 0.2f;
-    bool canDash = false;
+    bool canDash = true;
+    bool wasTouchingSurface = true; // Assuming the player starts on the ground
     Rigidbody2D rb;
     LeoMovement leoMovement;
-    LeoCollisionDetector leoColls;
+    LeoAttacks leoAttacks;
+    LeoCollisionDetector coll;
     MenuManager menuManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         leoMovement = GetComponent<LeoMovement>();
-        leoColls = GetComponent<LeoCollisionDetector>();
+        leoAttacks = GetComponent<LeoAttacks>();
+        coll = GetComponent<LeoCollisionDetector>();
         menuManager = FindObjectOfType<MenuManager>();
     }
 
@@ -28,8 +33,28 @@ public class DashController : MonoBehaviour
     {
         if (menuManager.GamePaused) return;
 
-        if (menuManager.DoubleClickDash) DoubleClickDash();
-        else ShiftDash();
+        // Check if the player is grounded or touching a wall
+        if ((coll.onGround || coll.onWall) && !wasTouchingSurface)
+        {
+            wasTouchingSurface = true;
+            canDash = true;
+        }
+        else if (!coll.onGround && !coll.onWall)
+        {
+            wasTouchingSurface = false;
+        }
+
+        // Check if the player can dash
+        if (leoAttacks.isAttacking || !canDash) return;
+
+        if (menuManager.DoubleClickDash)
+        {
+            DoubleClickDash();
+        }
+        else
+        {
+            ShiftDash();
+        }
     }
 
     private void DoubleClickDash()
@@ -41,11 +66,7 @@ public class DashController : MonoBehaviour
             detectionTime = 0.2f;
         }
 
-        if (leoColls.onGround && !canDash || leoColls.onWall && !canDash) canDash = true;
-
-        if (!canDash) return;
-
-        Vector2 dashVelocity = new Vector2(0, 0);
+        Vector2 dashVelocity = Vector2.zero;
 
         char currentSidePressed = 'I';
         if (Input.GetKeyDown(KeyCode.D))
@@ -89,21 +110,55 @@ public class DashController : MonoBehaviour
             {
                 dashVelocity = new Vector2(dashForce, 0);
             }
-            else dashVelocity = new Vector2(-dashForce, 0);
+            else
+            {
+                dashVelocity = new Vector2(-dashForce, 0);
+            }
 
-            StartCoroutine(Dash(dashVelocity, dashTime));
+            if (!coll.onGround) // Apply air dash cooldown and force multiplier if not grounded
+            {
+                StartCoroutine(Dash(dashVelocity * airDashForceMultiplier, dashTime, leoMovement.IsFacingRight ? 'D' : 'A', airDashCooldown));
+            }
+            else
+            {
+                StartCoroutine(Dash(dashVelocity, dashTime));
+            }
         }
     }
-    IEnumerator Dash(Vector2 velocity, float time, char side = 'N')
+
+    IEnumerator Dash(Vector2 velocity, float time, char side = 'N', float cooldown = 0f)
     {
         canDash = false;
+
+        float startTime = Time.time;
+        Vector2 initialVelocity = rb.velocity;
+
+        while (Time.time < startTime + time)
+        {
+            float elapsedTime = Time.time - startTime;
+            float dashProgress = Mathf.Clamp01(elapsedTime / time);
+
+            Vector2 newVelocity = new Vector2(
+                Mathf.Lerp(initialVelocity.x, velocity.x, dashProgress),
+                rb.velocity.y
+            );
+            rb.velocity = newVelocity;
+
+            yield return null;
+        }
+
         rb.velocity = velocity;
 
-        //float simulatedTime = 0;
+        if (leoMovement.CanMove) leoMovement.SetCanMove(false);
 
         yield return new WaitForSeconds(0.1f);
+        if (!leoMovement.CanMove) leoMovement.SetCanMove(true);
 
-        rb.velocity *= 0.1f;
-        canDash = false;
+        if (cooldown > 0)
+        {
+            yield return new WaitForSeconds(cooldown);
+        }
+
+        canDash = true;
     }
 }
