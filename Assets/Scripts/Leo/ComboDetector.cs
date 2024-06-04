@@ -6,7 +6,7 @@ public class ComboDetector : MonoBehaviour
     float timeout = 1f; //Tempo de espera até atacar novamente
     int comboIndex = 0; //Registo de combo atual (informação que pode ser útil para escolher as animações)
     float comboTime = 0.75f; //Tempo perfeito para o combo
-    float timeLimit = 0.15f; //O tempo em que o combo pode ser detetado
+    float timeLimit = 0.1f; //O tempo em que o combo pode ser detetado
 
     void Update()
     {
@@ -22,11 +22,13 @@ public class ComboDetector : MonoBehaviour
             {
                 comboIndex = 0;
                 // Ataque combo 3 (final)
+                InitializeCooldown(2f);
             }
             else
             {
                 comboIndex++;
                 // Ataque combo 1 ou 2
+                InitializeCooldown(1f);
             }
         }
         else
@@ -34,6 +36,7 @@ public class ComboDetector : MonoBehaviour
             if (canAttack())
             {
                 // Ataque normal
+                InitializeCooldown(1f);
             }
             else
             {
@@ -41,8 +44,6 @@ public class ComboDetector : MonoBehaviour
                 return;
             }
         };
-
-        InitializeCooldown(1f);
     }
 
     // Verifica se comboTime coincide com o tempo desde o último ataque (dentro do limite de imprecisão timeLimit)
