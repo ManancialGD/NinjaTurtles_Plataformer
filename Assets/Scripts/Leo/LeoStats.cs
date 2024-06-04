@@ -51,6 +51,7 @@ public class LeoStats : MonoBehaviour
 
         isStunned = false;
         InStaminaBreak = false;
+        justConsumedStamina = true;
     }
 
     /// <summary>
@@ -101,9 +102,17 @@ public class LeoStats : MonoBehaviour
     // Coroutine to wait for X seconds after receiving stamina and then reset the justConsumedStamina flag
     private IEnumerator WaitAndRecoverStamina()
     {
-        yield return new WaitForSeconds(1f);
+        // Set justConsumedStamina to false to prevent multiple coroutines from running simultaneously
         justConsumedStamina = false;
-        passiveStaminaCoroutine = null; // Reset the coroutine reference to allow passive stamina recovery again
+
+        // Wait for the specified time
+        yield return new WaitForSeconds(2f);
+
+        // Set justConsumedStamina back to true after the waiting period
+        justConsumedStamina = true;
+
+        // Reset the coroutine reference to allow passive stamina recovery again
+        passiveStaminaCoroutine = null;
     }
 
     // Method to heal Leo

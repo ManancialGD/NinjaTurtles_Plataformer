@@ -41,7 +41,7 @@ public class DashController : MonoBehaviour
 
     void Update()
     {
-        if (leoStats.Stamina < 25) return;
+        if (leoStats.Stamina <= 0) return;
         if (leoStats.InStaminaBreak) return;
         if (menuManager.GamePaused) return;
 
