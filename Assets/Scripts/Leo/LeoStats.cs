@@ -51,7 +51,7 @@ public class LeoStats : MonoBehaviour
 
         isStunned = false;
         InStaminaBreak = false;
-        justConsumedStamina = true;
+        justConsumedStamina = false;
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public class LeoStats : MonoBehaviour
             }
             else
             {
-                // If Leo was not attacking and just consumed stamina, wait for 2 seconds before recovering stamina passively
+                // If Leo was not attacking and just consumed stamina, wait for 1.2 seconds before recovering stamina passively
                 if (justConsumedStamina)
                 {
                     if (passiveStaminaCoroutine == null)
@@ -102,14 +102,11 @@ public class LeoStats : MonoBehaviour
     // Coroutine to wait for X seconds after receiving stamina and then reset the justConsumedStamina flag
     private IEnumerator WaitAndRecoverStamina()
     {
-        // Set justConsumedStamina to false to prevent multiple coroutines from running simultaneously
-        justConsumedStamina = false;
-
         // Wait for the specified time
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.2f);
 
-        // Set justConsumedStamina back to true after the waiting period
-        justConsumedStamina = true;
+        // Allow passive stamina recovery after the waiting period
+        justConsumedStamina = false;
 
         // Reset the coroutine reference to allow passive stamina recovery again
         passiveStaminaCoroutine = null;
@@ -158,6 +155,7 @@ public class LeoStats : MonoBehaviour
         {
             ReceiveStamina(1);
         }
+        passiveStaminaCoroutine = null;
     }
 
     // Method to consume stamina
