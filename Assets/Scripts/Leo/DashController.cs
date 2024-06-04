@@ -142,23 +142,6 @@ public class DashController : MonoBehaviour
     {
         canDash = false;
 
-        float startTime = Time.time;
-        Vector2 initialVelocity = rb.velocity;
-
-        while (Time.time < startTime + time)
-        {
-            float elapsedTime = Time.time - startTime;
-            float dashProgress = Mathf.Clamp01(elapsedTime / time);
-
-            Vector2 newVelocity = new Vector2(
-                Mathf.Lerp(initialVelocity.x, velocity.x, dashProgress),
-                rb.velocity.y
-            );
-            rb.velocity = newVelocity;
-
-            yield return null;
-        }
-
         rb.velocity = velocity;
 
         leoStats.ConsumeStamina(25);
