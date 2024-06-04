@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,7 +88,18 @@ public class LeoMovement : MonoBehaviour
         {
             wallJumped = false;
         }
-
+        
+        if (Sliding)
+        {
+            if (coll.onRightWall && !IsFacingRight)
+            {
+                Flip(true);
+            }
+            else if (coll.onLeftWall && IsFacingRight)
+            {
+                Flip(false);
+            }
+        }
         if (canJump) Jump(); // Jump logic
     }
 

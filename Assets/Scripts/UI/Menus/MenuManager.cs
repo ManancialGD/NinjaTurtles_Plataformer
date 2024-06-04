@@ -18,7 +18,6 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
-
         saveSystem = GetComponent<SaveOptionsSystem>();
 
         DoubleClickDash = true;
