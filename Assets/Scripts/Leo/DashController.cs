@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class DashController : MonoBehaviour
@@ -13,16 +14,22 @@ public class DashController : MonoBehaviour
     Rigidbody2D rb;
     LeoMovement leoMovement;
     LeoCollisionDetector leoColls;
+    SceneManager sceneManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         leoMovement = GetComponent<LeoMovement>();
         leoColls = GetComponent<LeoCollisionDetector>();
+        sceneManager = FindObjectOfType<SceneManager>();
     }
 
     void Update()
     {
+        if (sceneManager.GamePaused)
+        {
+            return;
+        }
         if (detectionTime > 0 && timesPressed > 0) detectionTime -= Time.deltaTime;
         if (detectionTime < 0)
         {
@@ -51,13 +58,11 @@ public class DashController : MonoBehaviour
             if (detectionTime >= 0) timesPressed++;
             detectionTime = 0.2f;
             dashVelocity = new Vector2(-dashForce, 0);
-            print(lastSidePressed);
             if (lastSidePressed != 'A') timesPressed = 1;
         }
 
         if (currentSidePressed != 'I' && timesPressed >= 2)
         {
-            print(lastSidePressed + " - " + currentSidePressed);
             if (lastSidePressed == currentSidePressed)
             {
                 timesPressed = 0;
@@ -75,7 +80,6 @@ public class DashController : MonoBehaviour
     IEnumerator Dash(Vector2 velocity, float time, char side)
     {
         canDash = false;
-        Debug.Log("DASHH " + velocity);
         rb.velocity = velocity;
 
         //float simulatedTime = 0;

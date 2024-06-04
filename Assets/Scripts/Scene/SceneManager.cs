@@ -8,6 +8,7 @@ public class SceneManager : MonoBehaviour
 
     CameraFollow cameraFollow;
     PauseMenu pauseMenu;
+    public bool GamePaused { get; private set; }
 
     private void Awake()
     {
@@ -21,7 +22,14 @@ public class SceneManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Pause"))
         {
-            pauseMenu.Pause();
+            if (!GamePaused)
+            {
+                pauseMenu.Pause();
+            }
+            else if (GamePaused)
+            {
+                pauseMenu.Continue();
+            }
         }
     }
 
@@ -30,5 +38,10 @@ public class SceneManager : MonoBehaviour
     private void ChangeCameraTarget(Transform target)
     {
         cameraFollow.SetTarget(target);
+    }
+
+    public void SetGamePaused (bool b)
+    {
+        GamePaused = b;
     }
 }
