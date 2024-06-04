@@ -8,7 +8,14 @@ public class EnemyShooter : MonoBehaviour
     RotateArm arm;
     Transform target;
 
+    [Header("Times")]
+    private float cooldownTime = 2;
+
+    [Space]
+
+    [Header("Bools")]
     private bool waitingToShoot;
+    private bool firstDetected;
 
     private void Awake()
     {
@@ -39,6 +46,7 @@ public class EnemyShooter : MonoBehaviour
         {
             Debug.LogError("LeoMovement object not found in the scene");
         }
+        firstDetected = true;
     }
 
     private void FixedUpdate()
@@ -56,30 +64,37 @@ public class EnemyShooter : MonoBehaviour
         
             arm.SetRotationAngle(theta);
 
+            if (firstDetected)
+            {
+                StartCoroutine(ShootAfterDelay(cooldownTime));
+                firstDetected = false;
+            }
             // Start shooting if not already waiting to shoot
             if (!waitingToShoot)
             {
-                StartCoroutine(ShootAfterDelay(2f, vel));
+                StartCoroutine(ShootAfterDelay(cooldownTime));
+
+                // Instantiate the bullet prefab and set its velocity
+                var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
+                newShot.SetVelocity(vel);
+
+                // Start the recoil coroutine
+                StartCoroutine(arm.Recoil());
             }
         }
         else
         {
             arm.SetRotationAngle(0);
+            firstDetected = true;
         }
     }
 
-    private IEnumerator ShootAfterDelay(float delay, Vector2 vel)
+    private IEnumerator ShootAfterDelay(float delay)
     {
         waitingToShoot = true;
 
-        // Instantiate the bullet prefab and set its velocity
-        var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
-        newShot.SetVelocity(vel);
-
-        // Start the recoil coroutine
-        StartCoroutine(arm.Recoil());
-
         yield return new WaitForSeconds(delay);
+
         waitingToShoot = false;
     }
 }
