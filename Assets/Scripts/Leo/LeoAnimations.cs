@@ -13,6 +13,7 @@ public class LeoAnimation : MonoBehaviour
     private const float movementThreshold = 0.5f; // Threshold for significant movement
     private float movementX;
     private Rigidbody2D rb;
+    MenuManager menuManager;
 
     // Start is called before the first frame update
     void Start()
@@ -23,11 +24,13 @@ public class LeoAnimation : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<LeoCollisionDetector>();
+        menuManager = FindObjectOfType<MenuManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (menuManager.GamePaused) return;
         CheckAnimation();
     }
 

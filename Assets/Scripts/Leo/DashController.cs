@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DashController : MonoBehaviour
 {
-    [SerializeField] float dashForce = 200;
+    [SerializeField] float dashForce = 150;
     [SerializeField] float dashTime = 0.3f;
     int timesPressed = 0;
     char lastSidePressed = 'I';
@@ -14,22 +14,25 @@ public class DashController : MonoBehaviour
     Rigidbody2D rb;
     LeoMovement leoMovement;
     LeoCollisionDetector leoColls;
-    SceneManager sceneManager;
+    MenuManager menuManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         leoMovement = GetComponent<LeoMovement>();
         leoColls = GetComponent<LeoCollisionDetector>();
-        sceneManager = FindObjectOfType<SceneManager>();
+        menuManager = FindObjectOfType<MenuManager>();
     }
 
     void Update()
     {
-        if (sceneManager.GamePaused)
-        {
-            return;
-        }
+        if (menuManager.GamePaused)return;
+
+    	DoubleClickDash();
+    }
+
+    private void DoubleClickDash()
+    {
         if (detectionTime > 0 && timesPressed > 0) detectionTime -= Time.deltaTime;
         if (detectionTime < 0)
         {
@@ -74,7 +77,6 @@ public class DashController : MonoBehaviour
             else timesPressed = 1;
         }
         if (currentSidePressed != 'I') lastSidePressed = currentSidePressed;
-
     }
 
     IEnumerator Dash(Vector2 velocity, float time, char side)

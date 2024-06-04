@@ -10,6 +10,7 @@ public class LeoAttacks : MonoBehaviour
     LeoAnimation leoAnim;
     PlayerInputs inputs;
     LeoStats leoStats;
+    MenuManager menuManager;
 
     private Vector2 input;
 
@@ -32,7 +33,7 @@ public class LeoAttacks : MonoBehaviour
         leoAnim = GetComponent<LeoAnimation>();
         leoMov = GetComponent<LeoMovement>();
         leoStats = GetComponent<LeoStats>();
-
+        menuManager = FindObjectOfType<MenuManager>();
         // Insure that hasHit starts as false
         hasHit = false;
     }
@@ -40,6 +41,8 @@ public class LeoAttacks : MonoBehaviour
 
     void Update()
     {
+        if (menuManager.GamePaused) return;
+
         if (Input.GetButtonDown("Attack"))
         {
             if (coll.onGround)

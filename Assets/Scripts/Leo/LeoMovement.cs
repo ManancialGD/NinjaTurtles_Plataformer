@@ -7,6 +7,7 @@ public class LeoMovement : MonoBehaviour
     LeoCollisionDetector coll;
     Rigidbody2D rb;
     PlayerInputs playerInputs;
+    MenuManager menuManager;
 
     [Header("Colliders")]
     [SerializeField] Collider2D groundCollider;
@@ -55,10 +56,13 @@ public class LeoMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<LeoCollisionDetector>();
         defaultGravityScale = rb.gravityScale;
+        menuManager = FindObjectOfType<MenuManager>();
     }
 
     void Update()
     {
+        if (menuManager.GamePaused) return;
+
         // Get player Inputs
         playerInput = playerInputs.input;
         // Change collisions if in air
@@ -89,6 +93,7 @@ public class LeoMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (menuManager.GamePaused) return;
         if (CanMove) Move();
     }
 
