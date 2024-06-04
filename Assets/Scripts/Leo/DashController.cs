@@ -3,6 +3,15 @@ using UnityEngine;
 
 public class DashController : MonoBehaviour
 {
+
+    Rigidbody2D rb;
+    LeoMovement leoMovement;
+    LeoAttacks leoAttacks;
+    LeoStats leoStats;
+    LeoCollisionDetector coll;
+    MenuManager menuManager;
+
+    [Header("Stats")]
     [SerializeField] float dashForce = 150f;
     [SerializeField] float dashTime = 0.3f;
     [SerializeField] float dashCooldown = 0.5f;
@@ -12,19 +21,20 @@ public class DashController : MonoBehaviour
     int timesPressed = 0;
     char lastSidePressed = 'I';
     float detectionTime = 0.2f;
-    bool canDash = true;
-    bool wasTouchingSurface = true; // Assuming the player starts on the ground
-    Rigidbody2D rb;
-    LeoMovement leoMovement;
-    LeoAttacks leoAttacks;
-    LeoCollisionDetector coll;
-    MenuManager menuManager;
 
-    void Start()
+    [Space]
+
+    [Header("Bools")]
+    [SerializeField] bool canDash = true;
+    [SerializeField] bool wasTouchingSurface = true;
+
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         leoMovement = GetComponent<LeoMovement>();
         leoAttacks = GetComponent<LeoAttacks>();
+        leoStats = GetComponent<LeoStats>();
         coll = GetComponent<LeoCollisionDetector>();
         menuManager = FindObjectOfType<MenuManager>();
     }
@@ -148,6 +158,8 @@ public class DashController : MonoBehaviour
         }
 
         rb.velocity = velocity;
+
+        leoStats.ConsumeStamina(25);
 
         if (leoMovement.CanMove) leoMovement.SetCanMove(false);
 
