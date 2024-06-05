@@ -10,7 +10,8 @@ public class DashController : MonoBehaviour
     LeoCollisionDetector leoColls;
     MenuManager menuManager;
 
-    [SerializeField] float dashForce = 200;
+    [SerializeField] float dash1Force = 500;
+    [SerializeField] float dash2Force = 250;
     [SerializeField] float dashTime = 0.3f;
     int timesPressed = 0;
     char lastSidePressed = 'I';
@@ -57,7 +58,7 @@ public class DashController : MonoBehaviour
             currentSidePressed = 'D';
             if (detectionTime >= 0) timesPressed++;
             detectionTime = 0.2f;
-            dashVelocity = new Vector2(dashForce, 0);
+            dashVelocity = new Vector2(dash1Force, 0);
             if (lastSidePressed != 'D') timesPressed = 1;
         }
         else if (Input.GetKeyDown(KeyCode.A))
@@ -65,7 +66,7 @@ public class DashController : MonoBehaviour
             currentSidePressed = 'A';
             if (detectionTime >= 0) timesPressed++;
             detectionTime = 0.2f;
-            dashVelocity = new Vector2(-dashForce, 0);
+            dashVelocity = new Vector2(-dash1Force, 0);
             print(lastSidePressed);
             if (lastSidePressed != 'A') timesPressed = 1;
         }
@@ -117,9 +118,9 @@ public class DashController : MonoBehaviour
             Vector2 dashVelocity;
             if (leoMovement.IsFacingRight)
             {
-                dashVelocity = new Vector2 (dashForce, 0);
+                dashVelocity = new Vector2 (dash2Force, 0);
             }
-            else dashVelocity = new Vector2 (-dashForce, 0);
+            else dashVelocity = new Vector2 (-dash2Force, 0);
             
             StartCoroutine(Dash2(dashVelocity,  .4f));
         }
