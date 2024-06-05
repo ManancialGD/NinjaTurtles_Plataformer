@@ -50,7 +50,7 @@ public class SlideButton : MonoBehaviour
 
     void SetButtonColor()
     {
-        if (mumentum <= 0) return;
+        if (mumentum == 0) return;
 
         float lerpValue = (images[1].rectTransform.localPosition.x + 11.5f) / 23f;
 

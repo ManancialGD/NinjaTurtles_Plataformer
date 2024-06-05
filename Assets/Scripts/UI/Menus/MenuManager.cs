@@ -10,7 +10,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject PausePanel;
     [SerializeField] private GameObject OptionsPanel;
     [SerializeField] private GameObject DashTypeTextObject;  // GameObject
-    [SerializeField] private GameObject DashButtonTextObject;  // GameObject
+
 
     [SerializeField] private GameObject LevelSelectionPanel;
     [SerializeField] private GameObject PilotLevelPanel;
@@ -34,8 +34,8 @@ public class MenuManager : MonoBehaviour
         {
             //DoubleClickDash = true;
 
-            //saveSystem = GetComponent<SaveOptionsSystem>();
-            int i = PlayerPrefs.GetInt("DoubleClickDash");
+            saveSystem = GetComponent<SaveOptionsSystem>();
+            int i = saveSystem.LoadData();
             Debug.Log(i == 0);
             DoubleClickDash = i == 0;
         }
@@ -130,7 +130,6 @@ public class MenuManager : MonoBehaviour
     public void ChangeDashType()
     {
         TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI dashButtonText = DashButtonTextObject.GetComponent<TextMeshProUGUI>();
 
         if (DoubleClickDash)
         {

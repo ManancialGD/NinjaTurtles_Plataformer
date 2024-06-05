@@ -673,7 +673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &444183943
 RectTransform:
   m_ObjectHideFlags: 0
@@ -981,7 +981,6 @@ MonoBehaviour:
   PausePanel: {fileID: 786792569}
   OptionsPanel: {fileID: 444183942}
   DashTypeTextObject: {fileID: 2036333696}
-  DashButtonTextObject: {fileID: 0}
   LevelSelectionPanel: {fileID: 0}
   PilotLevelPanel: {fileID: 0}
 --- !u!224 &690868525 stripped
@@ -2328,7 +2327,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Dash1 DOUBLE CLICK:'
+  m_text: 'Dash DOUBLE CLICK:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 379925e8bba3d5d4f8a74895921c3f2f, type: 2}
   m_sharedMaterial: {fileID: 2075320524980174972, guid: 379925e8bba3d5d4f8a74895921c3f2f, type: 2}
