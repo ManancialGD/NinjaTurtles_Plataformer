@@ -32,12 +32,11 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            //DoubleClickDash = true;
+            DoubleClickDash = true;
 
             saveSystem = GetComponent<SaveOptionsSystem>();
             int i = saveSystem.LoadData();
-            Debug.Log(i == 0);
-            DoubleClickDash = i == 0;
+            if (i == 0) ChangeDashType();
         }
     }
 
