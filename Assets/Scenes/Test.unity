@@ -3894,7 +3894,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   hasInfHP: 1
-  isStunned: 0
   stunTime: 0
 --- !u!1 &1333306382
 GameObject:
@@ -4409,7 +4408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70e5a35ecbde01645b67745325d70f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashForce: 300
+  dashForce: 250
   dashTime: 0.15
   canDash: 0
   hasExtraDash: 0
@@ -4423,6 +4422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1569659776}
+  - component: {fileID: 1569659780}
   - component: {fileID: 1569659779}
   - component: {fileID: 1569659778}
   - component: {fileID: 1569659777}
@@ -4581,7 +4581,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leoOnRight: 0
   IsFacingRight: 1
-  isFacingLeo: 0
+  IsFacingLeo: 0
+  IsLeoInArea: 0
+  leoDetected: 0
   collisionRadius: 80
   groundLayers:
     serializedVersion: 2
@@ -4612,8 +4614,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   hasInfHP: 0
-  isStunned: 0
   stunTime: 0
+--- !u!114 &1569659780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569659772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bc55c0b9fc9cae4a9027f251ec0918c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 50
+  groundCheckPosition: {fileID: 1701823745}
+  groundCheckRadius: 1.17
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1701823745
 GameObject:
   m_ObjectHideFlags: 0
@@ -4624,7 +4643,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1701823746}
   m_Layer: 6
-  m_Name: DetectCollider
+  m_Name: DetecGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4639,7 +4658,7 @@ Transform:
   m_GameObject: {fileID: 1701823745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 7.18, y: -15.86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

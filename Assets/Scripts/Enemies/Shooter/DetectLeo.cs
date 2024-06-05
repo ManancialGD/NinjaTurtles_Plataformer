@@ -9,10 +9,10 @@ public class DetectLeo : MonoBehaviour
 
     [Header("Bools")]
     [SerializeField] private bool leoOnRight;
-    [SerializeField] private bool IsFacingRight;
-    [SerializeField] private bool isFacingLeo;
-    private bool IsLeoInArea;
-    public bool leoDetected { get; private set; }
+    [SerializeField] public bool IsFacingRight;
+    [SerializeField] public bool IsFacingLeo;
+    [SerializeField] public bool IsLeoInArea;
+    [SerializeField] public bool leoDetected;
 
     [Space]
 
@@ -55,15 +55,15 @@ public class DetectLeo : MonoBehaviour
         // Determine if the object is facing Leo based on current direction and Leo's position
         if ((IsFacingRight && leoOnRight) || (!IsFacingRight && !leoOnRight))
         {
-            isFacingLeo = true;
+            IsFacingLeo = true;
         }
         else
         {
-            isFacingLeo = false;
+            IsFacingLeo = false;
         }
 
         // Check if there's a clear line of sight to Leo if the object is facing Leo
-        if (isFacingLeo || IsLeoInArea)
+        if (IsFacingLeo || IsLeoInArea)
         {
             canSeeLeo = CanSeeLeo();
             leoDetected = canSeeLeo;
@@ -93,7 +93,7 @@ public class DetectLeo : MonoBehaviour
         if (leo.position.x < transform.position.x)
         {
             leoOnRight = false;
-            if ((IsFacingRight && isFacingLeo) || IsLeoInArea)
+            if ((IsFacingRight && IsFacingLeo) || IsLeoInArea)
             {
                 if (canSeeLeo) Rotate(true);
             }
@@ -101,7 +101,7 @@ public class DetectLeo : MonoBehaviour
         else if (leo.position.x > transform.position.x)
         {
             leoOnRight = true;
-            if ((!IsFacingRight && isFacingLeo) || IsLeoInArea)
+            if ((!IsFacingRight && IsFacingLeo) || IsLeoInArea)
             {
                 if (canSeeLeo) Rotate(false);
             }
@@ -137,7 +137,7 @@ public class DetectLeo : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, collisionRadius);
 
         // Draw the line indicating line of sight only if the object is facing Leo
-        if (leo != null && isFacingLeo)
+        if (leo != null && IsFacingLeo)
         {
             Gizmos.color = canSeeLeo ? Color.green : Color.red;
             Gizmos.DrawLine(transform.position, leo.position);
