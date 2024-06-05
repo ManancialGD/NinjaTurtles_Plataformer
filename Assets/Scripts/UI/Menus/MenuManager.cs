@@ -23,14 +23,18 @@ public class MenuManager : MonoBehaviour
     private MenuState menuState = MenuState.Playing;
     private void Awake()
     {
-        saveSystem = GetComponent<SaveOptionsSystem>();
         sceneManage = FindObjectOfType<SceneManage>();
 
 
-        if (sceneManage.CurrentScene == "MainMenu" || sceneManage.CurrentScene == "Test") 
+        if (sceneManage.CurrentScene == "LevelSelect") 
+        {
+
+        }
+        else
         {
             DoubleClickDash = true;
 
+            saveSystem = GetComponent<SaveOptionsSystem>();
             int i = saveSystem.LoadData();
             if (i == 0) ChangeDashType();
         }
