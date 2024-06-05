@@ -15,16 +15,14 @@ public class EnemyHP : MonoBehaviour
     [Space]
 
     [Header("Stun")]
-    
-    [SerializeField] private bool isStunned;
     [SerializeField] private float stunTime;
-
+    public bool IsStunned { get; private set; }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         
-        isStunned = false;
+        IsStunned = false;
     }
 
     public virtual void TakeDamage(int damageAmount, float stunTime = 0, Vector2? knockback = null)
@@ -33,7 +31,7 @@ public class EnemyHP : MonoBehaviour
         
         HP -= damageAmount;
  
-        if (stunTime <= 0) Stun(stunTime);
+        if (stunTime >= 0) Stun(stunTime);
 
         Vector2 appliedKnockback = knockback ?? new Vector2(0, 0);
         Knockback(appliedKnockback);
@@ -56,13 +54,14 @@ public class EnemyHP : MonoBehaviour
 
     public void Stun(float stunTime)
     {
-        isStunned = true;
+        StopAllCoroutines();
+        IsStunned = true;
         StartCoroutine(StunTime(stunTime));
     }
 
     private IEnumerator StunTime(float stunTime)
     {
         yield return new WaitForSeconds(stunTime);
-        isStunned = false;
+        IsStunned = false;
     }
 }

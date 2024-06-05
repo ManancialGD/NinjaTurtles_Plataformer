@@ -119,6 +119,7 @@ public class LeoStats : MonoBehaviour
     public void Heal(int healAmount)
     {
         HP += healAmount;
+        hpImage.fillAmount = HP/100f;
     }
 
     // Method to apply damage to Leo
@@ -135,6 +136,8 @@ public class LeoStats : MonoBehaviour
 
         Vector2 appliedKnockback = knockback ?? new Vector2(0, 0);
         Knockback(appliedKnockback);
+
+        hpImage.fillAmount = HP/100f;
     }
 
     // Method called when Leo's HP reaches zero

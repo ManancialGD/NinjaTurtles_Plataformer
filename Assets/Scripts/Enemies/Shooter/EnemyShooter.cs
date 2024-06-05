@@ -7,6 +7,7 @@ public class EnemyShooter : MonoBehaviour
     ShooterAim aim;
     RotateArm arm;
     Transform target;
+    EnemyHP hp;
 
     [Header("Times")]
     private float cooldownTime = 2;
@@ -19,6 +20,7 @@ public class EnemyShooter : MonoBehaviour
 
     private void Awake()
     {
+        hp = GetComponent<EnemyHP>();
         leodetection = GetComponent<DetectLeo>();
         if (leodetection == null)
         {
@@ -70,7 +72,7 @@ public class EnemyShooter : MonoBehaviour
                 firstDetected = false;
             }
             // Start shooting if not already waiting to shoot
-            if (!waitingToShoot)
+            if (!waitingToShoot && !hp.IsStunned)
             {
                 StartCoroutine(ShootAfterDelay(cooldownTime));
 
