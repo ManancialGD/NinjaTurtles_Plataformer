@@ -3890,13 +3890,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc55c0b9fc9cae4a9027f251ec0918c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 2
+  movementSpeed: 50
   forwardGroundCheckPosition: {fileID: 1701823745}
   backwardGroundCheckPosition: {fileID: 512651554}
-  groundCheckRadius: 0.5
+  groundCheckRadius: 1.54
   groundLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!1 &1701823745
 GameObject:
   m_ObjectHideFlags: 0
