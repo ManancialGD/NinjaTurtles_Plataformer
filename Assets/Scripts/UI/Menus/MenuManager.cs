@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 
 public class MenuManager : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject OptionsPanel;
     [SerializeField] private GameObject DashTypeTextObject;  // GameObject
     [SerializeField] private GameObject DashButtonTextObject;  // GameObject
+
+    [SerializeField] private GameObject LevelSelectionPanel;
+    [SerializeField] private GameObject PilotLevelPanel;
+
     public bool GamePaused { get; private set; }
 
     public bool DoubleClickDash { get; private set; }
@@ -21,11 +26,16 @@ public class MenuManager : MonoBehaviour
         saveSystem = GetComponent<SaveOptionsSystem>();
         sceneManage = FindObjectOfType<SceneManage>();
 
-        DoubleClickDash = true;
 
-        int i = saveSystem.LoadData();
-        if (i == 0) ChangeDashType();
+        if (sceneManage.CurrentScene == "MainMenu" || sceneManage.CurrentScene == "Test") 
+        {
+            DoubleClickDash = true;
+
+            int i = saveSystem.LoadData();
+            if (i == 0) ChangeDashType();
+        }
     }
+
     private void Update()
     {
         if (Input.GetButtonDown("Pause"))
@@ -51,6 +61,18 @@ public class MenuManager : MonoBehaviour
                 if (menuState == MenuState.Settings)
                 {
                     ReturnSetting();
+                }
+            }
+            else if (sceneManage.CurrentScene == "LevelSelect")
+            {
+                if (menuState == MenuState.Settings)
+                {
+                    ReturnLevelSelection();
+                    Debug.Log("A");
+                }
+                else if (menuState == MenuState.Playing)
+                {
+                    sceneManage.ChangeScene("MainMenu");
                 }
             }
         }
@@ -85,6 +107,19 @@ public class MenuManager : MonoBehaviour
         OptionsPanel.SetActive(false);
         PausePanel.SetActive(true);
         menuState = MenuState.Pause;
+    }
+
+    public void ReturnLevelSelection()
+    {
+        LevelSelectionPanel.SetActive(true);
+        PilotLevelPanel.SetActive(false);
+        menuState = MenuState.Playing;
+    }
+    public void PilotLevel()
+    {
+        PilotLevelPanel.SetActive(true);
+        LevelSelectionPanel.SetActive(false);
+        menuState = MenuState.Settings;
     }
 
     public void ChangeDashType()

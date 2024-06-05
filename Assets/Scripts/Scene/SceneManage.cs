@@ -22,7 +22,7 @@ public class SceneManage : MonoBehaviour
         {
             
         }
-        else
+        else if (CurrentScene == "Test")
         {
             leo = FindObjectOfType<LeoMovement>().transform;
             cameraFollow = FindObjectOfType<CameraFollow>();

@@ -982,6 +982,8 @@ MonoBehaviour:
   OptionsPanel: {fileID: 444183942}
   DashTypeTextObject: {fileID: 2036333696}
   DashButtonTextObject: {fileID: 2114778599}
+  LevelSelectionPanel: {fileID: 0}
+  PilotLevelPanel: {fileID: 0}
 --- !u!1 &786792569
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,7 +1933,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Test
+          m_StringArgument: LevelSelect
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1636502800
