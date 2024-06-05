@@ -77,7 +77,7 @@ public class ShooterMovement : MonoBehaviour
 
         if (leoDetection.IsLeoInArea)
         {
-            movementSpeed = defaultMovementSpeed / 2;
+            movementSpeed = defaultMovementSpeed / 1.5f;
             direction *= -1;
             
             if (leoDetection.IsFacingRight)
