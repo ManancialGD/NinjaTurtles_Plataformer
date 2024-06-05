@@ -15,7 +15,9 @@ public class DashController : MonoBehaviour
     int timesPressed = 0;
     char lastSidePressed = 'I';
     float detectionTime = 0.2f;
-    bool canDash = false;
+    [SerializeField] bool canDash = false;
+    [SerializeField] bool hasExtraDash;
+    [SerializeField] bool onCooldown;
 
     void Awake()
     {
@@ -29,6 +31,7 @@ public class DashController : MonoBehaviour
     void Update()
     {
         if (leoStats.InStaminaBreak) return;
+
         if (menuManager.DoubleClickDash) Dash1();
         else Dash2();
     }
@@ -85,6 +88,30 @@ public class DashController : MonoBehaviour
 
     private void Dash2()
     {
+        if (onCooldown)
+        {
+            canDash = false;
+        }
+        else if (leoColls.onGround || leoColls.onWall)
+        {
+            hasExtraDash = true;
+            canDash = true;
+        }
+        else if (!leoColls.onGround && !leoColls.onWall && hasExtraDash)
+        {
+            if (Input.GetButtonDown("Dash"))
+            {
+                hasExtraDash = false;
+                canDash = true;
+            }
+        }
+        else
+        {
+            canDash = false;
+        }
+
+        if (!canDash) return;
+
         if (Input.GetButtonDown("Dash"))
         {
             Vector2 dashVelocity;
@@ -94,7 +121,7 @@ public class DashController : MonoBehaviour
             }
             else dashVelocity = new Vector2 (-dashForce, 0);
             
-            StartCoroutine(Dash2(dashVelocity,  1f));
+            StartCoroutine(Dash2(dashVelocity,  .4f));
         }
     }
 
@@ -112,14 +139,13 @@ public class DashController : MonoBehaviour
     }
     IEnumerator Dash2(Vector2 velocity, float cooldown)
     {
-
+        onCooldown = true;
         rb.velocity = new Vector2(rb.velocity.x + velocity.x, rb.velocity.y);
 
         leoStats.ConsumeStamina(25);
 
         yield return new WaitForSeconds(cooldown);
 
-
-        canDash = true;
+        onCooldown = false;
     }
 }

@@ -22,6 +22,7 @@ public class LeoMovement : MonoBehaviour
     [SerializeField] private Vector2 wallJumpSpeed = new Vector2(150f, 200f);
     private float defaultMovementSpeed;
     private float defaultJumpSpeed;
+    private Vector2 defaultWallJumpSpeed;
     private float currentSpeed = 0f;
     private float speedIncrement = 75f; // Speed increment value
 
@@ -52,6 +53,8 @@ public class LeoMovement : MonoBehaviour
     {
         defaultJumpSpeed = jumpSpeed;
         defaultMovementSpeed = movementSpeed;
+        defaultWallJumpSpeed = wallJumpSpeed;
+
         IsFacingRight = true; // Start facing right
         playerInputs = GetComponent<PlayerInputs>();
         rb = GetComponent<Rigidbody2D>();
@@ -211,10 +214,12 @@ public class LeoMovement : MonoBehaviour
     {
         movementSpeed = 50f;
         jumpSpeed = 50f;
+        wallJumpSpeed = new Vector2(50f, 50f);
     }
     public void StaminaRecovered()
     {
         movementSpeed = defaultMovementSpeed;
         jumpSpeed = defaultJumpSpeed;
+        wallJumpSpeed = defaultWallJumpSpeed;
     }
 }
