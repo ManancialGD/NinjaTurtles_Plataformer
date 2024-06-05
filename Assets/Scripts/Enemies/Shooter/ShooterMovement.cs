@@ -79,28 +79,49 @@ public class ShooterMovement : MonoBehaviour
         {
             movementSpeed = defaultMovementSpeed / 2;
             direction *= -1;
-
-            if (direction == -1 && !isGroundedBackward)
+            
+            if (leoDetection.IsFacingRight)
             {
-                rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving backward
-                Debug.Log("Stopping movement - not grounded backward");
-                return;
+                if (direction == -1 && !isGroundedBackward)
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving backward
+                    return;
+                }
             }
+            else
+            {
+                if (direction == 1 && !isGroundedBackward)
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving backward
+                    return;
+                }       
+            }
+
         }
         else
         {
             movementSpeed = defaultMovementSpeed;
 
-            if (direction == 1 && !isGroundedForward)
+            if (leoDetection.IsFacingRight)
             {
-                rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving forward
-                Debug.Log("Stopping movement - not grounded forward");
-                return;
+                if (direction == 1 && !isGroundedForward)
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving forward
+                    return;
+                }
             }
+            else
+            {
+                if (direction == -1 && !isGroundedForward)
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving forward
+                    return;
+                }
+            }
+
         }
 
         rb.velocity = new Vector2(direction * movementSpeed, rb.velocity.y);
-        Debug.Log($"Moving with velocity: {rb.velocity}");
     }
 
     /// <summary>

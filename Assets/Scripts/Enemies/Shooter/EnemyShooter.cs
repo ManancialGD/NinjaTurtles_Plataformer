@@ -62,26 +62,27 @@ public class EnemyShooter : MonoBehaviour
         if (leodetection.leoDetected)
         {
             // Always aim towards the target if detected
-            if(aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed, Physics2D.gravity.y, aim.minimizeTime, out Vector2 vel, out float theta))
-        
-            arm.SetRotationAngle(theta);
-
-            if (firstDetected)
+            if (aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed, Physics2D.gravity.y, aim.minimizeTime, out Vector2 vel, out float theta))
             {
-                StartCoroutine(ShootAfterDelay(cooldownTime));
-                firstDetected = false;
-            }
-            // Start shooting if not already waiting to shoot
-            if (!waitingToShoot && !hp.IsStunned)
-            {
-                StartCoroutine(ShootAfterDelay(cooldownTime));
+                arm.SetRotationAngle(theta);
 
-                // Instantiate the bullet prefab and set its velocity
-                var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
-                newShot.SetVelocity(vel);
+                if (firstDetected)
+                {
+                    StartCoroutine(ShootAfterDelay(cooldownTime));
+                    firstDetected = false;
+                }
+                // Start shooting if not already waiting to shoot
+                if (!waitingToShoot && !hp.IsStunned)
+                {
+                    StartCoroutine(ShootAfterDelay(cooldownTime));
 
-                // Start the recoil coroutine
-                StartCoroutine(arm.Recoil());
+                    // Instantiate the bullet prefab and set its velocity
+                    var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
+                    newShot.SetVelocity(vel);
+
+                    // Start the recoil coroutine
+                    StartCoroutine(arm.Recoil());
+                }
             }
         }
         else
