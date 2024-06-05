@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyShooter : MonoBehaviour
 {
+    float gunAmmo = 0;
     DetectLeo leodetection;
     ShooterAim aim;
     RotateArm arm;
@@ -55,6 +56,9 @@ public class EnemyShooter : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (gunAmmo < 1f) gunAmmo += 0.02f;
+        if (gunAmmo > 1f) gunAmmo = 1f;
+
         // Return early if any required component is missing
         if (leodetection == null || aim == null || target == null || arm == null)
         {
@@ -70,19 +74,20 @@ public class EnemyShooter : MonoBehaviour
             {
                 arm.SetRotationAngle(theta);
 
-                if (!waitingToShoot && firstDetected && !hp.IsStunned)
+                if (!waitingToShoot && firstDetected && !hp.IsStunned && gunAmmo >= 1f)
                 {
                     StartCoroutine(ShootAfterDelay(UnityEngine.Random.Range(cooldownTime.Item1, cooldownTime.Item2)));
                     firstDetected = false;
                 }
                 // Start shooting if not already waiting to shoot
-                if (!waitingToShoot && !hp.IsStunned)
+                if (!waitingToShoot && !hp.IsStunned && gunAmmo >= 1f)
                 {
                     StartCoroutine(ShootAfterDelay(UnityEngine.Random.Range(cooldownTime.Item1, cooldownTime.Item2)));
 
                     // Instantiate the bullet prefab and set its velocity
                     var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
                     newShot.SetVelocity(vel);
+                    gunAmmo = 0;
 
                     // Start the recoil coroutine
                     StartCoroutine(arm.Recoil());
@@ -104,4 +109,5 @@ public class EnemyShooter : MonoBehaviour
 
         waitingToShoot = false;
     }
+    public float GetEnemyAmmo() => gunAmmo;
 }
