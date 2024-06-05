@@ -26,17 +26,18 @@ public class MenuManager : MonoBehaviour
         sceneManage = FindObjectOfType<SceneManage>();
 
 
-        if (sceneManage.CurrentScene == "LevelSelect") 
+        if (sceneManage.CurrentScene == "LevelSelect")
         {
 
         }
         else
         {
-            DoubleClickDash = true;
+            //DoubleClickDash = true;
 
-            saveSystem = GetComponent<SaveOptionsSystem>();
-            int i = saveSystem.LoadData();
-            if (i == 0) ChangeDashType();
+            //saveSystem = GetComponent<SaveOptionsSystem>();
+            int i = PlayerPrefs.GetInt("DoubleClickDash");
+            Debug.Log(i == 0);
+            DoubleClickDash = i == 0;
         }
     }
 
@@ -134,15 +135,13 @@ public class MenuManager : MonoBehaviour
         if (DoubleClickDash)
         {
             DoubleClickDash = false;
-            dashTypeText.text = "Dash2 USE SHIFT: ";
-            dashButtonText.text = "";
+            dashTypeText.text = "Dash USE SHIFT: ";
             saveSystem.SaveDashType(0);
         }
         else
         {
             DoubleClickDash = true;
-            dashTypeText.text = "Dash1 DOUBLE CLICK: ";
-            dashButtonText.text = "O";
+            dashTypeText.text = "Dash DOUBLE CLICK: ";
             saveSystem.SaveDashType(1);
         }
     }

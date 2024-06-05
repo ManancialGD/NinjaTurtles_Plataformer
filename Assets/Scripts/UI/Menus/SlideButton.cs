@@ -38,7 +38,6 @@ public class SlideButton : MonoBehaviour
         {
             images[1].rectTransform.localPosition = correctPosition;
             mumentum = 0f;
-            Debug.Log("Teleport");
         }
 
         if (Mathf.Abs(images[1].rectTransform.localPosition[0] - correctPosition[0]) > 0.01f)
@@ -51,20 +50,15 @@ public class SlideButton : MonoBehaviour
 
     void SetButtonColor()
     {
-        // Calcula o valor de lerpValue corretamente
+        if (mumentum <= 0) return;
+
         float lerpValue = (images[1].rectTransform.localPosition.x + 11.5f) / 23f;
 
-        // Garante que lerpValue está entre 0 e 1
+        // (0 e 1)
         lerpValue = Mathf.Clamp01(lerpValue);
 
-        // Logs para verificação
-        Debug.Log("localPosition.x: " + images[1].rectTransform.localPosition.x);
-        Debug.Log("lerpValue: " + lerpValue);
-
-        // Define a cor correta
         Color targetColor = new Color(50 / 255f, 222 / 255f, 84 / 255f);
 
-        // Aplica a cor interpolada
         images[1].color = Color.Lerp(defaultColor, targetColor, lerpValue);
     }
 
