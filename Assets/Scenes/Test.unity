@@ -3362,8 +3362,6 @@ MonoBehaviour:
   OptionsPanel: {fileID: 834491200}
   DashTypeTextObject: {fileID: 936510460}
   DashButtonTextObject: {fileID: 538759726}
-  LevelSelectionPanel: {fileID: 0}
-  PilotLevelPanel: {fileID: 0}
 --- !u!114 &870614130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3925,6 +3923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   hasInfHP: 1
+  isStunned: 0
   stunTime: 0
 --- !u!1 &1333306382
 GameObject:
@@ -4439,11 +4438,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70e5a35ecbde01645b67745325d70f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashForce: 250
+  dashForce: 600
   dashTime: 0.15
+  dashCooldown: 0.5
+  airDashCooldown: 0.5
+  airDashForceMultiplier: 0.5
   canDash: 0
-  hasExtraDash: 0
-  onCooldown: 0
+  wasTouchingSurface: 1
 --- !u!1 &1569659772
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,9 +4614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leoOnRight: 0
   IsFacingRight: 1
-  IsFacingLeo: 0
-  IsLeoInArea: 0
-  leoDetected: 0
+  isFacingLeo: 0
   collisionRadius: 80
   groundLayers:
     serializedVersion: 2
@@ -4646,6 +4645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   hasInfHP: 0
+  isStunned: 0
   stunTime: 0
 --- !u!114 &1569659780
 MonoBehaviour:
@@ -4659,13 +4659,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc55c0b9fc9cae4a9027f251ec0918c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 50
-  forwardGroundCheckPosition: {fileID: 1701823745}
-  backwardGroundCheckPosition: {fileID: 512651554}
-  groundCheckRadius: 1.99
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!1 &1701823745
 GameObject:
   m_ObjectHideFlags: 0
