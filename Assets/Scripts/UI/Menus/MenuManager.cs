@@ -95,14 +95,14 @@ public class MenuManager : MonoBehaviour
         if (DoubleClickDash)
         {
             DoubleClickDash = false;
-            dashTypeText.text = "Shift to dash: ";
+            dashTypeText.text = "Dash2 USE SHIFT: ";
             dashButtonText.text = "";
             saveSystem.SaveDashType(0);
         }
         else
         {
             DoubleClickDash = true;
-            dashTypeText.text = "Double click dash: ";
+            dashTypeText.text = "Dash1 DOUBLE CLICK: ";
             dashButtonText.text = "O";
             saveSystem.SaveDashType(1);
         }

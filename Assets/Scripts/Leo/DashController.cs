@@ -1,75 +1,39 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DashController : MonoBehaviour
 {
-
     Rigidbody2D rb;
     LeoMovement leoMovement;
-    LeoAttacks leoAttacks;
     LeoStats leoStats;
-    LeoCollisionDetector coll;
+    LeoCollisionDetector leoColls;
     MenuManager menuManager;
 
-    [Header("Stats")]
-    [SerializeField] float dashForce = 150f;
+    [SerializeField] float dashForce = 200;
     [SerializeField] float dashTime = 0.3f;
-    [SerializeField] float dashCooldown = 0.5f;
-    [SerializeField] float airDashCooldown = 0.5f;
-    [SerializeField] float airDashForceMultiplier = 0.5f;
-
     int timesPressed = 0;
     char lastSidePressed = 'I';
     float detectionTime = 0.2f;
-
-    [Space]
-
-    [Header("Bools")]
-    [SerializeField] bool canDash = true;
-    [SerializeField] bool wasTouchingSurface = true;
-
+    bool canDash = false;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         leoMovement = GetComponent<LeoMovement>();
-        leoAttacks = GetComponent<LeoAttacks>();
+        leoColls = GetComponent<LeoCollisionDetector>();
         leoStats = GetComponent<LeoStats>();
-        coll = GetComponent<LeoCollisionDetector>();
         menuManager = FindObjectOfType<MenuManager>();
     }
 
     void Update()
     {
-        if (leoStats.Stamina <= 0) return;
         if (leoStats.InStaminaBreak) return;
-        if (menuManager.GamePaused) return;
-
-        // Check if the player is grounded or touching a wall
-        if ((coll.onGround || coll.onWall) && !wasTouchingSurface)
-        {
-            wasTouchingSurface = true;
-            canDash = true;
-        }
-        else if (!coll.onGround && !coll.onWall)
-        {
-            wasTouchingSurface = false;
-        }
-
-        // Check if the player can dash
-        if (leoAttacks.isAttacking || !canDash) return;
-
-        if (menuManager.DoubleClickDash)
-        {
-            DoubleClickDash();
-        }
-        else
-        {
-            ShiftDash();
-        }
+        if (menuManager.DoubleClickDash) Dash1();
+        else Dash2();
     }
 
-    private void DoubleClickDash()
+    private void Dash1()
     {
         if (detectionTime > 0 && timesPressed > 0) detectionTime -= Time.deltaTime;
         if (detectionTime < 0)
@@ -78,7 +42,11 @@ public class DashController : MonoBehaviour
             detectionTime = 0.2f;
         }
 
-        Vector2 dashVelocity = Vector2.zero;
+        if (leoColls.onGround && !canDash || leoColls.onWall && !canDash) canDash = true;
+
+        if (!canDash) return;
+
+        Vector2 dashVelocity = new Vector2(0, 0);
 
         char currentSidePressed = 'I';
         if (Input.GetKeyDown(KeyCode.D))
@@ -95,17 +63,19 @@ public class DashController : MonoBehaviour
             if (detectionTime >= 0) timesPressed++;
             detectionTime = 0.2f;
             dashVelocity = new Vector2(-dashForce, 0);
+            print(lastSidePressed);
             if (lastSidePressed != 'A') timesPressed = 1;
         }
 
         if (currentSidePressed != 'I' && timesPressed >= 2)
         {
+            print(lastSidePressed + " - " + currentSidePressed);
             if (lastSidePressed == currentSidePressed)
             {
                 timesPressed = 0;
                 detectionTime = 2f;
                 lastSidePressed = 'I';
-                StartCoroutine(Dash(dashVelocity, dashTime, currentSidePressed));
+                StartCoroutine(Dash1(dashVelocity, dashTime, currentSidePressed));
                 return;
             }
             else timesPressed = 1;
@@ -113,48 +83,42 @@ public class DashController : MonoBehaviour
         if (currentSidePressed != 'I') lastSidePressed = currentSidePressed;
     }
 
-    private void ShiftDash()
+    private void Dash2()
     {
         if (Input.GetButtonDown("Dash"))
         {
             Vector2 dashVelocity;
             if (leoMovement.IsFacingRight)
             {
-                dashVelocity = new Vector2(dashForce, 0);
+                dashVelocity = new Vector2 (dashForce, 0);
             }
-            else
-            {
-                dashVelocity = new Vector2(-dashForce, 0);
-            }
-
-            if (!coll.onGround) // Apply air dash cooldown and force multiplier if not grounded
-            {
-                StartCoroutine(Dash(dashVelocity * airDashForceMultiplier, dashTime, leoMovement.IsFacingRight ? 'D' : 'A', airDashCooldown));
-            }
-            else
-            {
-                StartCoroutine(Dash(dashVelocity, dashTime));
-            }
+            else dashVelocity = new Vector2 (-dashForce, 0);
+            
+            StartCoroutine(Dash2(dashVelocity,  1f));
         }
     }
 
-    IEnumerator Dash(Vector2 velocity, float time, char side = 'N', float cooldown = 0f)
+    IEnumerator Dash1(Vector2 velocity, float time, char side)
     {
         canDash = false;
-
         rb.velocity = velocity;
+
+        //float simulatedTime = 0;
+
+        yield return new WaitForSeconds(0.1f);
+
+        rb.velocity *= 0.1f;
+        canDash = false;
+    }
+    IEnumerator Dash2(Vector2 velocity, float cooldown)
+    {
+
+        rb.velocity = new Vector2(rb.velocity.x + velocity.x, rb.velocity.y);
 
         leoStats.ConsumeStamina(25);
 
-        if (leoMovement.CanMove) leoMovement.SetCanMove(false);
+        yield return new WaitForSeconds(cooldown);
 
-        yield return new WaitForSeconds(0.1f);
-        if (!leoMovement.CanMove) leoMovement.SetCanMove(true);
-
-        if (cooldown > 0)
-        {
-            yield return new WaitForSeconds(cooldown);
-        }
 
         canDash = true;
     }

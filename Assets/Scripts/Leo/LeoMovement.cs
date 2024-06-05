@@ -138,7 +138,6 @@ public class LeoMovement : MonoBehaviour
 
         rb.velocity = leoVelocity;
     }
-
     private void Move()
     {
         Vector3 leoVelocity = rb.velocity;
@@ -147,7 +146,12 @@ public class LeoMovement : MonoBehaviour
         if (playerInput.x != 0)
         {
             float targetSpeed = playerInput.x * movementSpeed;
-            leoVelocity.x = Mathf.MoveTowards(leoVelocity.x, targetSpeed, speedIncrement);
+
+            // Only change velocity if it's less than the movement speed or greater than -movement speed
+            if ((leoVelocity.x < movementSpeed && playerInput.x > 0) || (leoVelocity.x > -movementSpeed && playerInput.x < 0))
+            {
+                leoVelocity.x = Mathf.MoveTowards(leoVelocity.x, targetSpeed, speedIncrement);
+            }
         }
 
         // Flip character based on movement direction
