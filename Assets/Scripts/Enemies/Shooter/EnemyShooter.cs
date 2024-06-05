@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,13 +11,14 @@ public class EnemyShooter : MonoBehaviour
     EnemyHP hp;
 
     [Header("Times")]
-    private float cooldownTime = 2;
+    private (float, float) cooldownTime = (.9f, 2f);
 
     [Space]
 
     [Header("Bools")]
     private bool waitingToShoot;
     private bool firstDetected;
+
 
     private void Awake()
     {
@@ -62,19 +64,21 @@ public class EnemyShooter : MonoBehaviour
         if (leodetection.leoDetected)
         {
             // Always aim towards the target if detected
-            if (aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed, Physics2D.gravity.y, aim.minimizeTime, out Vector2 vel, out float theta))
+            bool minimizeTime = (Mathf.Abs(target.transform.position[0] - transform.position[0]) + Mathf.Abs(target.transform.position[1] - transform.position[1])) < 150f;
+
+            if (aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed * 1f, Physics2D.gravity.y, minimizeTime, out Vector2 vel, out float theta))
             {
                 arm.SetRotationAngle(theta);
 
-                if (firstDetected)
+                if (!waitingToShoot && firstDetected && !hp.IsStunned)
                 {
-                    StartCoroutine(ShootAfterDelay(cooldownTime));
+                    StartCoroutine(ShootAfterDelay(UnityEngine.Random.Range(cooldownTime.Item1, cooldownTime.Item2)));
                     firstDetected = false;
                 }
                 // Start shooting if not already waiting to shoot
                 if (!waitingToShoot && !hp.IsStunned)
                 {
-                    StartCoroutine(ShootAfterDelay(cooldownTime));
+                    StartCoroutine(ShootAfterDelay(UnityEngine.Random.Range(cooldownTime.Item1, cooldownTime.Item2)));
 
                     // Instantiate the bullet prefab and set its velocity
                     var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);

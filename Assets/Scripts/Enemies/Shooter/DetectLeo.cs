@@ -39,7 +39,7 @@ public class DetectLeo : MonoBehaviour
     private void Update()
     {
         DetectLeoInArea();
-        RotateTowardsLeo();
+        if (canSeeLeo) RotateTowardsLeo();
     }
 
     /// <summary>
