@@ -12,8 +12,7 @@ public class DashController : MonoBehaviour
     MenuManager menuManager;
     LeoAudio leoAudio;
 
-    [SerializeField] float dash1Force = 500;
-    [SerializeField] float dash2Force = 250;
+    [SerializeField] float dashForce = 500;
     [SerializeField] float dashCooldown = 0.3f;
     int timesPressed = 0;
     char lastSidePressed = 'I';
@@ -63,7 +62,7 @@ public class DashController : MonoBehaviour
             currentSidePressed = 'D';
             if (detectionTime >= 0) timesPressed++;
             detectionTime = 0.2f;
-            dashVelocity = new Vector2(dash1Force, 0);
+            dashVelocity = new Vector2(dashForce, 0);
             if (lastSidePressed != 'D') timesPressed = 1;
         }
         else if (Input.GetKeyDown(KeyCode.A))
@@ -71,7 +70,7 @@ public class DashController : MonoBehaviour
             currentSidePressed = 'A';
             if (detectionTime >= 0) timesPressed++;
             detectionTime = 0.2f;
-            dashVelocity = new Vector2(-dash1Force, 0);
+            dashVelocity = new Vector2(-dashForce, 0);
             print(lastSidePressed);
             if (lastSidePressed != 'A') timesPressed = 1;
         }
@@ -123,9 +122,9 @@ public class DashController : MonoBehaviour
             Vector2 dashVelocity;
             if (leoMovement.IsFacingRight)
             {
-                dashVelocity = new Vector2 (dash2Force, 0);
+                dashVelocity = new Vector2 (dashForce, 0);
             }
-            else dashVelocity = new Vector2 (-dash2Force, 0);
+            else dashVelocity = new Vector2 (-dashForce, 0);
             
             StartCoroutine(Dash(dashVelocity, dashCooldown));
         }
@@ -137,12 +136,12 @@ public class DashController : MonoBehaviour
         canDash = false;
         rb.velocity = velocity;
 
-        //float simulatedTime = 0;
         leoStats.ConsumeStamina(15);
-        
+
         yield return new WaitForSeconds(cooldown);
 
         rb.velocity *= 0.1f;
         canDash = false;
     }
+
 }
