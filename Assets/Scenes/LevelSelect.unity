@@ -168,7 +168,6 @@ MonoBehaviour:
   PausePanel: {fileID: 1437754025}
   OptionsPanel: {fileID: 1437754025}
   DashTypeTextObject: {fileID: 1437754025}
-  DashButtonTextObject: {fileID: 1437754025}
   LevelSelectionPanel: {fileID: 330007115}
   PilotLevelPanel: {fileID: 1317686513}
 --- !u!224 &224469588
