@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LeoMovement : MonoBehaviour
@@ -9,6 +10,7 @@ public class LeoMovement : MonoBehaviour
     Rigidbody2D rb;
     PlayerInputs playerInputs;
     MenuManager menuManager;
+    LeoAudio leoAudio;
 
     [Header("Colliders")]
     [SerializeField] Collider2D groundCollider;
@@ -44,6 +46,8 @@ public class LeoMovement : MonoBehaviour
     public bool IsFacingRight { get; private set; }
     [SerializeField] public bool Sliding { get; private set; }
     [SerializeField] private bool wallJumped;
+    [SerializeField] private bool jumped;
+    private bool alreadyPlayingStep;
 
     private bool alreadyFlipped;
     private float defaultGravityScale;
@@ -61,6 +65,9 @@ public class LeoMovement : MonoBehaviour
         coll = GetComponent<LeoCollisionDetector>();
         defaultGravityScale = rb.gravityScale;
         menuManager = FindObjectOfType<MenuManager>();
+
+        leoAudio = FindObjectOfType<LeoAudio>();
+        jumped = false;
     }
 
     void Update()
@@ -103,15 +110,24 @@ public class LeoMovement : MonoBehaviour
                 Flip(false);
             }
         }
+        if (jumped && coll.onGround)
+        {
+            jumped = false;
+            leoAudio.PlayLandSound();
+        }
+
         if (canJump) Jump(); // Jump logic
     }
-
+    private IEnumerator WaitBeforeJumped()
+    {
+        yield return new WaitForSeconds(0.1f);
+        jumped = true;
+    }
     private void FixedUpdate()
     {
         if (menuManager.GamePaused) return;
         if (CanMove) Move();
     }
-
     private void Jump()
     {
         Vector3 leoVelocity = rb.velocity;
@@ -123,6 +139,10 @@ public class LeoMovement : MonoBehaviour
                 leoVelocity.y = jumpSpeed;
                 rb.gravityScale = 1.0f;
                 jumpTime = Time.time; // Prevent falling slowly without jumping first
+                
+                StartCoroutine(WaitBeforeJumped());
+
+                leoAudio.PlayJumpSound();
             }
             else if (Sliding)
             {

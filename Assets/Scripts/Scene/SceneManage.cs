@@ -28,7 +28,12 @@ public class SceneManage : MonoBehaviour
             cameraFollow = FindObjectOfType<CameraFollow>();
             ChangeCameraTarget(leo);
         }
-
+        else if (CurrentScene == "PilotLevel")
+        {
+            leo = FindObjectOfType<LeoMovement>().transform;
+            cameraFollow = FindObjectOfType<CameraFollow>();
+            ChangeCameraTarget(leo);   
+        }
     }
 
     // This is a method for the future, now we set the target as the player in the awake

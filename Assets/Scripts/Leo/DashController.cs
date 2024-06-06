@@ -7,12 +7,14 @@ public class DashController : MonoBehaviour
     Rigidbody2D rb;
     LeoMovement leoMovement;
     LeoStats leoStats;
+    LeoAttacks leoAttacks;
     LeoCollisionDetector leoColls;
     MenuManager menuManager;
+    LeoAudio leoAudio;
 
     [SerializeField] float dash1Force = 500;
     [SerializeField] float dash2Force = 250;
-    [SerializeField] float dashTime = 0.3f;
+    [SerializeField] float dashCooldown = 0.3f;
     int timesPressed = 0;
     char lastSidePressed = 'I';
     float detectionTime = 0.2f;
@@ -24,15 +26,18 @@ public class DashController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         leoMovement = GetComponent<LeoMovement>();
+        leoAttacks = GetComponent<LeoAttacks>();
         leoColls = GetComponent<LeoCollisionDetector>();
         leoStats = GetComponent<LeoStats>();
         menuManager = FindObjectOfType<MenuManager>();
+        leoAudio = FindObjectOfType<LeoAudio>();
     }
 
     void Update()
     {
         if (leoStats.InStaminaBreak) return;
 
+        if (leoAttacks.isAttacking) return;
         if (menuManager.DoubleClickDash) Dash1();
         else Dash2();
     }
@@ -79,7 +84,7 @@ public class DashController : MonoBehaviour
                 timesPressed = 0;
                 detectionTime = 2f;
                 lastSidePressed = 'I';
-                StartCoroutine(Dash1(dashVelocity, dashTime, currentSidePressed));
+                StartCoroutine(Dash(dashVelocity, dashCooldown));
                 return;
             }
             else timesPressed = 1;
@@ -122,32 +127,22 @@ public class DashController : MonoBehaviour
             }
             else dashVelocity = new Vector2 (-dash2Force, 0);
             
-            StartCoroutine(Dash2(dashVelocity,  .4f));
+            StartCoroutine(Dash(dashVelocity, dashCooldown));
         }
     }
 
-    IEnumerator Dash1(Vector2 velocity, float time, char side)
+    IEnumerator Dash(Vector2 velocity, float cooldown)
     {
+        leoAudio.PlayDashSound();
         canDash = false;
         rb.velocity = velocity;
 
         //float simulatedTime = 0;
         leoStats.ConsumeStamina(15);
         
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(cooldown);
 
         rb.velocity *= 0.1f;
         canDash = false;
-    }
-    IEnumerator Dash2(Vector2 velocity, float cooldown)
-    {
-        onCooldown = true;
-        rb.velocity = new Vector2(rb.velocity.x + velocity.x, rb.velocity.y);
-
-        leoStats.ConsumeStamina(15);
-
-        yield return new WaitForSeconds(cooldown);
-
-        onCooldown = false;
     }
 }

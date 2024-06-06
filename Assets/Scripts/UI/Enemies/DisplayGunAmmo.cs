@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -32,3 +32,4 @@ public class DisplayGunAmmo : MonoBehaviour
         transform.localPosition = new Vector3(defaultPosition[0] - ((1 - ammo) * 2.5f), defaultPosition.y, defaultPosition.z);
     }
 }
+*/

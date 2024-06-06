@@ -58,7 +58,6 @@ public class MenuManager : MonoBehaviour
                 {
                     PauseGame();
                 }
-
             }
             else if (sceneManage.CurrentScene == "MainMenu")
             {
@@ -72,11 +71,25 @@ public class MenuManager : MonoBehaviour
                 if (menuState == MenuState.Settings)
                 {
                     ReturnLevelSelection();
-                    Debug.Log("A");
                 }
                 else if (menuState == MenuState.Playing)
                 {
                     sceneManage.ChangeScene("MainMenu");
+                }
+            }
+            else if (sceneManage.CurrentScene == "PilotLevel")
+            {
+                if (menuState == MenuState.Settings)
+                {
+                    ReturnSetting();
+                }
+                else if (menuState == MenuState.Pause)
+                {
+                    ContinueGame();
+                }
+                else
+                {
+                    PauseGame();
                 }
             }
         }

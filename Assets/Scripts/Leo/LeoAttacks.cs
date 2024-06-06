@@ -11,6 +11,7 @@ public class LeoAttacks : MonoBehaviour
     PlayerInputs inputs;
     LeoStats leoStats;
     MenuManager menuManager;
+    LeoAudio leoAudio;
 
     private Vector2 input;
 
@@ -34,6 +35,7 @@ public class LeoAttacks : MonoBehaviour
         leoMov = GetComponent<LeoMovement>();
         leoStats = GetComponent<LeoStats>();
         menuManager = FindObjectOfType<MenuManager>();
+        leoAudio = FindObjectOfType<LeoAudio>();
         // Insure that hasHit starts as false
         hasHit = false;
     }
@@ -96,9 +98,10 @@ public class LeoAttacks : MonoBehaviour
         {
             leoAnim.ChangeAnimation(animationName);
             isAttacking = true;
-            leoStats.ConsumeStamina(25);
+            leoStats.ConsumeStamina(20);
             if (leoMov.IsFacingRight && !isAttacking) rb.velocity += velocityRight;
             else if (!isAttacking) rb.velocity += velocityLeft;
         }
+        leoAudio.PlayAttackSound();
     }
 }

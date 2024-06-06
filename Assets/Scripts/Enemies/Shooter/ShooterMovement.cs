@@ -17,12 +17,13 @@ public class ShooterMovement : MonoBehaviour
     [SerializeField] private GameObject forwardGroundCheckPosition; // Position to check for ground collision when moving forward
     [SerializeField] private GameObject backwardGroundCheckPosition; // Position to check for ground collision when moving backward
     [SerializeField] private float groundCheckRadius = 0.5f; // Radius for the ground check
+    [SerializeField] private bool isGroundedForward;
+    [SerializeField] private bool isGroundedBackward;
+
 
     [Header("Layers")]
     [SerializeField] private LayerMask groundLayers;
 
-    private bool isGroundedForward;
-    private bool isGroundedBackward;
 
     /// <summary>
     /// Initialize components needed for this class.
@@ -61,8 +62,6 @@ public class ShooterMovement : MonoBehaviour
         {
             isGroundedBackward = Physics2D.OverlapCircle(backwardGroundCheckPosition.transform.position, groundCheckRadius, groundLayers);
         }
-
-        Debug.Log($"isGroundedForward: {isGroundedForward}, isGroundedBackward: {isGroundedBackward}");
     }
 
     /// <summary>
@@ -72,56 +71,25 @@ public class ShooterMovement : MonoBehaviour
     private void HandleMovement()
     {
         if (!isGroundedForward && !isGroundedBackward) return;
-
+        
         float direction = leo.position.x < transform.position.x ? -1 : 1;
-
+        
         if (leoDetection.IsLeoInArea)
         {
-            movementSpeed = defaultMovementSpeed / 1.5f;
-            direction *= -1;
-            
-            if (leoDetection.IsFacingRight)
+            if (isGroundedBackward)
             {
-                if (direction == -1 && !isGroundedBackward)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving backward
-                    return;
-                }
-            }
-            else
-            {
-                if (direction == 1 && !isGroundedBackward)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving backward
-                    return;
-                }       
-            }
-
+                direction *= -1;
+                rb.velocity = new Vector2(direction * movementSpeed, rb.velocity.y);
+            }      
         }
         else
         {
-            movementSpeed = defaultMovementSpeed;
-
-            if (leoDetection.IsFacingRight)
+            if (isGroundedForward)
             {
-                if (direction == 1 && !isGroundedForward)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving forward
-                    return;
-                }
-            }
-            else
-            {
-                if (direction == -1 && !isGroundedForward)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y); // Stop movement if not grounded when moving forward
-                    return;
-                }
-            }
+                rb.velocity = new Vector2(direction * movementSpeed, rb.velocity.y);
 
+            }
         }
-
-        rb.velocity = new Vector2(direction * movementSpeed, rb.velocity.y);
     }
 
     /// <summary>
