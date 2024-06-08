@@ -1279,6 +1279,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2087520783}
     - target: {fileID: 8746199420357149831, guid: db95209d827418f498c5a74f4fa7cf1f, type: 3}
+      propertyPath: hasInfHP
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8746199420357149831, guid: db95209d827418f498c5a74f4fa7cf1f, type: 3}
       propertyPath: staminaImage
       value: 
       objectReference: {fileID: 2010409081}
