@@ -1,5 +1,6 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Collections;
 
 public class SceneManage : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class SceneManage : MonoBehaviour
 
         if (CurrentScene == "MainMenu")
         {
-            
+
         }
         else if (CurrentScene == "Test")
         {
@@ -32,7 +33,7 @@ public class SceneManage : MonoBehaviour
         {
             leo = FindObjectOfType<LeoMovement>().transform;
             cameraFollow = FindObjectOfType<CameraFollow>();
-            ChangeCameraTarget(leo);   
+            ChangeCameraTarget(leo);
         }
     }
 
@@ -45,12 +46,18 @@ public class SceneManage : MonoBehaviour
 
     public void ChangeScene(string scene)
     {
-        SceneManager.LoadScene(scene);
-        CurrentScene = scene;
-        menuManager.ContinueGame();
+        StartCoroutine(WaitAndChangeScene(scene));
     }
     public void Quit()
     {
         Application.Quit();
+    }
+
+    IEnumerator WaitAndChangeScene(string scene)
+    {
+        yield return new WaitForSeconds(0.2f);
+        SceneManager.LoadScene(scene);
+        CurrentScene = scene;
+        menuManager.ContinueGame();
     }
 }
