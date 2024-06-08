@@ -1,9 +1,12 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LeoAnimation : MonoBehaviour
 {
     LeoCollisionDetector coll;
+    LeoAudio leoAudio;
+    private bool alreadyPlayingStep;
     private Animator anim;
     private LeoAttacks leoAttacks;
     private LeoStats leoStats;
@@ -25,6 +28,8 @@ public class LeoAnimation : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<LeoCollisionDetector>();
         menuManager = FindObjectOfType<MenuManager>();
+        leoAudio = FindObjectOfType<LeoAudio>();
+        alreadyPlayingStep = false;
     }
 
     // Update is called once per frame
@@ -32,8 +37,29 @@ public class LeoAnimation : MonoBehaviour
     {
         if (menuManager.GamePaused) return;
         CheckAnimation();
-    }
 
+        if (!alreadyPlayingStep)
+        {
+            if (currentAnimation == "LeoWalk")
+            {
+                StartCoroutine(PlayStepSound(.6f));
+                leoAudio.PlayStepSound();
+            }
+            else if (currentAnimation == "LeoRun")
+            {
+                StartCoroutine(PlayStepSound(.4f));
+                leoAudio.PlayStepSound();
+            }
+        }
+    }
+    private IEnumerator PlayStepSound(float time)
+    {
+        alreadyPlayingStep = true;
+
+        yield return new WaitForSeconds(time);
+
+        alreadyPlayingStep = false;
+    }
     private void CheckAnimation()
     {
         if (leoMov.Sliding)
@@ -54,7 +80,7 @@ public class LeoAnimation : MonoBehaviour
         }
         else if (Mathf.Abs(rb.velocity.x) > movementThreshold && !leoAttacks.isAttacking)
         {
-            if (leoStats.InStaminaBreak)  ChangeAnimation("LeoWalk");
+            if (leoStats.InStaminaBreak) ChangeAnimation("LeoWalk");
             else ChangeAnimation("LeoRun");
         }
         else if (Mathf.Abs(rb.velocity.x) < 0.1f && !leoAttacks.isAttacking) // If velocity.x is close to zero

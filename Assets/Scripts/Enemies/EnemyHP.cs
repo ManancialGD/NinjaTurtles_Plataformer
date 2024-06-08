@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyHP : MonoBehaviour
 {
     Rigidbody2D rb;
+    EnemyAudio enemyAudio;
 
     [Header("Health")]
     
@@ -21,13 +22,16 @@ public class EnemyHP : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        
+        enemyAudio = GetComponentInChildren<EnemyAudio>();
+
         IsStunned = false;
     }
 
     public virtual void TakeDamage(int damageAmount, float stunTime = 0, Vector2? knockback = null)
     {
         if (hasInfHP) damageAmount = 0; // if has damage amount, will damage 0 
+
+        enemyAudio.PlaySwordHitSound();
         
         HP -= damageAmount;
  

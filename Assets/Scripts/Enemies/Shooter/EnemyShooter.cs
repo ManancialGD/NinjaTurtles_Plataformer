@@ -1,18 +1,17 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class EnemyShooter : MonoBehaviour
 {
-    float gunAmmo = 0;
     DetectLeo leodetection;
     ShooterAim aim;
     RotateArm arm;
     Transform target;
     EnemyHP hp;
+    EnemyAudio enemyAudio;
 
     [Header("Times")]
-    private (float, float) cooldownTime = (.9f, 2f);
+    private float cooldownTime = 2;
 
     [Space]
 
@@ -20,11 +19,11 @@ public class EnemyShooter : MonoBehaviour
     private bool waitingToShoot;
     private bool firstDetected;
 
-
     private void Awake()
     {
         hp = GetComponent<EnemyHP>();
         leodetection = GetComponent<DetectLeo>();
+        enemyAudio = GetComponentInChildren<EnemyAudio>();
         if (leodetection == null)
         {
             Debug.LogError("DetectLeo component not found on " + gameObject.name);
@@ -56,9 +55,6 @@ public class EnemyShooter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (gunAmmo < 1f) gunAmmo += 0.02f;
-        if (gunAmmo > 1f) gunAmmo = 1f;
-
         // Return early if any required component is missing
         if (leodetection == null || aim == null || target == null || arm == null)
         {
@@ -68,26 +64,26 @@ public class EnemyShooter : MonoBehaviour
         if (leodetection.leoDetected)
         {
             // Always aim towards the target if detected
-            bool minimizeTime = (Mathf.Abs(target.transform.position[0] - transform.position[0]) + Mathf.Abs(target.transform.position[1] - transform.position[1])) < 150f;
-
-            if (aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed * 1f, Physics2D.gravity.y, minimizeTime, out Vector2 vel, out float theta))
+            if (aim.ComputeVelocity(aim.transform.position, target.position, aim.prefabToSpawn.speed, Physics2D.gravity.y, aim.minimizeTime, out Vector2 vel, out float theta))
             {
                 arm.SetRotationAngle(theta);
 
-                if (!waitingToShoot && firstDetected && !hp.IsStunned && gunAmmo >= 1f)
+                if (firstDetected)
                 {
-                    StartCoroutine(ShootAfterDelay(UnityEngine.Random.Range(cooldownTime.Item1, cooldownTime.Item2)));
+                    StartCoroutine(ShootAfterDelay(cooldownTime));
                     firstDetected = false;
                 }
                 // Start shooting if not already waiting to shoot
-                if (!waitingToShoot && !hp.IsStunned && gunAmmo >= 1f)
+                if (!waitingToShoot && !hp.IsStunned)
                 {
-                    StartCoroutine(ShootAfterDelay(UnityEngine.Random.Range(cooldownTime.Item1, cooldownTime.Item2)));
+                    StartCoroutine(ShootAfterDelay(cooldownTime));
 
                     // Instantiate the bullet prefab and set its velocity
                     var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
                     newShot.SetVelocity(vel);
-                    gunAmmo = 0;
+
+                    enemyAudio.PlayShootSound();
+
 
                     // Start the recoil coroutine
                     StartCoroutine(arm.Recoil());
@@ -109,5 +105,4 @@ public class EnemyShooter : MonoBehaviour
 
         waitingToShoot = false;
     }
-    public float GetEnemyAmmo() => gunAmmo;
 }
