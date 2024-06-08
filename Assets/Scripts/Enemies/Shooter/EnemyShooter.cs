@@ -8,6 +8,7 @@ public class EnemyShooter : MonoBehaviour
     RotateArm arm;
     Transform target;
     EnemyHP hp;
+    EnemyAudio enemyAudio;
 
     [Header("Times")]
     private float cooldownTime = 2;
@@ -22,6 +23,7 @@ public class EnemyShooter : MonoBehaviour
     {
         hp = GetComponent<EnemyHP>();
         leodetection = GetComponent<DetectLeo>();
+        enemyAudio = GetComponentInChildren<EnemyAudio>();
         if (leodetection == null)
         {
             Debug.LogError("DetectLeo component not found on " + gameObject.name);
@@ -79,6 +81,9 @@ public class EnemyShooter : MonoBehaviour
                     // Instantiate the bullet prefab and set its velocity
                     var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
                     newShot.SetVelocity(vel);
+
+                    enemyAudio.PlayShootSound();
+
 
                     // Start the recoil coroutine
                     StartCoroutine(arm.Recoil());
