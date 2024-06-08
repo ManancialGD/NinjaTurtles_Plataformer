@@ -138,10 +138,15 @@ public class DashController : MonoBehaviour
 
         leoStats.ConsumeStamina(15);
 
-        yield return new WaitForSeconds(cooldown);
+        onCooldown = true;
+        yield return new WaitForSeconds(.3f);
 
         rb.velocity *= 0.1f;
         canDash = false;
+
+        yield return new WaitForSeconds(cooldown);
+        
+        onCooldown = false;
     }
 
 }

@@ -173,7 +173,6 @@ GameObject:
   - component: {fileID: 6622886806041547087}
   - component: {fileID: 8746199420357149831}
   - component: {fileID: 262664811838584147}
-  - component: {fileID: 8551648110713881707}
   - component: {fileID: 5246233084013756691}
   - component: {fileID: 2262835370205545173}
   - component: {fileID: 60630888906931240}
@@ -325,23 +324,6 @@ MonoBehaviour:
   nearGroundBoxSize: {x: 0.5, y: 50}
   nearGroundOffset: {x: 0.5, y: -41.1}
   debugGroundCollisionColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &8551648110713881707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2568636477140032222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 599b9504a6229984e9c4f262c2163f02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpSound: {fileID: 0}
-  landSound: {fileID: 0}
-  stepSound: {fileID: 0}
-  attackSound: {fileID: 0}
-  dashSound: {fileID: 0}
 --- !u!212 &5246233084013756691
 SpriteRenderer:
   m_ObjectHideFlags: 0

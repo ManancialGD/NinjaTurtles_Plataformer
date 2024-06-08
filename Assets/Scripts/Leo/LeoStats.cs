@@ -14,6 +14,7 @@ public class LeoStats : MonoBehaviour
     private bool wasAttacking;
     private bool justConsumedStamina;
     private Coroutine passiveStaminaCoroutine;
+    SceneManage sceneManage;
 
     [Header("Health")]
     [SerializeField] private Image hpImage; // Image component to display health bar
@@ -48,6 +49,8 @@ public class LeoStats : MonoBehaviour
         leoMov = GetComponent<LeoMovement>();
         attacks = GetComponent<LeoAttacks>();
         rb = GetComponent<Rigidbody2D>();
+
+        sceneManage = FindObjectOfType<SceneManage>();
 
         isStunned = false;
         InStaminaBreak = false;
@@ -146,7 +149,7 @@ public class LeoStats : MonoBehaviour
     /// </summary>
     private void Die()
     {
-        Destroy(gameObject);
+        sceneManage.ChangeScene("GameOver");
     }
 
     // Coroutine for passive stamina recovery
