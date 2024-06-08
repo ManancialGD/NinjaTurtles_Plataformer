@@ -23,12 +23,6 @@ public class SceneManage : MonoBehaviour
         {
 
         }
-        else if (CurrentScene == "Test")
-        {
-            leo = FindObjectOfType<LeoMovement>().transform;
-            cameraFollow = FindObjectOfType<CameraFollow>();
-            ChangeCameraTarget(leo);
-        }
         else if (CurrentScene == "PilotLevel")
         {
             leo = FindObjectOfType<LeoMovement>().transform;

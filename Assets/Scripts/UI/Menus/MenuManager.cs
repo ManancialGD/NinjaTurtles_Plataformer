@@ -44,22 +44,7 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Pause"))
         {
-            if (sceneManage.CurrentScene == "Test")
-            {
-                if (menuState == MenuState.Settings)
-                {
-                    ReturnSetting();
-                }
-                else if (menuState == MenuState.Pause)
-                {
-                    ContinueGame();
-                }
-                else
-                {
-                    PauseGame();
-                }
-            }
-            else if (sceneManage.CurrentScene == "MainMenu")
+            if (sceneManage.CurrentScene == "MainMenu")
             {
                 if (menuState == MenuState.Settings)
                 {
