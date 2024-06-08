@@ -3,7 +3,12 @@ using UnityEngine.UI;
 
 public class OptionsButton : MonoBehaviour
 {
+    public string Value { get; private set; } = null;
     [SerializeField] string[] options;
+    [SerializeField] Font textFont;
+    [SerializeField] Sprite buttonSprite;
+    [SerializeField] Sprite buttonSpriteLast;
+    [SerializeField] Vector2 size = new Vector2(100, 25);
     private Button[] buttons;
     private float animationTime = 0.3f;
     private Color defaultColor = new Color(118f / 255f, 118f / 255f, 118f / 255f);
@@ -22,46 +27,49 @@ public class OptionsButton : MonoBehaviour
             return;
         }
 
-
         for (int i = 0; i < options.Length; i++)
         {
-            GameObject buttonObject = new GameObject("Button " + (i + 1));
+            bool optionSelected = false;
+            if (Value != null && Value.ToLower() == options[i].ToLower()) optionSelected = true;
 
+            GameObject buttonObject = new GameObject("Button " + (i + 1));
+            buttonObject.transform.SetParent(canvas.transform, false);
             RectTransform rectTransform = buttonObject.AddComponent<RectTransform>();
             Image image = buttonObject.AddComponent<Image>();
+
             Button newButton = buttonObject.AddComponent<Button>();
 
-            image.color = defaultColor; // Cor padrão do botão
+
+            if (i == options.Length - 1) image.sprite = buttonSpriteLast;//ultimo botão
+            else image.sprite = buttonSprite;
+
+            if (optionSelected) image.color = selectedColor;
+            else image.color = defaultColor;
 
 
             GameObject textObject = new GameObject("Text");
+            textObject.transform.SetParent(buttonObject.transform);
+
             Text buttonText = textObject.AddComponent<Text>();
             RectTransform textRectTransform = textObject.GetComponent<RectTransform>();
 
-            textRectTransform.sizeDelta = new Vector2(100, 25);
-            textRectTransform.SetParent(buttonObject.transform, false);
-            textRectTransform.anchorMin = Vector2.zero;
-            textRectTransform.anchorMax = Vector2.one;
+            textRectTransform.sizeDelta = size;
+            textRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            textRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
             textRectTransform.anchoredPosition = Vector2.zero;
 
-
+            buttonText.fontSize = 10;
             buttonText.text = options[i];
             buttonText.alignment = TextAnchor.MiddleCenter;
-            buttonText.color = Color.black;
-            //buttonText.font = Resources.GetBuiltinResource<Font>("Arial.ttf"); // Define a fonte
-
-
-            buttonObject.transform.SetParent(canvas.transform, false);
+            if (optionSelected) buttonText.color = Color.black;
+            else buttonText.color = Color.white;
+            buttonText.font = textFont;
 
 
             buttons[i] = newButton;
 
-            rectTransform.sizeDelta = new Vector2(100, 25);
-            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            rectTransform.sizeDelta = size;
             rectTransform.anchoredPosition = new Vector2(0, 0);
-
 
             ColorBlock colors = newButton.colors;
             colors.normalColor = defaultColor;
@@ -92,7 +100,4 @@ public class OptionsButton : MonoBehaviour
         if (animationTime > 0) animationTime -= Time.deltaTime;
         if (animationTime < 0) animationTime = 0;
     }
-
-
-
 }
