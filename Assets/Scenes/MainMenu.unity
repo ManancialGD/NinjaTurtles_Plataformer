@@ -1749,6 +1749,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1636502797}
   m_CullTransparentMesh: 1
+--- !u!224 &1955253458 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4675831140020100472, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+  m_PrefabInstance: {fileID: 2026063299}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1978961475
 GameObject:
   m_ObjectHideFlags: 0
@@ -2029,13 +2034,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: OptionsButton
       objectReference: {fileID: 0}
+    - target: {fileID: 1160549569827791376, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160549569827791376, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896750563665712054, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: mainButton
+      value: 
+      objectReference: {fileID: 1955253458}
+    - target: {fileID: 4675831140020100472, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4675831140020100472, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -288.45566
+      value: -306
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -58.81696
+      value: -22.3
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.z

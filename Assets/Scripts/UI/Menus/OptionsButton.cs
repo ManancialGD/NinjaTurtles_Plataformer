@@ -1,14 +1,22 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class OptionsButton : MonoBehaviour
 {
     public string Value { get; private set; } = null;
+    public bool MenuOpened { get; private set; } = false;
+    private int actionMode = 0; // 1-opening 2-closing
+    [SerializeField] Transform mainButton;
     [SerializeField] string[] options;
     [SerializeField] Font textFont;
-    [SerializeField] Sprite buttonSprite;
-    [SerializeField] Sprite buttonSpriteLast;
+    [SerializeField] Sprite spriteMain;
+    [SerializeField] Sprite spriteMainSelected;
+    [SerializeField] Sprite spriteMiddle;
+    [SerializeField] Sprite spriteLast;
     [SerializeField] Vector2 size = new Vector2(100, 25);
+    private Canvas canvas;
     private Button[] buttons;
     private float animationTime = 0.3f;
     private Color defaultColor = new Color(118f / 255f, 118f / 255f, 118f / 255f);
@@ -20,7 +28,7 @@ public class OptionsButton : MonoBehaviour
     {
         buttons = new Button[options.Length];
 
-        Canvas canvas = GetComponentInChildren<Canvas>();
+        canvas = GetComponentInChildren<Canvas>();
         if (canvas == null)
         {
             Debug.LogError("Canvas não encontrado.");
@@ -35,17 +43,23 @@ public class OptionsButton : MonoBehaviour
             GameObject buttonObject = new GameObject("Button " + (i + 1));
             buttonObject.transform.SetParent(canvas.transform, false);
             RectTransform rectTransform = buttonObject.AddComponent<RectTransform>();
+            rectTransform.anchoredPosition = Vector3.zero;
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.sizeDelta = size;
             Image image = buttonObject.AddComponent<Image>();
 
             Button newButton = buttonObject.AddComponent<Button>();
 
+            int optionIndex = i;
 
-            if (i == options.Length - 1) image.sprite = buttonSpriteLast;//ultimo botão
-            else image.sprite = buttonSprite;
+            newButton.onClick.AddListener(() => OnChooseOption(options[optionIndex]));
+
+            if (i == options.Length - 1) image.sprite = spriteLast;//ultimo botão
+            else image.sprite = spriteMain;
 
             if (optionSelected) image.color = selectedColor;
             else image.color = defaultColor;
-
 
             GameObject textObject = new GameObject("Text");
             textObject.transform.SetParent(buttonObject.transform);
@@ -56,7 +70,7 @@ public class OptionsButton : MonoBehaviour
             textRectTransform.sizeDelta = size;
             textRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
             textRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            textRectTransform.anchoredPosition = Vector2.zero;
+            textRectTransform.anchoredPosition = Vector3.zero;
 
             buttonText.fontSize = 10;
             buttonText.text = options[i];
@@ -67,9 +81,6 @@ public class OptionsButton : MonoBehaviour
 
 
             buttons[i] = newButton;
-
-            rectTransform.sizeDelta = size;
-            rectTransform.anchoredPosition = new Vector2(0, 0);
 
             ColorBlock colors = newButton.colors;
             colors.normalColor = defaultColor;
@@ -82,22 +93,95 @@ public class OptionsButton : MonoBehaviour
 
             newButton.interactable = true;
         }
+        mainButton.gameObject.transform.SetAsLastSibling();
     }
 
     void Update()
     {
-        if (animationTime > 0) AnimateButton();
+        if (actionMode > 0) DisplayAnimation(actionMode);
     }
 
-    void AnimateButton()
+    void OpenMenu()
     {
-        int index = 0;
+        mainButton.gameObject.GetComponent<Image>().sprite = spriteMainSelected;
+
+        Debug.Log("Open");
+        animationTime = 0.3f;
+        actionMode = 1;
+        ChangeInteractability(true);
+
+    }
+
+    void CloseMenu()
+    {
+        mainButton.gameObject.GetComponent<Image>().sprite = spriteMainSelected;
+        Debug.Log("Close");
+        animationTime = 0.3f;
+        actionMode = 2;
+
+    }
+
+    void DisplayAnimation(int mode)
+    {
+        if (mode == 1) // menu opening
+        {
+            int index = 0;
+            foreach (Button button in buttons)
+            {
+                button.transform.position = new Vector3(mainButton.transform.position.x, mainButton.transform.position.y - (index + 1) * (25 * ((0.3f - animationTime) / 0.3f)), mainButton.transform.position.z);
+                if (index < buttons.Length - 1 && animationTime < 0.2f) button.image.sprite = spriteMiddle;
+                index++;
+            }
+            if (animationTime > 0) animationTime -= Time.deltaTime;
+            if (animationTime <= 0)
+            {
+                ChangeInteractability(true);
+                animationTime = 0;
+                actionMode = 0;
+            }
+        }
+        else if (mode == 2) // menu closing
+        {
+            int index = 0;
+            foreach (Button button in buttons)
+            {
+                button.transform.position = new Vector3(mainButton.transform.position.x, mainButton.transform.position.y - (index + 1) * (25 * (animationTime / 0.3f)), mainButton.transform.position.z);
+                if (index < buttons.Length - 1 && animationTime < 0.1f) button.image.sprite = spriteMain;
+                index++;
+            }
+            if (animationTime > 0) animationTime -= Time.deltaTime;
+            if (animationTime <= 0)
+            {
+                mainButton.gameObject.GetComponent<Image>().sprite = spriteMain;
+                ChangeInteractability(false);
+                animationTime = 0;
+                actionMode = 0;
+            }
+        }
+
+    }
+
+    void ChangeInteractability(bool isInteractable)
+    {
         foreach (Button button in buttons)
         {
-            button.transform.localPosition = new Vector3(button.transform.localPosition.x, transform.position.y - index * (25 * ((0.3f - animationTime) / 0.3f)), button.transform.localPosition.z);
-            index++;
+            button.interactable = isInteractable;
+            //button.transform.gameObject.SetActive(isInteractable);
         }
-        if (animationTime > 0) animationTime -= Time.deltaTime;
-        if (animationTime < 0) animationTime = 0;
+    }
+
+    public void OnClick()
+    {
+        MenuOpened = !MenuOpened;
+        if (MenuOpened) OpenMenu();
+        else CloseMenu();
+    }
+
+    public void OnChooseOption(string option)
+    {
+        Value = option;
+        mainButton.gameObject.GetComponentInChildren<TMP_Text>().text = option;
+        MenuOpened = false;
+        CloseMenu();
     }
 }
