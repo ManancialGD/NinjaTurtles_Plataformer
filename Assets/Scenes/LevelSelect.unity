@@ -457,6 +457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 791588630}
   - component: {fileID: 791588632}
+  - component: {fileID: 791588633}
   - component: {fileID: 791588631}
   m_Layer: 5
   m_Name: Description
@@ -584,6 +585,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791588629}
   m_CullTransparentMesh: 1
+--- !u!114 &791588633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791588629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  english: There are some strange activities in this lab... Go there and find out!
+  portuguese: "Tem algumas ativadades estranhas nesse laborat\xF3rio... Vai l\xE1
+    e descobre!"
+  languageManager: {fileID: 1814754655}
 --- !u!1 &1068030712
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,6 +817,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1147889681}
   - component: {fileID: 1147889683}
+  - component: {fileID: 1147889684}
   - component: {fileID: 1147889682}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -925,6 +944,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147889680}
   m_CullTransparentMesh: 1
+--- !u!114 &1147889684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147889680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1147889682}
+  english: Play
+  portuguese: Jogar
+  languageManager: {fileID: 1814754655}
 --- !u!1 &1203411513
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,6 +1014,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1205146066}
   - component: {fileID: 1205146068}
+  - component: {fileID: 1205146069}
   - component: {fileID: 1205146067}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -1103,6 +1139,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1205146065}
   m_CullTransparentMesh: 1
+--- !u!114 &1205146069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205146065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1205146067}
+  english: Return
+  portuguese: Voltar
+  languageManager: {fileID: 1814754655}
 --- !u!1 &1317686513
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,6 +1386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1747368785}
   - component: {fileID: 1747368787}
+  - component: {fileID: 1747368788}
   - component: {fileID: 1747368786}
   m_Layer: 5
   m_Name: The Lab
@@ -1359,7 +1412,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 71.1}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 368.99, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1747368786
 MonoBehaviour:
@@ -1458,6 +1511,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747368784}
   m_CullTransparentMesh: 1
+--- !u!114 &1747368788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747368784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1747368786}
+  english: THE LAB
+  portuguese: "O LABORAT\xD3RIO"
+  languageManager: {fileID: 1814754655}
 --- !u!1 &1781418560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1603,6 +1672,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1781418560}
   m_CullTransparentMesh: 1
+--- !u!1 &1814754654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1814754656}
+  - component: {fileID: 1814754655}
+  m_Layer: 0
+  m_Name: LenguageMenager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1814754655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814754654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06b770f590b149499db95effb7c22d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  language: 0
+--- !u!4 &1814754656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814754654}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 29.667553, y: 31.895676, z: -13.11104}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1823596761
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,6 +2190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2006087259}
   - component: {fileID: 2006087261}
+  - component: {fileID: 2006087262}
   - component: {fileID: 2006087260}
   m_Layer: 5
   m_Name: Pilot Level
@@ -2101,7 +2216,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 107.5}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 337.1, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2006087260
 MonoBehaviour:
@@ -2200,6 +2315,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006087258}
   m_CullTransparentMesh: 1
+--- !u!114 &2006087262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006087258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 2006087260}
+  english: Pilot Level
+  portuguese: Level Piloto
+  languageManager: {fileID: 1814754655}
 --- !u!1 &2043665306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2284,3 +2415,4 @@ SceneRoots:
   - {fileID: 1073836842}
   - {fileID: 1203411515}
   - {fileID: 224469588}
+  - {fileID: 1814754656}
