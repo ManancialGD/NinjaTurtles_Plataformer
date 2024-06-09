@@ -23,8 +23,8 @@ public class SlideButton : MonoBehaviour
         menuManager = FindObjectOfType<MenuManager>(); // Find the MenuManager in the scene.
         if (menuManager == null) canOperate = false; // Disable operation if no MenuManager found.
         Value = menuManager.DoubleClickDash; // Set Value based on MenuManager's DoubleClickDash.
-        if (Value) correctPosition = new Vector3(-11.5f, defaultPosition.y, defaultPosition.z);
-        else correctPosition = new Vector3(11.5f, defaultPosition.y, defaultPosition.z);
+        if (Value) correctPosition = new Vector3(11.5f, defaultPosition.y, defaultPosition.z);
+        else correctPosition = new Vector3(-11.5f, defaultPosition.y, defaultPosition.z);
         images[1].rectTransform.localPosition = correctPosition; // Set initial position.
     }
 
