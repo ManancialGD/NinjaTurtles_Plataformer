@@ -71,7 +71,6 @@ public class DashController : MonoBehaviour
             if (detectionTime >= 0) timesPressed++;
             detectionTime = 0.2f;
             dashVelocity = new Vector2(-dashForce, 0);
-            print(lastSidePressed);
             if (lastSidePressed != 'A') timesPressed = 1;
         }
 

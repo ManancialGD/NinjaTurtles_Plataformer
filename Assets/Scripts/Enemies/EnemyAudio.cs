@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyAudio: MonoBehaviour
 {
     [SerializeField] private AudioSource swordHit;
-    [SerializeField] private AudioSource shootSwound;
+    [SerializeField] private AudioSource shootSound;
 
     public void PlaySwordHitSound()
     {
@@ -15,7 +15,7 @@ public class EnemyAudio: MonoBehaviour
 
     public void PlayShootSound()
     {
-        shootSwound.pitch = Random.Range(0.8f, 1.2f);
-        shootSwound.Play();
+        shootSound.pitch = Random.Range(0.8f, 1.2f);
+        shootSound.Play();
     }
 }
