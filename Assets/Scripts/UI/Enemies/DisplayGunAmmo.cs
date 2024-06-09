@@ -1,12 +1,13 @@
-/*using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-
+using UnityEngine.UI;
 public class DisplayGunAmmo : MonoBehaviour
 {
     // 10 - 12.5
-    SpriteRenderer sr;
+    Canvas canvas;
+    Image image;
+    Light2D lightComponent;
     GameObject thisEnemy;
     EnemyShooter enemyShooter;
     Vector3 defaultScale;
@@ -15,7 +16,9 @@ public class DisplayGunAmmo : MonoBehaviour
     {
         thisEnemy = GetComponentInParent<EnemyShooter>().gameObject;
         enemyShooter = thisEnemy.GetComponent<EnemyShooter>();
-        sr = GetComponent<SpriteRenderer>();
+        lightComponent = GetComponentInChildren<Light2D>();
+        canvas = GetComponentInChildren<Canvas>();
+        image = canvas.GetComponentInChildren<Image>();
         defaultScale = transform.localScale;
         defaultPosition = transform.localPosition;
         Debug.Log("ThisEnemy: " + thisEnemy.name);
@@ -26,10 +29,14 @@ public class DisplayGunAmmo : MonoBehaviour
         if (thisEnemy == null) { Debug.LogError("Enemy not found!"); return; }
         if (enemyShooter == null) { Debug.LogError("Enemy script not found!"); return; }
 
-        float ammo = enemyShooter.GetEnemyAmmo();
+        (float ammo, float maxValue) = enemyShooter.GetTimeUntilShoot();
 
-        transform.localScale = new Vector3(ammo * defaultScale[0], transform.localScale.y, transform.localScale.z);
-        transform.localPosition = new Vector3(defaultPosition[0] - ((1 - ammo) * 2.5f), defaultPosition.y, defaultPosition.z);
+        image.rectTransform.sizeDelta = new Vector2((maxValue - ammo) / maxValue * 5, image.rectTransform.sizeDelta.y);
+        lightComponent.intensity = Random.Range((maxValue - ammo) / maxValue * 0.85f, (maxValue - ammo) / maxValue);
+
+        if (Random.Range(0, 10) == 0)
+        {
+            lightComponent.intensity -= Random.Range(0.05f, 0.8f);
+        }
     }
 }
-*/
