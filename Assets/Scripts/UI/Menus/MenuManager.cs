@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEditor;
+using UnityEngine.Audio;
 
 public class MenuManager : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class MenuManager : MonoBehaviour
             DoubleClickDash = true;
 
             saveSystem = GetComponent<SaveOptionsSystem>();
-            int i = saveSystem.LoadData();
+            int i = saveSystem.LoadDashData();
             if (i == 0) ChangeDashType();
         }
     }
@@ -141,4 +142,5 @@ public class MenuManager : MonoBehaviour
             saveSystem.SaveDashType(1);
         }
     }
+
 }
