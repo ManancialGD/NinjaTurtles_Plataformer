@@ -1978,13 +1978,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: OptionsButton
       objectReference: {fileID: 0}
+    - target: {fileID: 116761788002743046, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896750563665712054, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: options.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896750563665712054, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: options.Array.data[0]
+      value: English
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896750563665712054, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: options.Array.data[1]
+      value: "Portugu\xEAs"
+      objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -270.45383
+      value: 67.7
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.845793
+      value: 38.3
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.z
