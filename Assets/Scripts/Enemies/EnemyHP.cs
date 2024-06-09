@@ -132,7 +132,7 @@ public class EnemyHP : MonoBehaviour
         {
             if (s != null)
             {
-                s.color = new Color(1, 0.3f, 0.3f, 1);
+                s.color = new Color(1, 0.5f, 0.6f, 1);
             }
         }
         yield return new WaitForSeconds(time);
