@@ -12,6 +12,7 @@ public class LeoStats : MonoBehaviour
     LeoMovement leoMov;
     LeoAttacks attacks;
     LeoAudio leoAudio;
+    CameraFollow cameraFollow;
 
     private bool wasAttacking;
     private bool justConsumedStamina;
@@ -50,6 +51,8 @@ public class LeoStats : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        cameraFollow = FindObjectOfType<CameraFollow>();
+
         leoMov = GetComponent<LeoMovement>();
         attacks = GetComponent<LeoAttacks>();
         rb = GetComponent<Rigidbody2D>();
@@ -142,6 +145,7 @@ public class LeoStats : MonoBehaviour
         if (hasInfHP) damageAmount = 0; // If infinite health, no damage is taken 
 
         leoAudio.PlayDamageSound();
+        cameraFollow.CameraShake(.5f, .2f, .4f, new Vector2(100, 100));
 
         HP -= damageAmount;
 
