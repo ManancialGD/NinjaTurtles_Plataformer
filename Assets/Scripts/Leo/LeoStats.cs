@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ public class LeoStats : MonoBehaviour
     private bool justConsumedStamina;
     private Coroutine passiveStaminaCoroutine;
     SceneManage sceneManage;
+    SpriteRenderer sp;
 
     [Header("Health")]
     [SerializeField] private Image hpImage; // Image component to display health bar
@@ -52,6 +54,8 @@ public class LeoStats : MonoBehaviour
         attacks = GetComponent<LeoAttacks>();
         rb = GetComponent<Rigidbody2D>();
         leoAudio = GetComponentInChildren<LeoAudio>();
+
+        sp = GetComponent<SpriteRenderer>();
 
         sceneManage = FindObjectOfType<SceneManage>();
 
@@ -100,7 +104,7 @@ public class LeoStats : MonoBehaviour
                 }
             }
         }
-        
+
         // Reset the wasAttacking flag for the next frame
         wasAttacking = false;
     }
@@ -125,7 +129,7 @@ public class LeoStats : MonoBehaviour
     public void Heal(int healAmount)
     {
         HP += healAmount;
-        hpImage.fillAmount = HP/100f;
+        hpImage.fillAmount = HP / 100f;
     }
 
     // Method to apply damage to Leo
@@ -138,15 +142,16 @@ public class LeoStats : MonoBehaviour
         if (hasInfHP) damageAmount = 0; // If infinite health, no damage is taken 
 
         leoAudio.PlayDamageSound();
-        
+
         HP -= damageAmount;
 
         if (stunTime > 0) Stun(stunTime);
 
         Vector2 appliedKnockback = knockback ?? new Vector2(0, 0);
         Knockback(appliedKnockback);
+        StartCoroutine(DamageColor(1f));
 
-        hpImage.fillAmount = HP/100f;
+        hpImage.fillAmount = HP / 100f;
     }
 
     // Method called when Leo's HP reaches zero
@@ -261,5 +266,12 @@ public class LeoStats : MonoBehaviour
     {
         yield return new WaitForSeconds(stunTime);
         isStunned = false;
+    }
+
+    private IEnumerator DamageColor(float time)
+    {
+        sp.color = new Color(1, 0.3f, 0.3f, 1);
+        yield return new WaitForSeconds(time);
+        sp.color = Color.white;
     }
 }
