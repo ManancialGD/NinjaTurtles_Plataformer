@@ -14,6 +14,7 @@ public class AudioSlider : MonoBehaviour
     {
         saveOptionsSystem = FindObjectOfType<SaveOptionsSystem>();
         slider.value = saveOptionsSystem.LoadAudioVolumeData();
+        ChangeAudio();
     }
 
     public void ChangeAudio()
