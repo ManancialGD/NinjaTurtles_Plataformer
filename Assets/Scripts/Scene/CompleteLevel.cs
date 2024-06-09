@@ -13,13 +13,16 @@ public class CompleteLevel : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.name == "CompleteLevel")
+        Debug.Log("HITAEYBIEAHGAEIHEAGBIEUAAEGBIUOEABUEGAUBOAEGOAEGBOUAGEOBEGAOUBAEGOUBAEGOUBGEUOAEAGOUBAOEGBU");
+        LeoMovement leo = other.GetComponent<LeoMovement>();
+        if (leo != null)
         {
             foreach (GameObject enemy in enemies)
             {
                 if (enemy != null) return;
             }
             FinishLevel(); // caso todos os inimigos estejam mortos
+
         }
     }
 
