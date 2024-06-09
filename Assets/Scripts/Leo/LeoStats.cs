@@ -270,7 +270,7 @@ public class LeoStats : MonoBehaviour
 
     private IEnumerator DamageColor(float time)
     {
-        sp.color = new Color(1, 0.3f, 0.3f, 1);
+        sp.color = new Color(1, 0.5f, 0.6f, 1);
         yield return new WaitForSeconds(time);
         sp.color = Color.white;
     }
