@@ -9,6 +9,7 @@ public class LanguageManager : MonoBehaviour
     public delegate void LanguageChangedHandler();
     // Define an event based on the delegate
     public event LanguageChangedHandler OnLanguageChanged;
+    DataSystem dataSystem;
 
     // Method to trigger the event
     public void TriggerEvent()
@@ -20,16 +21,14 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ChangeLanguage(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ChangeLanguage(0);
-        }
+        dataSystem = FindObjectOfType<DataSystem>();
+        GameData gameData = dataSystem.LoadData();
+
+        if (gameData.Language == "English") language = 0;
+        else language = 1;
+        ChangeLanguage(language);
     }
 
     // Method to change the language
