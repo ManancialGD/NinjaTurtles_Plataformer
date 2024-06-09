@@ -1585,15 +1585,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5263236014242079760, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.9529412
+      value: 0.6230769
       objectReference: {fileID: 0}
     - target: {fileID: 5263236014242079760, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6691834487235056852, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      propertyPath: m_MaxValue
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6944244793452547067, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.9529412
+      value: 0.6230769
       objectReference: {fileID: 0}
     - target: {fileID: 6944244793452547067, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1601,11 +1605,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6944244793452547067, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.9529412
+      value: 0.6230769
       objectReference: {fileID: 0}
     - target: {fileID: 7252924787447781363, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_text
       value: Dash with double tap
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527822519319381063, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7924278011313958423, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_LocalPosition.x
