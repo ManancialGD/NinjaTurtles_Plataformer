@@ -22,7 +22,7 @@ public class OptionsButton : MonoBehaviour
     private Color defaultColor = new Color(118f / 255f, 118f / 255f, 118f / 255f);
     private Color overlapColor = new Color(130f / 255f, 130f / 255f, 130f / 255f);
     private Color pressedColor = new Color(140f / 255f, 140f / 255f, 140f / 255f);
-    private Color selectedColor = new Color(50 / 255f, 222 / 255f, 84 / 255f); // verde
+    private Color selectedColor = new Color(50 / 255f, 222 / 255f, 84 / 255f); // Green
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class OptionsButton : MonoBehaviour
         canvas = GetComponentInChildren<Canvas>();
         if (canvas == null)
         {
-            Debug.LogError("Canvas não encontrado.");
+            Debug.LogError("Canvas not found.");
             return;
         }
 
