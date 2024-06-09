@@ -11,6 +11,7 @@ public class EnemyBullet : MonoBehaviour
     [Header("Destroy Time")]
     [SerializeField] private float destroyTime = 5f;
 
+    [SerializeField] ParticleSystem particles;
     Rigidbody2D rb;
     LeoStats leoStats;
     SpriteRenderer sp;
@@ -52,6 +53,8 @@ public class EnemyBullet : MonoBehaviour
             alreadyAttacked = true;
         }
 
+        var emissionModule = particles.emission;
+        emissionModule.enabled = false;
         Destroy(gameObject, 5f);
     }
 }
