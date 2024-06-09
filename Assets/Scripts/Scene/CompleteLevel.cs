@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class CompleteLevel : MonoBehaviour
 {
-    BoxCollider2D collider;
+    SceneManage sceneManage;
     [SerializeField] GameObject[] enemies;
-    void Start()
-    {
-        collider = GetComponent<BoxCollider2D>();
-    }
 
+    private void Awake()
+    {
+        sceneManage = FindObjectOfType<SceneManage>();
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("HITAEYBIEAHGAEIHEAGBIEUAAEGBIUOEABUEGAUBOAEGOAEGBOUAGEOBEGAOUBAEGOUBAEGOUBGEUOAEAGOUBAOEGBU");
         LeoMovement leo = other.GetComponent<LeoMovement>();
         if (leo != null)
         {
@@ -28,6 +27,6 @@ public class CompleteLevel : MonoBehaviour
 
     private void FinishLevel()
     {
-        Debug.Log("Você terminou o nível!");
+        sceneManage.ChangeScene("Win");
     }
 }
