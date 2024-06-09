@@ -23,8 +23,12 @@ public class SlideButton : MonoBehaviour
         menuManager = FindObjectOfType<MenuManager>(); // Find the MenuManager in the scene.
         if (menuManager == null) canOperate = false; // Disable operation if no MenuManager found.
         Value = menuManager.DoubleClickDash; // Set Value based on MenuManager's DoubleClickDash.
-        if (Value) correctPosition = new Vector3(-11.5f, defaultPosition.y, defaultPosition.z);
-        else correctPosition = new Vector3(11.5f, defaultPosition.y, defaultPosition.z);
+        if (Value)
+        {
+            correctPosition = new Vector3(11.5f, defaultPosition.y, defaultPosition.z);
+            images[1].color = new Color(50 / 255f, 222 / 255f, 84 / 255f);
+        }
+        else correctPosition = new Vector3(-11.5f, defaultPosition.y, defaultPosition.z);
         images[1].rectTransform.localPosition = correctPosition; // Set initial position.
     }
 
@@ -48,6 +52,10 @@ public class SlideButton : MonoBehaviour
             images[1].rectTransform.localPosition = new Vector3(images[1].rectTransform.localPosition[0] + momentum, defaultPosition.y, defaultPosition.z);
         }
         SetButtonColor(); // Update the button color based on its position.
+
+        if (images[1].rectTransform.localPosition.x > 11.5) images[1].rectTransform.localPosition = new Vector3(11.5f, images[1].rectTransform.localPosition.y, images[1].rectTransform.localPosition.z);
+        else if (images[1].rectTransform.localPosition.x < -11.5) images[1].rectTransform.localPosition = new Vector3(-11.5f, images[1].rectTransform.localPosition.y, images[1].rectTransform.localPosition.z);
+
     }
 
     void SetButtonColor()

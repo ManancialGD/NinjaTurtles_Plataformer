@@ -11,12 +11,12 @@ public class EnemyShooter : MonoBehaviour
     EnemyAudio enemyAudio;
 
     [Header("Times")]
-    private float cooldownTime = 2;
+    private (float, float) cooldownTime = (1.8f, 2.5f);
+    private (float, float) timeUntilShoot = (2f, 2f); // Item1 - Valor atualizado  |  Item2 - Tempo que foi setado
 
     [Space]
 
     [Header("Bools")]
-    public bool waitingToShoot;
     private bool firstDetected;
 
     private void Awake()
@@ -70,23 +70,16 @@ public class EnemyShooter : MonoBehaviour
 
                 if (firstDetected)
                 {
-                    StartCoroutine(ShootAfterDelay(cooldownTime));
+                    timeUntilShoot.Item1 = Random.Range(cooldownTime.Item1, cooldownTime.Item2);
+                    timeUntilShoot.Item2 = timeUntilShoot.Item1;
                     firstDetected = false;
                 }
                 // Start shooting if not already waiting to shoot
-                if (!waitingToShoot && !hp.IsStunned)
+                if (timeUntilShoot.Item1 <= 0 && !hp.IsStunned)
                 {
-                    StartCoroutine(ShootAfterDelay(cooldownTime));
-
-                    // Instantiate the bullet prefab and set its velocity
-                    var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
-                    newShot.SetVelocity(vel);
-
-                    enemyAudio.PlayShootSound();
-
-
-                    // Start the recoil coroutine
-                    StartCoroutine(arm.Recoil());
+                    StartCoroutine(ShootBullet(0f, vel));
+                    timeUntilShoot.Item1 = Random.Range(cooldownTime.Item1, cooldownTime.Item2);
+                    timeUntilShoot.Item2 = timeUntilShoot.Item1;
                 }
             }
         }
@@ -97,12 +90,22 @@ public class EnemyShooter : MonoBehaviour
         }
     }
 
-    private IEnumerator ShootAfterDelay(float delay)
+    void Update()
     {
-        waitingToShoot = true;
-
-        yield return new WaitForSeconds(delay);
-
-        waitingToShoot = false;
+        if (timeUntilShoot.Item1 > 0) timeUntilShoot.Item1 -= Time.deltaTime;
     }
+
+    private IEnumerator ShootBullet(float time, Vector2 vel)
+    {
+        yield return new WaitForSeconds(time);
+
+        var newShot = Instantiate(aim.prefabToSpawn, aim.transform.position, Quaternion.identity);
+        newShot.SetVelocity(vel);
+
+        enemyAudio.PlayShootSound();
+
+        StartCoroutine(arm.Recoil());
+    }
+
+    public (float, float) GetTimeUntilShoot() => (timeUntilShoot.Item1, timeUntilShoot.Item2);
 }

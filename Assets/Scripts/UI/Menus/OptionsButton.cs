@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,9 @@ public class OptionsButton : MonoBehaviour
 {
     public string Value { get; private set; } = null;
     public bool MenuOpened { get; private set; } = false;
+
     private int actionMode = 0; // 1-opening 2-closing
+    private int[] textActionMode; // 1-show 2-hide (para cada botão)
     [SerializeField] Transform mainButton;
     [SerializeField] string[] options;
     [SerializeField] Font textFont;
@@ -24,9 +27,10 @@ public class OptionsButton : MonoBehaviour
     private Color pressedColor = new Color(140f / 255f, 140f / 255f, 140f / 255f);
     private Color selectedColor = new Color(50 / 255f, 222 / 255f, 84 / 255f); // Green
 
-    void Start()
+    void Awake()
     {
         buttons = new Button[options.Length];
+        textActionMode = new int[options.Length];
 
         canvas = GetComponentInChildren<Canvas>();
         if (canvas == null)
@@ -51,11 +55,11 @@ public class OptionsButton : MonoBehaviour
 
             Button newButton = buttonObject.AddComponent<Button>();
 
-            int optionIndex = i;
+            int optionIndex = i; // para evitar dessincronização (importante)
 
             newButton.onClick.AddListener(() => OnChooseOption(options[optionIndex]));
 
-            if (i == options.Length - 1) image.sprite = spriteLast;//ultimo botão
+            if (i == options.Length - 1) image.sprite = spriteLast; //ultimo botão
             else image.sprite = spriteMain;
 
             if (optionSelected) image.color = selectedColor;
@@ -75,8 +79,8 @@ public class OptionsButton : MonoBehaviour
             buttonText.fontSize = 10;
             buttonText.text = options[i];
             buttonText.alignment = TextAnchor.MiddleCenter;
-            if (optionSelected) buttonText.color = Color.black;
-            else buttonText.color = Color.white;
+
+            buttonText.color = new Color(1, 1, 1, 0);
             buttonText.font = textFont;
 
 
@@ -91,7 +95,7 @@ public class OptionsButton : MonoBehaviour
             colors.colorMultiplier = 1;
             newButton.colors = colors;
 
-            newButton.interactable = true;
+            newButton.interactable = false;
         }
         mainButton.gameObject.transform.SetAsLastSibling();
     }
@@ -99,6 +103,19 @@ public class OptionsButton : MonoBehaviour
     void Update()
     {
         if (actionMode > 0) DisplayAnimation(actionMode);
+
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            if (textActionMode[i] == 1) // show 
+            {
+                Debug.Log("button: " + buttons[i]);
+                DisplayTextAnimation(buttons[i], true);
+            }
+            else if (textActionMode[i] == 2) // hide 
+            {
+                DisplayTextAnimation(buttons[i], false);
+            }
+        }
     }
 
     void OpenMenu()
@@ -108,6 +125,7 @@ public class OptionsButton : MonoBehaviour
         Debug.Log("Open");
         animationTime = 0.3f;
         actionMode = 1;
+        StartCoroutine(ShowText(0.5f));
         ChangeInteractability(true);
 
     }
@@ -118,6 +136,7 @@ public class OptionsButton : MonoBehaviour
         Debug.Log("Close");
         animationTime = 0.3f;
         actionMode = 2;
+        StartCoroutine(HideText(0.15f));
 
     }
 
@@ -135,7 +154,7 @@ public class OptionsButton : MonoBehaviour
             if (animationTime > 0) animationTime -= Time.deltaTime;
             if (animationTime <= 0)
             {
-                ChangeInteractability(true);
+
                 animationTime = 0;
                 actionMode = 0;
             }
@@ -146,10 +165,11 @@ public class OptionsButton : MonoBehaviour
             foreach (Button button in buttons)
             {
                 button.transform.position = new Vector3(mainButton.transform.position.x, mainButton.transform.position.y - (index + 1) * (25 * (animationTime / 0.3f)), mainButton.transform.position.z);
-                if (index < buttons.Length - 1 && animationTime < 0.1f) button.image.sprite = spriteMain;
+                if (index < buttons.Length - 1 && animationTime < 0.15f) button.image.sprite = spriteMain;
                 index++;
             }
             if (animationTime > 0) animationTime -= Time.deltaTime;
+            
             if (animationTime <= 0)
             {
                 mainButton.gameObject.GetComponent<Image>().sprite = spriteMain;
@@ -159,6 +179,71 @@ public class OptionsButton : MonoBehaviour
             }
         }
 
+    }
+
+
+    IEnumerator ShowText(float delayTime)
+    {
+
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            textActionMode[i] = 1;
+            yield return new WaitForSeconds(delayTime / buttons.Length);
+        }
+    }
+
+    IEnumerator HideText(float delayTime)
+    {
+        for (int i = buttons.Length - 1; i >= 0; i--) // para começar pelo último
+        {
+            textActionMode[i] = 2;
+            yield return new WaitForSeconds(delayTime / buttons.Length);
+        }
+    }
+
+    void DisplayTextAnimation(Button button, bool show)
+    {
+
+        Text textComponent = button.GetComponentInChildren<Text>();
+        if (!textComponent) { Debug.LogError("Text component not found!"); return; }
+
+        if (show)
+        {
+            if (textComponent.color.a < 1)
+            {
+                textComponent.color += new Color(0, 0, 0, 0.005f);
+            }
+            if (textComponent.color.a > 1)
+            {
+                textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 1);
+                textActionMode[GetIndexFromButton(button)] = 0;
+            }
+        }
+        else
+        {
+            if (textComponent.color.a > 0)
+            {
+                textComponent.color -= new Color(0, 0, 0, 0.05f);
+            }
+            if (textComponent.color.a < 0)
+            {
+                textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 0);
+                textActionMode[GetIndexFromButton(button)] = 0;
+            }
+        }
+
+    }
+
+    int GetIndexFromButton(Button button)
+    {
+        int index = 0;
+        foreach (Button b in buttons)
+        {
+            if (button == b) return index;
+            index++;
+        }
+        Debug.LogError("Button not found!");
+        return -1;
     }
 
     void ChangeInteractability(bool isInteractable)
