@@ -10,6 +10,7 @@ public class LeoStats : MonoBehaviour
     Rigidbody2D rb;
     LeoMovement leoMov;
     LeoAttacks attacks;
+    LeoAudio leoAudio;
 
     private bool wasAttacking;
     private bool justConsumedStamina;
@@ -50,6 +51,7 @@ public class LeoStats : MonoBehaviour
         leoMov = GetComponent<LeoMovement>();
         attacks = GetComponent<LeoAttacks>();
         rb = GetComponent<Rigidbody2D>();
+        leoAudio = GetComponentInChildren<LeoAudio>();
 
         sceneManage = FindObjectOfType<SceneManage>();
 
@@ -135,6 +137,8 @@ public class LeoStats : MonoBehaviour
         if (isInvulnerable) return;
         if (hasInfHP) damageAmount = 0; // If infinite health, no damage is taken 
 
+        leoAudio.PlayDamageSound();
+        
         HP -= damageAmount;
 
         if (stunTime > 0) Stun(stunTime);

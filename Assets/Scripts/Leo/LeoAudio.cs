@@ -9,6 +9,7 @@ public class LeoAudio : MonoBehaviour
     [SerializeField] private AudioSource stepSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource takeDamageSound;
 
     public void PlayJumpSound()
     {
@@ -36,5 +37,10 @@ public class LeoAudio : MonoBehaviour
     {
         dashSound.pitch = Random.Range(0.8f, 1.2f);
         dashSound.Play();
+    }
+    public void PlayDamageSound()
+    {
+        takeDamageSound.pitch = Random.Range(0.8f, 1.2f);
+        takeDamageSound.Play();
     }
 }

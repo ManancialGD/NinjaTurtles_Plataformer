@@ -99,6 +99,7 @@ AudioMixerGroupController:
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: d204965d21cfd6b49b5bd0f679d28310
   m_Children:
+  - {fileID: 7993510153185982957}
   - {fileID: -6760923717436780152}
   - {fileID: 2635106252206107875}
   - {fileID: -7169772653635095986}
@@ -318,6 +319,7 @@ AudioMixerController:
     - 63ff93c3aaca45e46b465a53474a56c7
     - d7a811ee876504f4dbca22d79dc4b4bb
     - 186ef0cb7350eff498d2dad08823e2f3
+    - ae597769af74b6e4583220dfda98571f
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -587,6 +589,39 @@ AudioMixerEffectController:
   m_EffectID: 7d20f406ff9572b4b9bd89e9326643c9
   m_EffectName: Attenuation
   m_MixLevel: 068a627655a0a4e4585a365af593c806
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &7993510153185982957
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TakeDamage
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: ae597769af74b6e4583220dfda98571f
+  m_Children: []
+  m_Volume: 04f3804efa31b554d9325cc4ecd5593c
+  m_Pitch: 6ae6d59c6e6234046b08eec893499045
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 8941500290372269046}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &8941500290372269046
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 0697f2dbc53eb3b4fa66ba3f452883c2
+  m_EffectName: Attenuation
+  m_MixLevel: 1d66c2bb44f42214990563b4245b7ac7
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0

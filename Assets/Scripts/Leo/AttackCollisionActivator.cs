@@ -13,6 +13,7 @@ public class AttackCollisionActivator : MonoBehaviour
     {
         attacks = GetComponent<LeoAttacks>();
     }
+    
     /// <summary>
     /// This code will receive a ID(kinda) from the AnimatorAttacks.cs
     /// And use the information to activate the correct GameObject that has the collision

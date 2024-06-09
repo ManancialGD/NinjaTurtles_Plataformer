@@ -194,6 +194,8 @@ public class LeoMovement : MonoBehaviour
         if (IsFacingRight) Flip(true);
         else if (!IsFacingRight) Flip(false);
 
+        leoAudio.PlayJumpSound();
+        
         StartCoroutine(DisableMovement(0.2f)); // Prevent immediate re-sliding
     }
 
