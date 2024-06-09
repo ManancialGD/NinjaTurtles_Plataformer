@@ -32,11 +32,16 @@ public class DataSystem : MonoBehaviour
     void OnEnable()
     {
         GameData data = LoadData();
-        if (data == null)
+        if (data == null || !ValidateData(data))
         {
             data = new GameData();
             SaveData(data);
             Debug.Log("New game data generated");
         }
+    }
+
+    bool ValidateData(GameData data)
+    {
+        return true; // alterar para detetar se a GameData está desatualizada (falta algum parametro)
     }
 }
