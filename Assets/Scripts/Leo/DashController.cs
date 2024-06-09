@@ -135,14 +135,14 @@ public class DashController : MonoBehaviour
         leoStats.isInvulnerable = true;
         leoAudio.PlayDashSound();
         canDash = false;
-        rb.velocity = velocity;
+        rb.velocity = new Vector2 (velocity.x, rb.velocity.y);
 
         leoStats.ConsumeStamina(15);
 
         onCooldown = true;
         yield return new WaitForSeconds(.3f);
 
-        rb.velocity *= 0.1f;
+        rb.velocity = new Vector2(rb.velocity.x * 0.1f, rb.velocity.y) ;
         canDash = false;
         leoStats.isInvulnerable = false;
         yield return new WaitForSeconds(cooldown);
