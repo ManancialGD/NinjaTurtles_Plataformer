@@ -2030,6 +2030,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 29010716635090856, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: m_text
+      value: None
+      objectReference: {fileID: 0}
     - target: {fileID: 116761788002743046, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_Name
       value: OptionsButton

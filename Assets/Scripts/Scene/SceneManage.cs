@@ -23,12 +23,6 @@ public class SceneManage : MonoBehaviour
         {
 
         }
-        else if (CurrentScene == "Test")
-        {
-            leo = FindObjectOfType<LeoMovement>().transform;
-            cameraFollow = FindObjectOfType<CameraFollow>();
-            ChangeCameraTarget(leo);
-        }
         else if (CurrentScene == "PilotLevel")
         {
             leo = FindObjectOfType<LeoMovement>().transform;
@@ -46,11 +40,18 @@ public class SceneManage : MonoBehaviour
 
     public void ChangeScene(string scene)
     {
+        FreezeGame(false);
         StartCoroutine(WaitAndChangeScene(scene));
     }
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void FreezeGame(bool b)
+    {
+        if (b) Time.timeScale = 0;
+        else Time.timeScale = 1;
     }
 
     IEnumerator WaitAndChangeScene(string scene)

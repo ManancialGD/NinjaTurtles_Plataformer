@@ -44,22 +44,7 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Pause"))
         {
-            if (sceneManage.CurrentScene == "Test")
-            {
-                if (menuState == MenuState.Settings)
-                {
-                    ReturnSetting();
-                }
-                else if (menuState == MenuState.Pause)
-                {
-                    ContinueGame();
-                }
-                else
-                {
-                    PauseGame();
-                }
-            }
-            else if (sceneManage.CurrentScene == "MainMenu")
+            if (sceneManage.CurrentScene == "MainMenu")
             {
                 if (menuState == MenuState.Settings)
                 {
@@ -101,7 +86,7 @@ public class MenuManager : MonoBehaviour
         OptionsPanel.SetActive(false);  // Hide options panel if it's open
         GamePaused = true;
         menuState = MenuState.Pause;
-        Time.timeScale = 0;
+        sceneManage.FreezeGame(true);
     }
 
     public void ContinueGame()
@@ -109,7 +94,7 @@ public class MenuManager : MonoBehaviour
         PausePanel.SetActive(false);
         GamePaused = false;
         menuState = MenuState.Playing;
-        Time.timeScale = 1;
+        sceneManage.FreezeGame(false);
     }
 
     public void SettingMenu()

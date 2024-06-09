@@ -16,7 +16,7 @@ public class EnemyShooter : MonoBehaviour
     [Space]
 
     [Header("Bools")]
-    private bool waitingToShoot;
+    public bool waitingToShoot;
     private bool firstDetected;
 
     private void Awake()
