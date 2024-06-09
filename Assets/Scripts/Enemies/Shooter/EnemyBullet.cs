@@ -41,7 +41,14 @@ public class EnemyBullet : MonoBehaviour
         if (!alreadyAttacked)
         {
             if (other.GetComponent<LeoStats>() != null)
-                leoStats.TakeDamage(25);
+            {
+                if (rb.velocity.x > 0.01f)
+                {
+                    leoStats.TakeDamage(25, 1, new Vector2 (150, 0));
+                }
+                else leoStats.TakeDamage(25, 1, new Vector2(-150, 0));
+            }
+                
             alreadyAttacked = true;
         }
 

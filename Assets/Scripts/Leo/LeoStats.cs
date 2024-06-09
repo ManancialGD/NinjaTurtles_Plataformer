@@ -22,6 +22,7 @@ public class LeoStats : MonoBehaviour
     public int HP { get { return hp; } private set { hp = value; if (hp <= 0) Die(); else if (hp >= maxHealth) hp = maxHealth; } } // Property to access and modify HP
     [SerializeField] private int maxHealth = 100; // Maximum health points
     [SerializeField] private bool hasInfHP; // Infinite health flag
+    [SerializeField] public bool isInvulnerable;
 
     [Space]
 
@@ -131,6 +132,7 @@ public class LeoStats : MonoBehaviour
     /// </summary>
     public void TakeDamage(int damageAmount, float stunTime = 0, Vector2? knockback = null)
     {
+        if (isInvulnerable) return;
         if (hasInfHP) damageAmount = 0; // If infinite health, no damage is taken 
 
         HP -= damageAmount;

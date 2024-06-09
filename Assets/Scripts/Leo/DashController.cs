@@ -132,6 +132,7 @@ public class DashController : MonoBehaviour
 
     IEnumerator Dash(Vector2 velocity, float cooldown)
     {
+        leoStats.isInvulnerable = true;
         leoAudio.PlayDashSound();
         canDash = false;
         rb.velocity = velocity;
@@ -143,7 +144,7 @@ public class DashController : MonoBehaviour
 
         rb.velocity *= 0.1f;
         canDash = false;
-
+        leoStats.isInvulnerable = false;
         yield return new WaitForSeconds(cooldown);
         
         onCooldown = false;
