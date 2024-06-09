@@ -26,9 +26,13 @@ public class OptionsButton : MonoBehaviour
     private Color overlapColor = new Color(130f / 255f, 130f / 255f, 130f / 255f);
     private Color pressedColor = new Color(140f / 255f, 140f / 255f, 140f / 255f);
     private Color selectedColor = new Color(50 / 255f, 222 / 255f, 84 / 255f); // Green
+    DataSystem dataSystem;
+    LanguageManager languageManager;
 
     void Awake()
     {
+        dataSystem = FindObjectOfType<DataSystem>();
+        languageManager = FindObjectOfType<LanguageManager>();
         buttons = new Button[options.Length];
         textActionMode = new int[options.Length];
 
@@ -98,6 +102,11 @@ public class OptionsButton : MonoBehaviour
             newButton.interactable = false;
         }
         mainButton.gameObject.transform.SetAsLastSibling();
+
+        GameData gameData = dataSystem.LoadData();
+        mainButton.gameObject.GetComponentInChildren<TMP_Text>().text = gameData.Language;
+        Value = gameData.Language;
+
     }
 
     void Update()
@@ -169,7 +178,7 @@ public class OptionsButton : MonoBehaviour
                 index++;
             }
             if (animationTime > 0) animationTime -= Time.deltaTime;
-            
+
             if (animationTime <= 0)
             {
                 mainButton.gameObject.GetComponent<Image>().sprite = spriteMain;
@@ -267,6 +276,8 @@ public class OptionsButton : MonoBehaviour
         Value = option;
         mainButton.gameObject.GetComponentInChildren<TMP_Text>().text = option;
         MenuOpened = false;
+        if(Value == "English") languageManager.ChangeLanguage(0); //0 - English | 1-Portugues
+        else if(Value == "Português") languageManager.ChangeLanguage(1); //0 - English | 1-Portugues
         CloseMenu();
     }
 }
