@@ -145,7 +145,7 @@ public class LeoStats : MonoBehaviour
         if (hasInfHP) damageAmount = 0; // If infinite health, no damage is taken 
 
         leoAudio.PlayDamageSound();
-        cameraFollow.CameraShake(.5f, .2f, .4f, new Vector2(100, 100));
+        cameraFollow.CameraShake(0.15f, 0.05f, 0.99f, new Vector2(100f, 3f));
 
         HP -= damageAmount;
 
