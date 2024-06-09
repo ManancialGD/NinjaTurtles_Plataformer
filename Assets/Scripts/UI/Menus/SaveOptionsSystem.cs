@@ -10,8 +10,16 @@ public class SaveOptionsSystem : MonoBehaviour
         PlayerPrefs.SetInt("DoubleClickDash", OnOff);
     }
 
-    public int LoadData()
+    public void SaveAudioVolume(float volume)
+    {
+        PlayerPrefs.SetFloat("volume", volume);
+    }
+    public int LoadDashData()
     {
         return PlayerPrefs.GetInt("DoubleClickDash");
+    }
+    public float LoadAudioVolumeData()
+    {
+        return PlayerPrefs.GetFloat("volume");
     }
 }
