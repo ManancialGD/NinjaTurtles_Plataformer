@@ -188,7 +188,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 520513968}
   m_Father: {fileID: 930214597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
@@ -1065,14 +1066,14 @@ RectTransform:
   m_GameObject: {fileID: 520513967}
   m_LocalRotation: {x: -0, y: -0, z: 0.0004882635, w: 0.9999999}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 2.3304694, y: 2.3304694, z: 2.3304696}
+  m_LocalScale: {x: 2.3304696, y: 2.3304696, z: 2.3304696}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1046357562}
+  m_Father: {fileID: 227172947}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -221.9, y: 24.6}
+  m_AnchoredPosition: {x: -240.2, y: 19.599997}
   m_SizeDelta: {x: 175.8, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &520513969
@@ -1306,8 +1307,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 151415032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.9529412, y: 0}
+  m_AnchorMax: {x: 0.9529412, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1667,7 +1668,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 592568794}
   m_Direction: 0
   m_MinValue: -80
-  m_MaxValue: 2
+  m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -1732,7 +1733,7 @@ RectTransform:
   m_Father: {fileID: 561578126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.9529412, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2046,7 +2047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8899422937272525695, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2054,9 +2055,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7924278011313958423, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: 0
       addedObject: {fileID: 2122950657}
-    - targetCorrespondingSourceObject: {fileID: 7924278011313958423, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 520513968}
     - targetCorrespondingSourceObject: {fileID: 7924278011313958423, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: -1
       addedObject: {fileID: 930214597}
