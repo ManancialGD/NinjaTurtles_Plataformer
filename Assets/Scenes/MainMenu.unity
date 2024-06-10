@@ -1443,6 +1443,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 438141139}
+    - target: {fileID: 500340785340078709, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      propertyPath: text
+      value: 
+      objectReference: {fileID: 1364005176}
+    - target: {fileID: 500340785340078709, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      propertyPath: languageManager
+      value: 
+      objectReference: {fileID: 1485213652}
     - target: {fileID: 973620814062061048, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: languageManager
       value: 
@@ -1699,16 +1707,24 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 102248521055120095, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7908851816940161878, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2135821287}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
 --- !u!1 &1364005175 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1383148108523761814, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
   m_PrefabInstance: {fileID: 1207005945}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1364005176 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7252924787447781363, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+  m_PrefabInstance: {fileID: 1207005945}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364005175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1485213651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2442,38 +2458,6 @@ MonoBehaviour:
   text: {fileID: 1986190487}
   english: Settings
   portuguese: "Configura\xE7\xF5es"
-  languageManager: {fileID: 1485213652}
---- !u!1 &2135821283 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7908851816940161878, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
-  m_PrefabInstance: {fileID: 1207005945}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2135821285 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1454419115343250473, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
-  m_PrefabInstance: {fileID: 1207005945}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135821283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2135821287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135821283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 2135821285}
-  english: Dash type
-  portuguese: Tipo do dash
   languageManager: {fileID: 1485213652}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
