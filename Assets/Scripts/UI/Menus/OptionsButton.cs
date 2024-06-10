@@ -18,7 +18,7 @@ public class OptionsButton : MonoBehaviour
     [SerializeField] Sprite spriteMainSelected;
     [SerializeField] Sprite spriteMiddle;
     [SerializeField] Sprite spriteLast;
-    [SerializeField] Vector2 size = new Vector2(100, 25);
+    [SerializeField] Vector2 size = new Vector2(100, 19);
     private Canvas canvas;
     private Button[] buttons;
     private float animationTime = 0.3f;
@@ -80,13 +80,14 @@ public class OptionsButton : MonoBehaviour
             textRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
             textRectTransform.anchoredPosition = Vector3.zero;
 
+            textRectTransform.position = new Vector3(textRectTransform.position.x, textRectTransform.position.y, 200f);
+
             buttonText.fontSize = 10;
             buttonText.text = options[i];
             buttonText.alignment = TextAnchor.MiddleCenter;
 
             buttonText.color = new Color(1, 1, 1, 0);
             buttonText.font = textFont;
-
 
             buttons[i] = newButton;
 
@@ -156,7 +157,7 @@ public class OptionsButton : MonoBehaviour
             int index = 0;
             foreach (Button button in buttons)
             {
-                button.transform.position = new Vector3(mainButton.transform.position.x, mainButton.transform.position.y - (index + 1) * (25 * ((0.3f - animationTime) / 0.3f)), mainButton.transform.position.z);
+                button.transform.position = new Vector3(mainButton.transform.position.x, mainButton.transform.position.y - (index + 1) * (19 * ((0.3f - animationTime) / 0.3f)), mainButton.transform.position.z);
                 if (index < buttons.Length - 1 && animationTime < 0.2f) button.image.sprite = spriteMiddle;
                 index++;
             }
@@ -173,7 +174,7 @@ public class OptionsButton : MonoBehaviour
             int index = 0;
             foreach (Button button in buttons)
             {
-                button.transform.position = new Vector3(mainButton.transform.position.x, mainButton.transform.position.y - (index + 1) * (25 * (animationTime / 0.3f)), mainButton.transform.position.z);
+                button.transform.position = new Vector3(mainButton.transform.position.x, mainButton.transform.position.y - (index + 1) * (19 * (animationTime / 0.3f)), mainButton.transform.position.z);
                 if (index < buttons.Length - 1 && animationTime < 0.15f) button.image.sprite = spriteMain;
                 index++;
             }

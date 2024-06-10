@@ -136,12 +136,12 @@ public class MenuManager : MonoBehaviour
             DoubleClickDash = false;
             if (languageManager.language == 1)
             {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                TMP_Text dashTypeText = DashTypeTextObject.GetComponent<TMP_Text>();
                 dashTypeText.text = dashLanguage.english2;
             }
             else 
             {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                TMP_Text dashTypeText = DashTypeTextObject.GetComponent<TMP_Text>();
                 dashTypeText.text = dashLanguage.portuguese2;
             }
 
@@ -152,12 +152,12 @@ public class MenuManager : MonoBehaviour
             DoubleClickDash = true;
             if (languageManager.language == 1)
             {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                TMP_Text dashTypeText = DashTypeTextObject.GetComponent<TMP_Text>();
                 dashTypeText.text = dashLanguage.english;
             }
             else 
             {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                TMP_Text dashTypeText = DashTypeTextObject.GetComponent<TMP_Text>();
                 dashTypeText.text = dashLanguage.portuguese;
             }
             saveSystem.SaveDashType(1);
