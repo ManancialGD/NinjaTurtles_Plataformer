@@ -1133,10 +1133,18 @@ PrefabInstance:
     - target: {fileID: 2441155447866270856, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 870614129}
     - target: {fileID: 2441155447866270856, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 694254998}
+    - target: {fileID: 2441155447866270856, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReturnSetting
+      objectReference: {fileID: 0}
+    - target: {fileID: 2441155447866270856, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayClickSound
       objectReference: {fileID: 0}
     - target: {fileID: 3556479905462703501, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_LocalPosition.z
