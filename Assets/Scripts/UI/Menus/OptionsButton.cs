@@ -1,11 +1,14 @@
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class OptionsButton : MonoBehaviour
 {
+
+    MenuSound menuSound;
     public string Value { get; private set; } = null;
     public bool MenuOpened { get; private set; } = false;
 
@@ -31,6 +34,7 @@ public class OptionsButton : MonoBehaviour
 
     void Awake()
     {
+        menuSound = FindObjectOfType<MenuSound>();
         dataSystem = FindObjectOfType<DataSystem>();
         languageManager = FindObjectOfType<LanguageManager>();
         buttons = new Button[options.Length];
@@ -267,6 +271,7 @@ public class OptionsButton : MonoBehaviour
 
     public void OnClick()
     {
+        menuSound.PlayClickSound();
         MenuOpened = !MenuOpened;
         if (MenuOpened) OpenMenu();
         else CloseMenu();
@@ -274,6 +279,7 @@ public class OptionsButton : MonoBehaviour
 
     public void OnChooseOption(string option)
     {
+        menuSound.PlayClickSound();
         Value = option;
         mainButton.gameObject.GetComponentInChildren<TMP_Text>().text = option;
 
