@@ -15,6 +15,7 @@ public class ChangeLanguageDash : MonoBehaviour
     private void Awake()
     {
         menuManager = FindObjectOfType<MenuManager>();
+        languageManager = FindObjectOfType<LanguageManager>();
         if (menuManager == null)
         {
             Debug.LogError("MenuManager component not found!");

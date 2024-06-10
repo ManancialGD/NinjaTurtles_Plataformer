@@ -12,6 +12,7 @@ public class ChangeLanguage : MonoBehaviour
     private void Awake()
     {
         text = GetComponent<TextMeshProUGUI>();  // Corrected the component name
+        languageManager = FindObjectOfType<LanguageManager>();
         if (text == null)
         {
             Debug.LogError("TextMeshProUGUI component not found!");
