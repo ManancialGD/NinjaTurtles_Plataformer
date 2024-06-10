@@ -1010,7 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad8deddd2bcc4b4aaa1dd338611b07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashTypeText: {fileID: 1364005183}
+  dashTypeText: {fileID: 0}
   PausePanel: {fileID: 786792569}
   OptionsPanel: {fileID: 945941803}
   DashTypeTextObject: {fileID: 1364005175}
@@ -1263,7 +1263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &945941804
 Transform:
   m_ObjectHideFlags: 0
@@ -1529,7 +1529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5263236014242079760, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5439277414798418122, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_LocalScale.x
@@ -1693,13 +1693,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8899422937272525695, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 102248521055120095, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7908851816940161878, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2135821287}
   m_SourcePrefab: {fileID: 100100000, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
 --- !u!1 &1364005175 stripped
 GameObject:
