@@ -275,9 +275,14 @@ public class OptionsButton : MonoBehaviour
     {
         Value = option;
         mainButton.gameObject.GetComponentInChildren<TMP_Text>().text = option;
+
+        GameData gameData = dataSystem.LoadData();
+        gameData.Language = Value;
         MenuOpened = false;
-        if(Value == "English") languageManager.ChangeLanguage(0); //0 - English | 1-Portugues
-        else if(Value == "Português") languageManager.ChangeLanguage(1); //0 - English | 1-Portugues
+        if (Value == "English") languageManager.ChangeLanguage(0); //0 - English | 1-Portugues
+        else if (Value == "Português") languageManager.ChangeLanguage(1); //0 - English | 1-Portugues
+
+        dataSystem.SaveData(gameData);
         CloseMenu();
     }
 }
