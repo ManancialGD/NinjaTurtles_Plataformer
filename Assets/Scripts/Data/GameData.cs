@@ -3,10 +3,10 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    public int Kills { get; set; }
-    public int Deaths { get; set; }
-    public bool Dash_DoubleTap { get; set; }
-    public string Language { get; set; }
+    public int Kills;
+    public int Deaths;
+    public bool Dash_DoubleTap;
+    public string Language;
 
     public GameData()
     {
