@@ -7,6 +7,8 @@ public class MenuManager : MonoBehaviour
 {
     SaveOptionsSystem saveSystem;
     SceneManage sceneManage;
+    ChangeLanguageDash dashLanguage;
+    LanguageManager languageManager;
 
     [SerializeField] private GameObject PausePanel;
     [SerializeField] private GameObject OptionsPanel;
@@ -25,7 +27,8 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         sceneManage = FindObjectOfType<SceneManage>();
-
+        dashLanguage = FindObjectOfType<ChangeLanguageDash>();
+        languageManager = FindObjectOfType<LanguageManager>();
 
         if (sceneManage.CurrentScene == "LevelSelect")
         {
@@ -127,18 +130,36 @@ public class MenuManager : MonoBehaviour
 
     public void ChangeDashType()
     {
-        TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
 
         if (DoubleClickDash)
         {
             DoubleClickDash = false;
-            dashTypeText.text = "Dash USE SHIFT: ";
+            if (languageManager.language == 1)
+            {
+                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                dashTypeText.text = dashLanguage.english2;
+            }
+            else 
+            {
+                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                dashTypeText.text = dashLanguage.portuguese2;
+            }
+
             saveSystem.SaveDashType(0);
         }
         else
         {
             DoubleClickDash = true;
-            dashTypeText.text = "Dash DOUBLE CLICK: ";
+            if (languageManager.language == 1)
+            {
+                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                dashTypeText.text = dashLanguage.english;
+            }
+            else 
+            {
+                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
+                dashTypeText.text = dashLanguage.portuguese;
+            }
             saveSystem.SaveDashType(1);
         }
     }
