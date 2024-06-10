@@ -1209,7 +1209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7527822519319381063, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7924278011313958423, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_LocalScale.x
@@ -1284,7 +1284,10 @@ PrefabInstance:
       addedObject: {fileID: 505255741}
     - targetCorrespondingSourceObject: {fileID: 1383148108523761814, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: 2
-      addedObject: {fileID: 505255740}
+      addedObject: {fileID: 505255746}
+    - targetCorrespondingSourceObject: {fileID: 7908851816940161878, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1093816198}
     - targetCorrespondingSourceObject: {fileID: 3179105262820653218, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: 2
       addedObject: {fileID: 505255739}
@@ -1363,22 +1366,6 @@ MonoBehaviour:
   english: Return
   portuguese: Voltar
   languageManager: {fileID: 739911321}
---- !u!114 &505255740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 505255735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 505255736}
-  english: Dash with double tap
-  portuguese: Apertar duas vezes para o dash
-  languageManager: {fileID: 739911321}
 --- !u!114 &505255741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1394,6 +1381,24 @@ MonoBehaviour:
   text: {fileID: 505255738}
   english: SETTINGS
   portuguese: "CONFIGURA\xC7\xD5ES"
+  languageManager: {fileID: 739911321}
+--- !u!114 &505255746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505255735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c0b67a681a3014895e225c858f3f7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 505255736}
+  english: Dash with double tap
+  english2: Dash with shift
+  portuguese: Aperte duas vezes para o dash
+  portuguese2: Aperte shift para o dash
   languageManager: {fileID: 739911321}
 --- !u!1 &519420028
 GameObject:
@@ -3882,6 +3887,50 @@ MonoBehaviour:
   randomNumber: 0
   randomBlink: 0
   blinkedTwice: 1
+--- !u!1 &591705749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 591705751}
+  - component: {fileID: 591705750}
+  m_Layer: 0
+  m_Name: DataSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &591705750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591705749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a572891ebc9873a42ad4dce6ccb1b65e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &591705751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591705749}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.629463, y: 18.986826, z: 67.24838}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &607840799
 GameObject:
   m_ObjectHideFlags: 0
@@ -7264,9 +7313,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad8deddd2bcc4b4aaa1dd338611b07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashTypeText: {fileID: 0}
   PausePanel: {fileID: 156078100}
   OptionsPanel: {fileID: 1638874310}
-  DashTypeTextObject: {fileID: 0}
+  DashTypeTextObject: {fileID: 505255735}
   LevelSelectionPanel: {fileID: 0}
   PilotLevelPanel: {fileID: 0}
 --- !u!114 &870614130
@@ -14625,6 +14675,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1093816194 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7908851816940161878, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+  m_PrefabInstance: {fileID: 505255730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1093816196 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1454419115343250473, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+  m_PrefabInstance: {fileID: 505255730}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093816194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1093816198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093816194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1093816196}
+  english: Dash Type
+  portuguese: Tipo de dash
+  languageManager: {fileID: 739911321}
 --- !u!1 &1149375596
 GameObject:
   m_ObjectHideFlags: 0
@@ -14840,7 +14922,7 @@ GameObject:
   - component: {fileID: 1299665068}
   - component: {fileID: 1299665067}
   m_Layer: 5
-  m_Name: DashTypeText (1)
+  m_Name: language
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14885,7 +14967,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Dash DOUBLE CLICK:'
+  m_text: 'Language: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 379925e8bba3d5d4f8a74895921c3f2f, type: 2}
   m_sharedMaterial: {fileID: 2075320524980174972, guid: 379925e8bba3d5d4f8a74895921c3f2f, type: 2}
@@ -17077,3 +17159,4 @@ SceneRoots:
   - {fileID: 1753512513}
   - {fileID: 1867961622}
   - {fileID: 739911322}
+  - {fileID: 591705751}

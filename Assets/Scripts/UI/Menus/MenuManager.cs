@@ -1,7 +1,5 @@
-using UnityEngine;
 using TMPro;
-using UnityEditor;
-using UnityEngine.Audio;
+using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
@@ -9,11 +7,10 @@ public class MenuManager : MonoBehaviour
     SceneManage sceneManage;
     ChangeLanguageDash dashLanguage;
     LanguageManager languageManager;
-
+    [SerializeField] TextMeshProUGUI dashTypeText;
     [SerializeField] private GameObject PausePanel;
     [SerializeField] private GameObject OptionsPanel;
     [SerializeField] private GameObject DashTypeTextObject;  // GameObject
-
 
     [SerializeField] private GameObject LevelSelectionPanel;
     [SerializeField] private GameObject PilotLevelPanel;
@@ -24,23 +21,44 @@ public class MenuManager : MonoBehaviour
 
     private enum MenuState { Playing, Pause, Settings }
     private MenuState menuState = MenuState.Playing;
+
     private void Awake()
     {
         sceneManage = FindObjectOfType<SceneManage>();
-        dashLanguage = FindObjectOfType<ChangeLanguageDash>();
-        languageManager = FindObjectOfType<LanguageManager>();
-
-        if (sceneManage.CurrentScene == "LevelSelect")
+        if (sceneManage == null)
         {
+            Debug.LogError("SceneManage component not found!");
+        }
 
+        dashLanguage = DashTypeTextObject.GetComponent<ChangeLanguageDash>();
+        if (dashLanguage == null)
+        {
+            Debug.LogError("ChangeLanguageDash component not found!");
+        }
+
+        languageManager = FindObjectOfType<LanguageManager>();
+        if (languageManager == null)
+        {
+            Debug.LogError("LanguageManager component not found!");
+        }
+
+        if (sceneManage != null && sceneManage.CurrentScene == "LevelSelect")
+        {
+            // Additional initialization for L  evelSelect scene
         }
         else
         {
             DoubleClickDash = true;
-
             saveSystem = GetComponent<SaveOptionsSystem>();
-            int i = saveSystem.LoadDashData();
-            if (i == 0) ChangeDashType();
+            if (saveSystem != null)
+            {
+                int i = saveSystem.LoadDashData();
+                if (i == 0) ChangeDashType();
+            }
+            else
+            {
+                Debug.LogError("SaveOptionsSystem component not found!");
+            }
         }
     }
 
@@ -48,6 +66,12 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Pause"))
         {
+            if (sceneManage == null)
+            {
+                Debug.LogError("SceneManage component is null in Update method!");
+                return;
+            }
+
             if (sceneManage.CurrentScene == "MainMenu")
             {
                 if (menuState == MenuState.Settings)
@@ -90,7 +114,10 @@ public class MenuManager : MonoBehaviour
         OptionsPanel.SetActive(false);  // Hide options panel if it's open
         GamePaused = true;
         menuState = MenuState.Pause;
-        sceneManage.FreezeGame(true);
+        if (sceneManage != null)
+        {
+            sceneManage.FreezeGame(true);
+        }
     }
 
     public void ContinueGame()
@@ -98,7 +125,10 @@ public class MenuManager : MonoBehaviour
         PausePanel.SetActive(false);
         GamePaused = false;
         menuState = MenuState.Playing;
-        sceneManage.FreezeGame(false);
+        if (sceneManage != null)
+        {
+            sceneManage.FreezeGame(false);
+        }
     }
 
     public void SettingMenu()
@@ -121,6 +151,7 @@ public class MenuManager : MonoBehaviour
         PilotLevelPanel.SetActive(false);
         menuState = MenuState.Playing;
     }
+
     public void PilotLevel()
     {
         PilotLevelPanel.SetActive(true);
@@ -130,38 +161,27 @@ public class MenuManager : MonoBehaviour
 
     public void ChangeDashType()
     {
-
         if (DoubleClickDash)
         {
             DoubleClickDash = false;
-            if (languageManager.language == 1)
-            {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
-                dashTypeText.text = dashLanguage.english2;
-            }
-            else 
-            {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
-                dashTypeText.text = dashLanguage.portuguese2;
-            }
-
-            saveSystem.SaveDashType(0);
         }
         else
         {
             DoubleClickDash = true;
-            if (languageManager.language == 1)
-            {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
-                dashTypeText.text = dashLanguage.english;
-            }
-            else 
-            {
-                TextMeshProUGUI dashTypeText = DashTypeTextObject.GetComponent<TextMeshProUGUI>();
-                dashTypeText.text = dashLanguage.portuguese;
-            }
-            saveSystem.SaveDashType(1);
+        }
+
+        if (dashLanguage != null)
+        {
+            dashLanguage.RespondToLanguageChange();
+        }
+        else
+        {
+            Debug.LogError("ChangeLanguageDash component is null in ChangeDashType method!");
+        }
+
+        if (saveSystem != null)
+        {
+            saveSystem.SaveDashType(DoubleClickDash ? 1 : 0);
         }
     }
-
 }

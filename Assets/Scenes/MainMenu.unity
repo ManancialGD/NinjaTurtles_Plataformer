@@ -1188,6 +1188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad8deddd2bcc4b4aaa1dd338611b07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashTypeText: {fileID: 1364005183}
   PausePanel: {fileID: 786792569}
   OptionsPanel: {fileID: 1568159369}
   DashTypeTextObject: {fileID: 1364005175}
@@ -1606,11 +1607,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5263236014242079760, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.6230769
       objectReference: {fileID: 0}
     - target: {fileID: 5263236014242079760, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6691834487235056852, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_MaxValue
@@ -1618,15 +1619,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6944244793452547067, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.6230769
       objectReference: {fileID: 0}
     - target: {fileID: 6944244793452547067, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6944244793452547067, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.6230769
       objectReference: {fileID: 0}
     - target: {fileID: 7252924787447781363, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_text
@@ -1634,7 +1635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7527822519319381063, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7924278011313958423, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1682,18 +1683,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8899422937272525695, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1804432824355144569, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7924278011313958423, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1356157849}
     - targetCorrespondingSourceObject: {fileID: 5439277414798418122, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: 3
       addedObject: {fileID: 118029027}
-    - targetCorrespondingSourceObject: {fileID: 5439277414798418122, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1356157849}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1059989383024818472, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: 2
@@ -1701,6 +1702,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1383148108523761814, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: 2
       addedObject: {fileID: 1364005182}
+    - targetCorrespondingSourceObject: {fileID: 7908851816940161878, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2135821287}
     - targetCorrespondingSourceObject: {fileID: 3179105262820653218, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       insertIndex: 2
       addedObject: {fileID: 158106185}
@@ -1764,12 +1768,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c0b67a681a3014895e225c858f3f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
+  text: {fileID: 1364005183}
   english: Dash with double tap
   english2: Dash with shift
   portuguese: Aperte duas vezes para o dash
   portuguese2: Aperte shift para o dash
-  languageManager: {fileID: 0}
+  languageManager: {fileID: 1485213652}
+--- !u!114 &1364005183 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7252924787447781363, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+  m_PrefabInstance: {fileID: 1207005945}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364005175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1485213651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2108,7 +2123,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1207005946}
+    m_TransformParent: {fileID: 1046357562}
     m_Modifications:
     - target: {fileID: 116761788002743046, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_Name
@@ -2130,17 +2145,21 @@ PrefabInstance:
       propertyPath: options.Array.data[1]
       value: "Portugu\xEAs"
       objectReference: {fileID: 0}
+    - target: {fileID: 4886948864462865809, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2172172
+      value: 1.2172174
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2172172
+      value: 1.2172174
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2172172
+      value: 1.2172174
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2152,7 +2171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -109.54956
+      value: -109.54953
       objectReference: {fileID: 0}
     - target: {fileID: 5001749339462800291, guid: add6c2f15db64c64f91fb8a9d88bc18f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2488,6 +2507,38 @@ MonoBehaviour:
   text: {fileID: 1986190487}
   english: Settings
   portuguese: "Configura\xE7\xF5es"
+  languageManager: {fileID: 1485213652}
+--- !u!1 &2135821283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7908851816940161878, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+  m_PrefabInstance: {fileID: 1207005945}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2135821285 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1454419115343250473, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+  m_PrefabInstance: {fileID: 1207005945}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135821283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2135821287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135821283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f57d874c4127e46830d012142f751a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 2135821285}
+  english: Dash type
+  portuguese: Tipo do dash
   languageManager: {fileID: 1485213652}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

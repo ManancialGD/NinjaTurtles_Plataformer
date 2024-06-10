@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ChangeLanguageDash : MonoBehaviour
 {
+    MenuManager menuManager;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] public string english;
     [SerializeField] public string english2;
@@ -13,6 +14,12 @@ public class ChangeLanguageDash : MonoBehaviour
 
     private void Awake()
     {
+        menuManager = FindObjectOfType<MenuManager>();
+        if (menuManager == null)
+        {
+            Debug.LogError("MenuManager component not found!");
+        }
+
         text = GetComponent<TextMeshProUGUI>();  // Corrected the component name
         if (text == null)
         {
@@ -36,16 +43,35 @@ public class ChangeLanguageDash : MonoBehaviour
     }
 
     // Method to respond to the language change event
-    private void RespondToLanguageChange()
+    public void RespondToLanguageChange()
     {
-        Debug.Log("Language has been changed to: " + languageManager.GetLanguage());
+        if (languageManager == null || menuManager == null)
+        {
+            Debug.LogError("RespondToLanguageChange called with null references!");
+            return;
+        }
+
         if (languageManager.GetLanguage() == 0)
         {
-            text.text = english;
+            if (menuManager.DoubleClickDash)
+            {
+                text.text = english;
+            }
+            else
+            {
+                text.text = english2;
+            }
         }
         else if (languageManager.GetLanguage() == 1)
         {
-            text.text = portuguese;
+            if (menuManager.DoubleClickDash)
+            {
+                text.text = portuguese;
+            }
+            else
+            {
+                text.text = portuguese2;
+            }
         }
     }
 
