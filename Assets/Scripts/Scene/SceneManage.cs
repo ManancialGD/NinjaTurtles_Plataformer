@@ -31,6 +31,14 @@ public class SceneManage : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetButtonDown("ResetScene"))
+        {
+            SceneManager.LoadScene(CurrentScene);
+        }
+    }
+
     // This is a method for the future, now we set the target as the player in the awake
     // But in the future we can change this to another thing
     private void ChangeCameraTarget(Transform target)

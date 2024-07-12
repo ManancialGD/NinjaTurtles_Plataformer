@@ -11,6 +11,7 @@ public class SlideButton : MonoBehaviour
     [SerializeField] public bool Value { get; private set; } // Value representing the button state.
     Color defaultColor; // Default color of the button.
     Vector3 defaultPosition; // Default position of the button.
+    [SerializeField] private float slideSpeed = 0.1f; // Variable to control the sliding speed.
 
     void Awake()
     {
@@ -32,7 +33,7 @@ public class SlideButton : MonoBehaviour
         images[1].rectTransform.localPosition = correctPosition; // Set initial position.
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Update correct position based on Value.
         if (Value && correctPosition != new Vector3(11.5f, defaultPosition.y, defaultPosition.z)) correctPosition = new Vector3(11.5f, defaultPosition.y, defaultPosition.z);
@@ -48,7 +49,7 @@ public class SlideButton : MonoBehaviour
         // Smoothly slide the button towards the correct position.
         if (Mathf.Abs(images[1].rectTransform.localPosition[0] - correctPosition[0]) > 0.01f)
         {
-            momentum += (correctPosition[0] / Mathf.Abs(correctPosition[0])) * 0.01f;
+            momentum += (correctPosition[0] / Mathf.Abs(correctPosition[0])) * slideSpeed; // Adjust sliding speed using slideSpeed variable.
             images[1].rectTransform.localPosition = new Vector3(images[1].rectTransform.localPosition[0] + momentum, defaultPosition.y, defaultPosition.z);
         }
         SetButtonColor(); // Update the button color based on its position.
@@ -57,6 +58,7 @@ public class SlideButton : MonoBehaviour
         else if (images[1].rectTransform.localPosition.x < -11.5) images[1].rectTransform.localPosition = new Vector3(-11.5f, images[1].rectTransform.localPosition.y, images[1].rectTransform.localPosition.z);
 
     }
+
 
     void SetButtonColor()
     {

@@ -1551,6 +1551,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5938332016111921671, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
+      propertyPath: slideSpeed
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6019431748545424536, guid: 758f100c7807f1c4982d1762e672f134, type: 3}
       propertyPath: m_LocalScale.z
       value: 1

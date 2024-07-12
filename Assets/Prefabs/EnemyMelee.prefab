@@ -56,6 +56,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
+  maxHealth: 100
   hasInfHP: 0
   stunTime: 0
 --- !u!114 &5606559280159581939
@@ -451,7 +452,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 2864156530195181729, guid: 80c8c3e8382c23348908ad355fc72de9, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d7e1da23328c2f64baad72e83f93f8b7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 7dfa37b37e024fd46bc22af59deab729, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -550,4 +551,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordHit: {fileID: 2462094295691473383}
-  shootSwound: {fileID: 0}
+  shootSound: {fileID: 0}
